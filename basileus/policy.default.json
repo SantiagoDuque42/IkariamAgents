@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "description": "Default limits for Basileus. A run may tighten these (doctrine, task prompt) but never loosen them without the player saying so in chat.",
+  "autonomy": "approved-orders",
+  "allowedActions": ["build", "transport", "workers", "wine"],
+  "forbidden": [
+    "attack, pillage, occupy, blockade or any military/naval mission",
+    "espionage missions",
+    "trading with other players, market offers, the Premium Trader",
+    "spending Ambrosia or anything bought with real money (speed-ups, premium features)",
+    "demolishing buildings, abandoning or founding towns",
+    "research, government changes, diplomacy, messages, alliance actions",
+    "account settings, logging in or typing any password, solving captchas"
+  ],
+  "limits": {
+    "maxActionsPerRun": 6,
+    "maxRunMinutes": 10,
+    "secondsBetweenActions": [4, 9],
+    "transport": { "ownTownsOnly": true, "maxPerResourcePerTrip": 60000, "keepWineHours": 36 },
+    "build": { "requireExactFromLevel": true, "abortIfCostExceeds": "maxCost" },
+    "wine": { "neverAboveTavernLevel": true }
+  },
+  "schedule": {
+    "quietHours": ["01:00", "08:00"],
+    "timezone": "Europe/Madrid",
+    "startJitterMinutes": [0, 7]
+  },
+  "stopConditions": [
+    "captcha or bot check of any kind",
+    "logged out / login page",
+    "unexpected dialog or page the playbook does not describe",
+    "game state does not match the step's precondition (skip that step, continue others)",
+    "the same error twice",
+    "Claude in Chrome not connected (end the run, notify)"
+  ]
+}

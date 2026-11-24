@@ -12,14 +12,15 @@ An information system for Ikariam: extractors that read the game (only when you 
 |---|---|---|---|
 | **Mayor** | Your towns: buildings, population, stock, wine, production, units, island levels | `mayor.snapshot.v1` | v0.2: island read fixed (untested in game) |
 | **Cartographer** (game source) | Islands in an area, with filters: good, levels, wonder, free spots, towns, players | `cartographer.map.v1` | v0.1: first real run will confirm response shapes |
-| **Cartographer** (ikadatos) | Players, alliances, rankings | `cartographer.map.v1` | planned; the site blocks automated fetches |
+| **Cartographer** (ikadatos) | Islands, towns, players and inactives from ikadatos, run on the ikadatos page in your browser | `cartographer.map.v1` | v0.1 (the site refuses server-side requests) |
 | **Spymaster** | Spy reports from your Hideouts + target warehouse/wall/inactive → Farmeos | `spymaster.reports.v1` | v0.1 |
 | **Strategist** | Reads the store + doctrine, simulates, emits orders | `strategist.orders.v1` | engine in `strategist/engine`, protocol in `strategist/PROTOCOL.md` |
-| Planned exporters | Military history, transports, … | one schema each | see "Adding an exporter" |
+| **Basileus** | Executes approved orders in your Chrome (Claude in Chrome): builds, transports, workers/wine | `basileus.journal.v1` | B0: contract, policy, playbook; see `docs/BASILEUS.md` |
+| Planned exporters | Military history, transports, … (each to its own spreadsheet) | one schema each | see "Adding an exporter" |
 
 ## Rules
 
-1. **No automated gameplay.** Tools only read, and only when you click them, at a human pace. Every action in the game is done by you. Gameforge bans bots.
+1. **Extractors only read**, only when you click them, at a human pace. **Basileus** is the only part that acts in the game, only on steps you approved, within its policy. Gameforge's rules forbid bots, so using Basileus is a risk you take for your own account (see `docs/BASILEUS.md`).
 2. **The contract is the system.** Every file is an envelope (`schemas/envelope.v1.json`) with a versioned schema. Consumers read files, never each other's internals.
 3. **This repo is public: no real game data in it.** Snapshots, reports, doctrine and plans live in the private Drive folder. Fixtures here are anonymised.
 

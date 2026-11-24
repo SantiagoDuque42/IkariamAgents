@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter, 'Open Sans', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5d6779"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b3362f"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9a6a24"/></marker>
+    <style>
+      .box{fill:#fff;stroke:#c9ced8;stroke-width:1.5;rx:10}
+      .t{font-size:17px;font-weight:600;fill:#18243a}
+      .s{font-size:13px;fill:#5d6779}
+      .h{font-size:13px;font-weight:700;fill:#9a6a24;letter-spacing:.08em}
+      .l{stroke:#5d6779;stroke-width:1.6;fill:none}
+      .lab{font-size:12px;fill:#5d6779}
+      .plan{stroke-dasharray:6 5}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f6f5f1"/>
+  <text x="40" y="52" font-size="28" font-weight="700" fill="#18243a">IkariamAgents · architecture</text>
+  <text x="40" y="80" class="s">24 Nov 2026 · v0.3 · extractors read, the Strategist plans, the player approves, Basileus executes</text>
+
+  <!-- column headers -->
+  <text x="40" y="122" class="h">PLAYER'S BROWSER</text>
+  <text x="330" y="122" class="h">EXTRACTORS · READ-ONLY</text>
+  <text x="650" y="122" class="h">STORE · DRIVE</text>
+  <text x="970" y="122" class="h">IMPORT · PLAN</text>
+  <text x="1290" y="122" class="h">OUTPUTS · PEOPLE</text>
+
+  <!-- column 1 -->
+  <rect x="40" y="150" width="230" height="220" class="box"/>
+  <text x="60" y="182" class="t">Ikariam</text>
+  <text x="60" y="204" class="s">game tab, s74-es · Atlas</text>
+  <text x="60" y="230" class="s">towns · islands · world map</text>
+  <text x="60" y="250" class="s">Hideout reports</text>
+  <rect x="40" y="420" width="230" height="80" class="box"/>
+  <text x="60" y="452" class="t">ikadatos.com</text>
+  <text x="60" y="474" class="s">islands · players · inactives</text>
+
+  <!-- column 2 extractors -->
+  <g>
+    <rect x="330" y="150" width="260" height="52" class="box"/><text x="348" y="174" class="t">Mayor</text><text x="348" y="193" class="s">own empire snapshot</text>
+    <rect x="330" y="214" width="260" height="52" class="box"/><text x="348" y="238" class="t">Cartographer · game</text><text x="348" y="257" class="s">area + filters, island details</text>
+    <rect x="330" y="278" width="260" height="52" class="box"/><text x="348" y="302" class="t">Spymaster</text><text x="348" y="321" class="s">spy reports + targets</text>
+    <rect x="330" y="342" width="260" height="52" class="box plan"/><text x="348" y="366" class="t" fill="#5d6779">Military history · Transports</text><text x="348" y="385" class="s">planned exporters</text>
+    <rect x="330" y="434" width="260" height="52" class="box"/><text x="348" y="458" class="t">Cartographer · ikadatos</text><text x="348" y="477" class="s">runs on the ikadatos page</text>
+  </g>
+  <line x1="270" y1="176" x2="328" y2="176" class="l" marker-end="url(#a)"/>
+  <line x1="270" y1="240" x2="328" y2="240" class="l" marker-end="url(#a)"/>
+  <line x1="270" y1="304" x2="328" y2="304" class="l" marker-end="url(#a)"/>
+  <line x1="270" y1="360" x2="328" y2="368" class="l plan" marker-end="url(#a)"/>
+  <line x1="270" y1="460" x2="328" y2="460" class="l" marker-end="url(#a)"/>
+
+  <!-- column 3 store -->
+  <rect x="650" y="140" width="260" height="400" rx="12" fill="#eef1f6" stroke="#9fb0c8" stroke-width="1.5"/>
+  <text x="668" y="166" class="s" font-weight="600">IKARIAM [ATLAS] / Agentic Development</text>
+  <rect x="668" y="182" width="224" height="50" class="box"/><text x="684" y="205" class="t">inbox/</text><text x="684" y="223" class="s">versioned JSON envelopes</text>
+  <rect x="668" y="250" width="224" height="50" class="box"/><text x="684" y="273" class="t">data/&lt;subsystem&gt;/</text><text x="684" y="291" class="s">processed files, journals</text>
+  <rect x="668" y="318" width="224" height="50" class="box"/><text x="684" y="341" class="t">orders/</text><text x="684" y="359" class="s">strategist.orders.v1</text>
+  <rect x="668" y="386" width="224" height="50" class="box"/><text x="684" y="409" class="t">doctrine.md</text><text x="684" y="427" class="s">goals · limits · preferences</text>
+  <text x="668" y="470" class="s">schemas: mayor · cartographer ·</text>
+  <text x="668" y="488" class="s">spymaster · orders · journal (v1)</text>
+  <path d="M590 176 C620 176 630 200 666 204" class="l" marker-end="url(#a)"/>
+  <path d="M590 240 C620 240 630 210 666 208" class="l" marker-end="url(#a)"/>
+  <path d="M590 304 C625 304 630 216 666 212" class="l" marker-end="url(#a)"/>
+  <path d="M590 368 C628 368 632 222 666 216" class="l plan" marker-end="url(#a)"/>
+  <path d="M590 460 C632 460 636 228 666 222" class="l" marker-end="url(#a)"/>
+  <text x="580" y="136" class="lab">downloads</text>
+
+  <!-- column 4 -->
+  <rect x="970" y="160" width="260" height="88" class="box"/>
+  <text x="988" y="188" class="t">AtlasImporter</text>
+  <text x="988" y="209" class="s">Apps Script, runs as the player</text>
+  <text x="988" y="229" class="s">one handler per schema</text>
+  <line x1="892" y1="207" x2="968" y2="200" class="l" marker-end="url(#a)"/>
+  <path d="M970 236 C940 250 930 270 894 275" class="l" marker-end="url(#a)"/>
+  <text x="914" y="302" class="lab">moves</text>
+
+  <rect x="970" y="330" width="260" height="120" class="box" stroke="#9a6a24" stroke-width="2"/>
+  <text x="988" y="358" class="t">Strategist</text>
+  <text x="988" y="380" class="s">Claude session + engine</text>
+  <text x="988" y="400" class="s">simulate · diff · calibrate</text>
+  <text x="988" y="420" class="s">orders with exec blocks</text>
+  <path d="M892 280 C935 290 940 350 968 360" class="l" marker-end="url(#a)"/>
+  <line x1="892" y1="411" x2="968" y2="411" class="l" marker-end="url(#a)"/>
+  <path d="M968 390 C940 380 925 350 894 345" class="l" marker-end="url(#b)" stroke="#9a6a24"/>
+
+  <!-- column 5 -->
+  <rect x="1290" y="150" width="270" height="52" class="box"/><text x="1308" y="174" class="t">Farmeos</text><text x="1308" y="193" class="s">targets + Historial</text>
+  <rect x="1290" y="214" width="270" height="52" class="box plan"/><text x="1308" y="238" class="t" fill="#5d6779">Historial militar</text><text x="1308" y="257" class="s">planned · own spreadsheet</text>
+  <rect x="1290" y="278" width="270" height="52" class="box plan"/><text x="1308" y="302" class="t" fill="#5d6779">Transportes</text><text x="1308" y="321" class="s">planned · own spreadsheet</text>
+  <line x1="1230" y1="190" x2="1288" y2="176" class="l" marker-end="url(#a)"/>
+  <line x1="1230" y1="205" x2="1288" y2="240" class="l plan" marker-end="url(#a)"/>
+  <line x1="1230" y1="220" x2="1288" y2="304" class="l plan" marker-end="url(#a)"/>
+
+  <rect x="1290" y="380" width="270" height="96" class="box" stroke="#1f4e79" stroke-width="2"/>
+  <text x="1308" y="410" class="t">Player</text>
+  <text x="1308" y="432" class="s">reads plans, approves steps</text>
+  <text x="1308" y="452" class="s">in chat · the only interface</text>
+  <path d="M1230 400 C1255 400 1262 420 1288 420" class="l" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="1236" y="372" class="lab">plans ⇄ input</text>
+
+  <!-- Basileus -->
+  <rect x="650" y="610" width="620" height="104" class="box" stroke="#b3362f" stroke-width="2"/>
+  <text x="670" y="640" class="t">Basileus · executor</text>
+  <text x="670" y="662" class="s">Claude in Chrome on the player's browser: precheck → act through the UI → postcheck</text>
+  <text x="670" y="682" class="s">approved steps only (chat, or a scheduled task's prompt) · builds · transports · workers/wine</text>
+  <text x="670" y="702" class="s">policy limits · quiet hours · stops on captcha, logout, surprises · journal every step</text>
+  <path d="M1425 476 C1425 560 1330 640 1272 650" class="l" marker-end="url(#a)" stroke="#1f4e79"/>
+  <text x="1438" y="520" class="lab">approves steps:</text><text x="1438" y="537" class="lab">on demand, set times</text><text x="1438" y="554" class="lab">or interval</text>
+  <path d="M648 664 C470 664 300 650 300 580 L300 400 C300 385 292 376 274 372" fill="none" stroke="#b3362f" stroke-width="2.4" marker-end="url(#r)"/>
+  <text x="316" y="560" font-size="13" font-weight="600" fill="#b3362f">UI clicks: the only</text><text x="316" y="578" font-size="13" font-weight="600" fill="#b3362f">writer to the game</text>
+  <path d="M780 608 L780 542" class="l" marker-end="url(#a)"/>
+  <text x="788" y="580" class="lab">journal</text>
+  <path d="M1100 608 C1100 520 1100 480 1100 452" class="l" marker-end="url(#a)"/>
+  <text x="1108" y="540" class="lab">reads approved orders</text>
+
+  <!-- GitHub -->
+  <rect x="40" y="760" width="580" height="80" class="box"/>
+  <text x="60" y="790" class="t">GitHub · IkariamAgents (public)</text>
+  <text x="60" y="812" class="s">code · schemas · tests · bookmarklets · ATLAS branches · no game data</text>
+
+  <!-- legend -->
+  <g transform="translate(650 770)">
+    <line x1="0" y1="10" x2="40" y2="10" class="l" marker-end="url(#a)"/><text x="50" y="14" class="lab">read / data flow</text>
+    <line x1="170" y1="10" x2="210" y2="10" stroke="#b3362f" stroke-width="2.4" marker-end="url(#r)"/><text x="220" y="14" class="lab">acts in the game</text>
+    <line x1="340" y1="10" x2="380" y2="10" class="l plan" marker-end="url(#a)"/><text x="390" y="14" class="lab">planned</text>
+    <line x1="470" y1="10" x2="510" y2="10" stroke="#9a6a24" stroke-width="1.6" marker-end="url(#b)"/><text x="520" y="14" class="lab">writes orders</text>
+  </g>
+</svg>

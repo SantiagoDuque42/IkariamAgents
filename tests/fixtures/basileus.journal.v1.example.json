@@ -1,0 +1,20 @@
+{
+ "schema": "basileus.journal.v1",
+ "producedAt": "2026-01-02T13:50:00.000Z",
+ "producer": "basileus@0.1.0",
+ "server": "s0-example",
+ "player": null,
+ "scope": {},
+ "payload": {
+  "run": { "mode": "set-times", "trigger": "Basileus · approved orders 2 Jan", "approval": "scheduled task prompt created in chat on 2026-01-02",
+    "startedAt": "2026-01-02T13:41:00.000Z", "endedAt": "2026-01-02T13:50:00.000Z", "dryRun": false, "policy": "basileus/policy.default.json@1", "aborted": null },
+  "steps": [
+   { "id": "orders-20260102#Epsilon.0", "exec": { "action": "wine", "town": "Epsilon", "level": 18 },
+     "precheck": { "ok": true, "observed": { "tavern": 18, "serving": 14 } }, "result": "done",
+     "postcheck": { "ok": true, "observed": { "serving": 18 } }, "at": "2026-01-02T13:44:00.000Z" },
+   { "id": "orders-20260102#Alpha.0", "exec": { "action": "transport", "from": "Alpha", "to": "Delta", "resources": { "wine": 20000 } },
+     "precheck": { "ok": false, "reason": "Alpha holds 21,000 wine; keepAtLeast 6,000 not met" }, "result": "skipped",
+     "reason": "precondition", "at": "2026-01-02T13:46:00.000Z" }
+  ]
+ }
+}

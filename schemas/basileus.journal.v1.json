@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "basileus.journal.v1.json",
+  "title": "Basileus journal v1 — one execution run: what was approved, checked, done or skipped",
+  "allOf": [{ "$ref": "envelope.v1.json" }],
+  "properties": {
+    "schema": { "const": "basileus.journal.v1" },
+    "payload": {
+      "type": "object",
+      "required": ["run", "steps"],
+      "properties": {
+        "run": {
+          "type": "object",
+          "required": ["mode", "startedAt", "dryRun", "approval"],
+          "properties": {
+            "mode": { "enum": ["on-demand", "set-times", "interval", "standing"] },
+            "trigger": { "type": "string", "description": "Scheduled task name, or 'chat'" },
+            "approval": { "type": "string", "description": "Where the approval came from: the chat message or the scheduled task prompt that listed these steps" },
+            "startedAt": { "type": "string", "format": "date-time" },
+            "endedAt": { "type": "string", "format": "date-time" },
+            "dryRun": { "type": "boolean" },
+            "policy": { "type": "string", "description": "Policy version used, e.g. basileus/policy.default.json@1" },
+            "aborted": { "type": ["string", "null"], "description": "Reason the whole run stopped early (captcha, logged out, unexpected dialog, …)" }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "exec", "result"],
+            "properties": {
+              "id": { "type": "string", "description": "Step id as approved (e.g. orders file + index, or the id in the task prompt)" },
+              "exec": { "type": "object", "description": "The exec block from strategist.orders.v1" },
+              "precheck": {
+                "type": "object",
+                "properties": { "ok": { "type": "boolean" }, "observed": { "type": "object" }, "reason": { "type": "string" } }
+              },
+              "result": { "enum": ["done", "skipped", "failed", "dry-run"] },
+              "reason": { "type": "string" },
+              "postcheck": { "type": "object", "properties": { "ok": { "type": "boolean" }, "observed": { "type": "object" } } },
+              "at": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,8 @@
 Read `README.md` and `docs/ARCHITECTURE.md` first.
 
 ## Hard rules
-- **Never automate game actions.** Bookmarklets only issue the read-only GET views the game UI itself uses (city, cityMilitary, island, safehouse, world map). Do not add anything that builds, sends, trades, attacks or changes settings, and do not add polling or timers. Keep request pacing (`pace()`).
+- **Only Basileus changes game state.** Every extractor (bookmarklets, importer) stays read-only: it issues only the GET views the game UI itself uses (city, cityMilitary, island, safehouse, world map). Extractors never build, send, trade, attack or change settings, never poll, and keep their request pacing (`pace()`).
+- **Basileus** (`basileus/`, `docs/BASILEUS.md`) acts only through Claude in Chrome, clicking the game UI. It executes only steps the player approved in chat, or that a scheduled task's prompt lists, within `basileus/policy.default.json`. Never add endpoint-level action code, captcha handling, credential entry or anything in `policy.forbidden`; changing that list is the player's decision.
 - **No real game data in this public repo**: no snapshots, reports, player/town names from the user's server, doctrine or plans. Real data lives in the Drive folder `IKARIAM [ATLAS]/Agentic Development`. Fixtures must be anonymised.
 - **Contract first.** A change to a payload means a schema change: additive → same major version, breaking → new `vN+1` schema file, and consumers support N and N−1.
 - **Unknown response shapes are discovered, not guessed.** When a parser cannot recognise a response, record `shape()` (structure only) in `diag`, ship it, and fix the parser from the real diag.
@@ -16,7 +17,8 @@ Read `README.md` and `docs/ARCHITECTURE.md` first.
 
 ## Layout
 - `shared/ikariam.js`: helpers inlined into every bookmarklet at `/*@shared*/`
-- `mayor/`, `cartographer/`, `spymaster/`: extractors
+- `mayor/`, `cartographer/` (game + ikadatos), `spymaster/`: extractors
+- `basileus/`: executor playbook, policy, UI notes
 - `schemas/`: JSON Schemas (draft 2020-12)
 - `sheets/AtlasImporter.gs`: Apps Script that imports inbox files into Google Sheets
 - `strategist/`:

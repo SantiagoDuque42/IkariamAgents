@@ -11,6 +11,7 @@ const targets = {
   mayor: 'mayor/mayor.bookmarklet.js',
   spymaster: 'spymaster/spymaster.bookmarklet.js',
   cartographer: 'cartographer/cartographer.bookmarklet.js',
+  ikadatos: 'cartographer/ikadatos.bookmarklet.js',
 };
 mkdirSync(root + 'dist', { recursive: true });
 for (const [name, path] of Object.entries(targets)) {

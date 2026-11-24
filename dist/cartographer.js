@@ -221,7 +221,8 @@ async function copyText(text, btn) {
     if (Object.keys(diag).length) env.diag = diag;
     const tag = `${scope.tradegood.join('-') || 'all'}_${x0}-${x1}x${y0}-${y1}`;
     const fname = `cartographer.map_${env.server}_${stamp()}_${tag}.json`;
-    download(env, fname);
+    window.__atlasLast = env; // lets a Claude-in-Chrome session read the result without a download
+    if (!window.__atlasNoDownload) download(env, fname);
     say('Cartographer: map ready',
       `${islands.length} islands in the area, ${opened} opened, ${kept.length} kept after the filter. Saved as ${fname}.` + (env.diag ? '\nSome responses had an unexpected shape; their structure (no values) is in the file so the parser can be fixed.' : ''),
       [{ label: 'Download again', onClick: () => download(env, fname) }]);

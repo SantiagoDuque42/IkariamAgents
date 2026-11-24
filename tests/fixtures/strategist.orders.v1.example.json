@@ -1,0 +1,28 @@
+{
+ "schema": "strategist.orders.v1",
+ "producedAt": "2026-01-02T11:00:00.000Z",
+ "producer": "strategist@0.1.0",
+ "server": "s0-example",
+ "player": null,
+ "scope": {},
+ "payload": {
+  "basis": { "snapshot": "mayor.snapshot_s0-example_20260102-1000Z.json" },
+  "goal": "economy",
+  "horizonHours": 24,
+  "towns": [
+   { "town": "Epsilon", "steps": [
+     { "kind": "wine", "text": "Tavern: serve wine at level 18", "why": "Satisfaction cap below housing at level 14",
+       "status": "accepted", "exec": { "action": "wine", "town": "Epsilon", "level": 18 } },
+     { "kind": "build", "text": "Tavern 18 → 19", "status": "proposed",
+       "exec": { "action": "build", "town": "Epsilon", "building": "tavern", "fromLevel": 18, "toLevel": 19, "maxCost": { "wood": 13000, "marble": 2600 } } }
+   ] },
+   { "town": "Alpha", "steps": [
+     { "kind": "transport", "text": "Send 20,000 wine Alpha → Delta", "status": "accepted",
+       "exec": { "action": "transport", "from": "Alpha", "to": "Delta", "resources": { "wine": 20000 }, "keepAtLeast": { "wine": 6000 } } },
+     { "kind": "allocate", "text": "Sawmill 900, vineyard 1000", "status": "accepted",
+       "exec": { "action": "workers", "town": "Alpha", "wood": 900, "lux": 1000 } }
+   ] }
+  ],
+  "expected": [ { "atHours": 24, "population": { "Epsilon": 1100 } } ]
+ }
+}

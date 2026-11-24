@@ -310,7 +310,8 @@ async function copyText(text, btn) {
       { player: opts.me, scope: { hideouts, enriched: opts.enrich } });
     if (Object.keys(diag).length) env.diag = diag;
     const fname = `spymaster.reports_${env.server}_${stamp()}.json`;
-    download(env, fname);
+    window.__atlasLast = env; // lets a Claude-in-Chrome session read the result without a download
+    if (!window.__atlasNoDownload) download(env, fname);
     say('Spymaster: reports ready',
       `${list.length} reports from ${hideouts} Hideouts, ${Object.keys(targets).length} targets enriched. Saved as ${fname}.` + (env.diag ? '\nSome pages had an unexpected structure; it is in the file (no text) so the parser can be fixed.' : ''),
       [{ label: 'Download again', onClick: () => download(env, fname) }]);

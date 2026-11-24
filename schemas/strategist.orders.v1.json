@@ -60,8 +60,60 @@
         "params": { "type": "object" },
         "why": { "type": "string" },
         "due": { "type": "string", "description": "When to do it (ISO time or 'now')" },
-        "status": { "enum": ["proposed", "accepted", "done", "skipped"], "default": "proposed" }
+        "status": { "enum": ["proposed", "accepted", "done", "skipped"], "default": "proposed" },
+        "exec": { "$ref": "#/$defs/exec", "description": "Machine-checkable form of the step, for Basileus. Only steps with exec can be executed by it." }
       }
+    },
+    "res": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": { "wood": { "type": "integer", "minimum": 0 }, "wine": { "type": "integer", "minimum": 0 }, "marble": { "type": "integer", "minimum": 0 }, "glass": { "type": "integer", "minimum": 0 }, "sulfur": { "type": "integer", "minimum": 0 } }
+    },
+    "exec": {
+      "oneOf": [
+        {
+          "type": "object", "title": "build",
+          "required": ["action", "town", "building", "fromLevel", "toLevel"],
+          "properties": {
+            "action": { "const": "build" },
+            "town": { "type": "string" }, "townId": { "type": "string" },
+            "building": { "type": "string", "description": "Internal name, e.g. tavern, townHall, warehouse" },
+            "position": { "type": "integer", "description": "Building ground index, needed for new buildings and multi-instance buildings" },
+            "fromLevel": { "type": "integer", "minimum": 0, "description": "Precondition: current level (0 = new building)" },
+            "toLevel": { "type": "integer", "minimum": 1 },
+            "maxCost": { "$ref": "#/$defs/res", "description": "Abort if the game asks for more than this" }
+          }
+        },
+        {
+          "type": "object", "title": "transport",
+          "required": ["action", "from", "to", "resources"],
+          "properties": {
+            "action": { "const": "transport" },
+            "from": { "type": "string" }, "to": { "type": "string" },
+            "fromId": { "type": "string" }, "toId": { "type": "string" },
+            "resources": { "$ref": "#/$defs/res" },
+            "keepAtLeast": { "$ref": "#/$defs/res", "description": "Precondition: the source keeps at least this much after sending" }
+          }
+        },
+        {
+          "type": "object", "title": "workers",
+          "required": ["action", "town"],
+          "properties": {
+            "action": { "const": "workers" },
+            "town": { "type": "string" }, "townId": { "type": "string" },
+            "wood": { "type": "integer", "minimum": 0 }, "lux": { "type": "integer", "minimum": 0 }, "scientists": { "type": "integer", "minimum": 0 }
+          }
+        },
+        {
+          "type": "object", "title": "wine",
+          "required": ["action", "town", "level"],
+          "properties": {
+            "action": { "const": "wine" },
+            "town": { "type": "string" }, "townId": { "type": "string" },
+            "level": { "type": "integer", "minimum": 0, "description": "Tavern serving level; must not exceed the tavern level" }
+          }
+        }
+      ]
     }
   }
 }

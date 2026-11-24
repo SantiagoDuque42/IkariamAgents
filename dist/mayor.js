@@ -228,7 +228,8 @@ async function copyText(text, btn) {
     const env = envelope('mayor.snapshot.v1', 'mayor@' + VERSION, payload, { scope: { towns: own.length } });
     if (Object.keys(diag).length) env.diag = diag;
     const fname = `mayor.snapshot_${env.server}_${stamp()}.json`;
-    download(env, fname);
+    window.__atlasLast = env; // lets a Claude-in-Chrome session read the result without a download
+    if (!window.__atlasNoDownload) download(env, fname);
     const legacy = { type: 'ikariam-snapshot', version: 1, takenAt: env.producedAt, server: location.host, ...payload };
     const nIsl = Object.keys(payload.islands).length;
     say('Mayor: snapshot ready',

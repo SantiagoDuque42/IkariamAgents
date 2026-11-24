@@ -7,6 +7,8 @@
  * that writes it. Adding an exporter = adding one handler (see "Adding an exporter" in sheets/README.md).
  *
  * Runs as the person who installs it, with their Drive permissions. Menu: ATLAS → Import now.
+ * Install it once, in any one spreadsheet (Farmeos is fine): each subsystem writes to its own
+ * spreadsheet (SPREADSHEETS below), found or created next to the "Agentic Development" folder.
  */
 
 var CONFIG = {
@@ -20,6 +22,39 @@ var CONFIG = {
 var HANDLERS = {
   'spymaster.reports.v1': importSpymaster_,
 };
+
+// ---------- One spreadsheet per subsystem ----------
+// Subsystem → spreadsheet title. The spreadsheet is looked up by title in the folder that contains
+// "Agentic Development" (IKARIAM [ATLAS]) and created there if missing. Its id is then remembered in
+// the script property SHEET_<SUBSYSTEM>; set that property yourself to point a subsystem elsewhere.
+var SPREADSHEETS = {
+  spymaster: 'Farmeos',
+  // military: 'Historial militar',   ← add one line per new exporter
+  // transports: 'Transportes',
+};
+
+function spreadsheetFor_(subsystem) {
+  var title = SPREADSHEETS[subsystem];
+  if (!title) throw new Error('No spreadsheet configured for "' + subsystem + '" in SPREADSHEETS');
+  var props = PropertiesService.getScriptProperties();
+  var key = 'SHEET_' + subsystem.toUpperCase();
+  var id = props.getProperty(key);
+  if (id) return SpreadsheetApp.openById(id);
+  var ss = null;
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active && active.getName() === title) ss = active;
+  var parent = rootFolder_().getParents().hasNext() ? rootFolder_().getParents().next() : DriveApp.getRootFolder();
+  if (!ss) {
+    var it = parent.getFilesByName(title);
+    while (!ss && it.hasNext()) { var f = it.next(); if (f.getMimeType() === MimeType.GOOGLE_SHEETS) ss = SpreadsheetApp.openById(f.getId()); }
+  }
+  if (!ss) {
+    ss = SpreadsheetApp.create(title);
+    DriveApp.getFileById(ss.getId()).moveTo(parent);
+  }
+  props.setProperty(key, ss.getId());
+  return ss;
+}
 
 // ---------- Menu and triggers ----------
 function onOpen() {
@@ -72,7 +107,7 @@ var HISTORY_HEADER = ['ID informe', 'Fecha', 'Misión', 'Ubicación', 'Recurso I
   'Depósito', 'Seguro', 'Muralla', 'Inactivo', 'Saqueable', 'Barcos', 'Ejército', 'Espiado por', 'Archivo'];
 
 function importSpymaster_(env, fileName) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = spreadsheetFor_('spymaster');
   var hist = ss.getSheetByName('Historial') || createHistory_(ss);
   var seen = {};
   if (hist.getLastRow() > 1) hist.getRange(2, 1, hist.getLastRow() - 1, 1).getValues().forEach(function (r) { seen[String(r[0])] = true; });
