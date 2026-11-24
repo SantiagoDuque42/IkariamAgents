@@ -1,0 +1,10 @@
+{
+  "world": "Mundo de demostración",
+  "server": "demo",
+  "workbookUrl": "",
+  "mapUrl": "https://example.invalid/ikariam-demo",
+  "observedAt": "2026-01-01T00:00:00Z",
+  "rankedOn": "2026-01-01",
+  "islands": [],
+  "players": []
+}

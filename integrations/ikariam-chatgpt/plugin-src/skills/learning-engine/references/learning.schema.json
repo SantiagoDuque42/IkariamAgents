@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ikariam learning claim v1",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^learn-[a-f0-9]{40}$"
+    },
+    "module_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "world": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "game_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60,
+          "not": {
+            "const": "*"
+          },
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "environment": {
+          "enum": [
+            "live",
+            "pts"
+          ]
+        }
+      },
+      "required": [
+        "account_id",
+        "world",
+        "game_version",
+        "environment"
+      ],
+      "additionalProperties": false
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "kind": {
+      "enum": [
+        "mechanic",
+        "parameter",
+        "preference",
+        "procedure",
+        "hypothesis"
+      ]
+    },
+    "value": {},
+    "unit": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "active",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "max_evidence_age_hours": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 8760
+    },
+    "requires_tests": {
+      "type": "boolean"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "origin": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 800
+          },
+          "source_type": {
+            "enum": [
+              "official_release",
+              "official_help",
+              "game_observation",
+              "wiki",
+              "battle_report",
+              "user_confirmation",
+              "synthetic_test"
+            ]
+          },
+          "scope": {
+            "type": "object",
+            "properties": {
+              "account_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "world": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "game_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60,
+                "not": {
+                  "const": "*"
+                },
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+              },
+              "environment": {
+                "enum": [
+                  "live",
+                  "pts"
+                ]
+              }
+            },
+            "required": [
+              "account_id",
+              "world",
+              "game_version",
+              "environment"
+            ],
+            "additionalProperties": false
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "access": {
+            "enum": [
+              "read",
+              "indexed_only",
+              "unavailable"
+            ]
+          },
+          "stance": {
+            "enum": [
+              "supports",
+              "contradicts"
+            ]
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "content_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effective_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "origin",
+          "locator",
+          "source_type",
+          "scope",
+          "observed_at",
+          "access",
+          "stance",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "access": {
+                  "const": "read"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "content_sha256"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "source_type": {
+                  "const": "official_release"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "effective_at"
+              ]
+            }
+          }
+        ]
+      },
+      "maxItems": 30
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,63}$"
+          },
+          "partition": {
+            "enum": [
+              "development",
+              "holdout"
+            ]
+          },
+          "dataset_type": {
+            "enum": [
+              "real_game",
+              "synthetic"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,63}$"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "case_id",
+          "partition",
+          "dataset_type",
+          "passed",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^learn-[a-f0-9]{40}$"
+      },
+      "maxItems": 20,
+      "uniqueItems": true
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "from": {
+            "enum": [
+              "candidate",
+              "active",
+              "superseded",
+              "rejected"
+            ]
+          },
+          "to": {
+            "enum": [
+              "candidate",
+              "active",
+              "superseded",
+              "rejected"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          }
+        },
+        "required": [
+          "at",
+          "from",
+          "to",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    },
+    "replacement_id": {
+      "type": "string",
+      "pattern": "^learn-[a-f0-9]{40}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "module_id",
+    "scope",
+    "topic",
+    "kind",
+    "value",
+    "unit",
+    "status",
+    "created_at",
+    "valid_until",
+    "max_evidence_age_hours",
+    "requires_tests",
+    "evidence",
+    "tests",
+    "dependencies",
+    "history"
+  ],
+  "additionalProperties": false
+}

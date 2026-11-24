@@ -1,0 +1,1145 @@
+{
+  "schema_version": "1.0.0",
+  "family": "modulos-operativos",
+  "updated_at": "2026-11-24",
+  "description": "Flujos coordinados por el agente y contratos locales; sin proceso residente de automatización.",
+  "defaults": {
+    "horizon_hours": 12,
+    "review_hours": 6,
+    "planning_max_age_minutes": 360,
+    "execution_max_age_minutes": 30,
+    "execution_mode": "manual",
+    "objective": "rapid_growth",
+    "game_connection": false,
+    "scheduled": false
+  },
+  "modules": [
+    {
+      "id": "operativo-orquestador",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-orquestador/SKILL.md",
+      "stage": "orchestrate",
+      "depends_on": [],
+      "inputs": [
+        "request",
+        "config",
+        "cycle"
+      ],
+      "outputs": [
+        "cycle"
+      ],
+      "effects": [
+        "read",
+        "write_journal"
+      ],
+      "tools": [
+        "list_accounts",
+        "get_account",
+        "save_entry"
+      ],
+      "display_name": "ORQUESTRADOR",
+      "role": "controller",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-orquestador-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-orquestador-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-orquestador",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-recoleccion",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-recoleccion/SKILL.md",
+      "stage": "collect",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "sources"
+      ],
+      "outputs": [
+        "observation_batch"
+      ],
+      "effects": [
+        "read"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "search_atlas_map",
+        "read_knowledge"
+      ],
+      "display_name": "collect",
+      "role": "shared_service",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-recoleccion-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-recoleccion-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-recoleccion",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-estado",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-estado/SKILL.md",
+      "stage": "normalize",
+      "depends_on": [
+        "operativo-recoleccion"
+      ],
+      "inputs": [
+        "observation_batch",
+        "reservations"
+      ],
+      "outputs": [
+        "snapshot"
+      ],
+      "effects": [
+        "read",
+        "write_observations"
+      ],
+      "tools": [
+        "get_account",
+        "save_account",
+        "save_city",
+        "save_entry"
+      ],
+      "display_name": "normalize",
+      "role": "shared_service",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-estado-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-estado-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-estado",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-deliberacion",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-deliberacion/SKILL.md",
+      "stage": "deliberate",
+      "depends_on": [
+        "operativo-estado"
+      ],
+      "inputs": [
+        "snapshot",
+        "objective"
+      ],
+      "outputs": [
+        "proposal"
+      ],
+      "effects": [
+        "read",
+        "calculate"
+      ],
+      "tools": [
+        "audit_account",
+        "calculate",
+        "combat_catalog",
+        "simulate_battle"
+      ],
+      "display_name": "deliberate",
+      "role": "shared_service",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-deliberacion-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-deliberacion-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-deliberacion",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-arbitraje",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-arbitraje/SKILL.md",
+      "stage": "arbitrate",
+      "depends_on": [
+        "operativo-deliberacion"
+      ],
+      "inputs": [
+        "snapshot",
+        "proposal"
+      ],
+      "outputs": [
+        "decision"
+      ],
+      "effects": [
+        "read",
+        "reserve"
+      ],
+      "tools": [
+        "get_account",
+        "save_entry"
+      ],
+      "display_name": "arbitrate",
+      "role": "shared_service",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-arbitraje-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-arbitraje-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-arbitraje",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-ejecucion",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-ejecucion/SKILL.md",
+      "stage": "execute",
+      "depends_on": [
+        "operativo-arbitraje"
+      ],
+      "inputs": [
+        "decision",
+        "authorization",
+        "reservations"
+      ],
+      "outputs": [
+        "receipt"
+      ],
+      "effects": [
+        "read",
+        "manual_dispatch",
+        "write_journal"
+      ],
+      "tools": [
+        "get_account",
+        "save_entry"
+      ],
+      "display_name": "execute",
+      "role": "shared_service",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-ejecucion-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-ejecucion-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-ejecucion",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-seguimiento",
+      "version": "1.2.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-seguimiento/SKILL.md",
+      "stage": "reconcile",
+      "depends_on": [
+        "operativo-ejecucion"
+      ],
+      "inputs": [
+        "receipt",
+        "observation_batch"
+      ],
+      "outputs": [
+        "cycle",
+        "observation_batch"
+      ],
+      "effects": [
+        "read",
+        "write_journal",
+        "release_reservations"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "save_entry"
+      ],
+      "display_name": "reconcile",
+      "role": "shared_service",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-seguimiento-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-seguimiento-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-seguimiento",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    }
+  ],
+  "adapters": [
+    {
+      "id": "account-records",
+      "status": "available",
+      "mode": "read",
+      "capabilities": [
+        "collect"
+      ],
+      "tools": [
+        "get_account",
+        "get_history"
+      ]
+    },
+    {
+      "id": "supplied-evidence",
+      "status": "available",
+      "mode": "read",
+      "capabilities": [
+        "collect"
+      ],
+      "tools": [],
+      "prerequisite": "Archivo o captura accesible en la sesión"
+    },
+    {
+      "id": "atlas-map",
+      "status": "available",
+      "mode": "read",
+      "capabilities": [
+        "collect"
+      ],
+      "tools": [
+        "search_atlas_map"
+      ],
+      "prerequisite": "Copia registrada de Atlas España; conservar fecha"
+    },
+    {
+      "id": "shared-drive",
+      "status": "planned",
+      "mode": "read",
+      "capabilities": [
+        "collect"
+      ],
+      "tools": [],
+      "source_ref": "https://example.invalid/private-ikariam-drive",
+      "prerequisite": "Acceso comprobado al archivo concreto mediante conector disponible"
+    },
+    {
+      "id": "manual-game",
+      "status": "available",
+      "mode": "manual",
+      "capabilities": [
+        "preflight",
+        "dispatch",
+        "reconcile"
+      ],
+      "tools": [],
+      "prerequisite": "El jugador ejecuta en la interfaz y aporta evidencia"
+    },
+    {
+      "id": "authorized-game",
+      "status": "planned",
+      "mode": "read_write",
+      "capabilities": [
+        "discover_capabilities",
+        "collect",
+        "preflight",
+        "dispatch",
+        "reconcile"
+      ],
+      "tools": [],
+      "prerequisite": "Conector de juego disponible, autorizado y verificado"
+    }
+  ],
+  "persistence": {
+    "tool": "save_entry",
+    "encoding": "JSON in data.content",
+    "config": {
+      "kind": "note",
+      "entry_id": "ops-config-v1"
+    },
+    "state": {
+      "kind": "note",
+      "entry_id": "ops-state-v1"
+    },
+    "snapshot": {
+      "kind": "report",
+      "entry_id": "ops-snapshot-{snapshot_id}"
+    },
+    "proposal": {
+      "kind": "plan",
+      "entry_id": "ops-proposal-{proposal_id}"
+    },
+    "decision": {
+      "kind": "plan",
+      "entry_id": "ops-decision-{decision_id}"
+    },
+    "receipt": {
+      "kind": "report",
+      "entry_id": "ops-receipt-{action_id}"
+    },
+    "cycle": {
+      "kind": "report",
+      "entry_id": "ops-cycle-{cycle_id}"
+    },
+    "concurrency": "expected_revision; central state is the reservation authority",
+    "domain_state": {
+      "kind": "note",
+      "entry_id": "ops-module-{slug}-v1"
+    },
+    "debugger": {
+      "kind": "note",
+      "entry_id": "ops-debugger-{module_id}-v1"
+    },
+    "learner": {
+      "kind": "note",
+      "entry_id": "ops-learner-{module_id}-v1"
+    }
+  },
+  "architecture_version": "1.1.0",
+  "controller": {
+    "id": "operativo-orquestador",
+    "name": "ORQUESTRADOR",
+    "aliases": [
+      "ORQUESTADOR"
+    ]
+  },
+  "domain_modules": [
+    {
+      "id": "operativo-spy",
+      "display_name": "SPY",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-spy/SKILL.md",
+      "stage": "domain",
+      "role": "manager",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "snapshot",
+        "spy_state",
+        "objective"
+      ],
+      "outputs": [
+        "observation_batch",
+        "proposal",
+        "receipt"
+      ],
+      "effects": [
+        "read",
+        "propose",
+        "manual_dispatch",
+        "reconcile"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "read_knowledge",
+        "save_entry"
+      ],
+      "owns": [
+        "espionage"
+      ],
+      "context_from": [
+        "operativo-mayor",
+        "operativo-worldlord"
+      ],
+      "state_entry_id": "ops-module-spy-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-spy-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-spy-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-spy",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-diplomat",
+      "display_name": "DIPLOMAT",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-diplomat/SKILL.md",
+      "stage": "domain",
+      "role": "manager",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "snapshot",
+        "messages",
+        "known_agreements",
+        "communication_goal"
+      ],
+      "outputs": [
+        "observation_batch",
+        "proposal",
+        "receipt"
+      ],
+      "effects": [
+        "read",
+        "propose",
+        "manual_dispatch",
+        "reconcile"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "read_knowledge",
+        "save_entry"
+      ],
+      "owns": [
+        "diplomacy"
+      ],
+      "context_from": [
+        "operativo-mayor",
+        "operativo-worldlord"
+      ],
+      "state_entry_id": "ops-module-diplomat-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-diplomat-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-diplomat-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-diplomat",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-general",
+      "display_name": "GENERAL",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-general/SKILL.md",
+      "stage": "domain",
+      "role": "manager",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "snapshot",
+        "army",
+        "military_fleet",
+        "battle_reports",
+        "objective"
+      ],
+      "outputs": [
+        "observation_batch",
+        "proposal",
+        "receipt"
+      ],
+      "effects": [
+        "read",
+        "propose",
+        "manual_dispatch",
+        "reconcile"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "read_knowledge",
+        "combat_catalog",
+        "simulate_battle",
+        "calculate",
+        "save_entry"
+      ],
+      "owns": [
+        "military"
+      ],
+      "context_from": [
+        "operativo-mayor",
+        "operativo-worldlord"
+      ],
+      "state_entry_id": "ops-module-general-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-general-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-general-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-general",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-investigator",
+      "display_name": "INVESTIGATOR",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-investigator/SKILL.md",
+      "stage": "domain",
+      "role": "manager",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "snapshot",
+        "research",
+        "religious_state",
+        "objective"
+      ],
+      "outputs": [
+        "observation_batch",
+        "proposal",
+        "receipt"
+      ],
+      "effects": [
+        "read",
+        "propose",
+        "manual_dispatch",
+        "reconcile"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "read_knowledge",
+        "calculate",
+        "save_entry"
+      ],
+      "owns": [
+        "research",
+        "religion"
+      ],
+      "context_from": [
+        "operativo-mayor",
+        "operativo-worldlord"
+      ],
+      "state_entry_id": "ops-module-investigator-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-investigator-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-investigator-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-investigator",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-shipper",
+      "display_name": "SHIPPER",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-shipper/SKILL.md",
+      "stage": "domain",
+      "role": "manager",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "snapshot",
+        "merchant_fleet",
+        "shipments",
+        "needs"
+      ],
+      "outputs": [
+        "observation_batch",
+        "proposal",
+        "receipt"
+      ],
+      "effects": [
+        "read",
+        "propose",
+        "manual_dispatch",
+        "reconcile"
+      ],
+      "tools": [
+        "get_account",
+        "get_history",
+        "read_knowledge",
+        "calculate",
+        "save_entry"
+      ],
+      "owns": [
+        "logistics"
+      ],
+      "context_from": [
+        "operativo-mayor",
+        "operativo-worldlord"
+      ],
+      "state_entry_id": "ops-module-shipper-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-shipper-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-shipper-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-shipper",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-worldlord",
+      "display_name": "WORLDLORD",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-worldlord/SKILL.md",
+      "stage": "domain",
+      "role": "collector",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "server_identity",
+        "map_sources",
+        "coverage"
+      ],
+      "outputs": [
+        "observation_batch"
+      ],
+      "effects": [
+        "read",
+        "produce_observations"
+      ],
+      "tools": [
+        "icariam_status",
+        "get_account",
+        "search_atlas_map",
+        "save_entry"
+      ],
+      "owns": [
+        "world"
+      ],
+      "context_from": [],
+      "state_entry_id": "ops-module-worldlord-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-worldlord-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-worldlord-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-worldlord",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    },
+    {
+      "id": "operativo-mayor",
+      "display_name": "MAYOR",
+      "version": "1.1.0",
+      "contract_version": "1.0.0",
+      "status": "available",
+      "implementation": "agent_workflow",
+      "skill_path": "skills/operativo-mayor/SKILL.md",
+      "stage": "domain",
+      "role": "collector",
+      "depends_on": [
+        "operativo-orquestador"
+      ],
+      "inputs": [
+        "account_identity",
+        "city_sources",
+        "registered_cities"
+      ],
+      "outputs": [
+        "observation_batch"
+      ],
+      "effects": [
+        "read",
+        "produce_observations"
+      ],
+      "tools": [
+        "list_accounts",
+        "get_account",
+        "get_history"
+      ],
+      "owns": [
+        "city"
+      ],
+      "context_from": [],
+      "state_entry_id": "ops-module-mayor-v1",
+      "upgraders": {
+        "debugger": {
+          "enabled": true,
+          "state_entry_id": "ops-debugger-operativo-mayor-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "max_steps_without_progress": 20,
+          "same_failure_limit": 2,
+          "same_operation_limit": 3,
+          "history_window": 6,
+          "unknown_outcome": "reconcile_before_retry"
+        },
+        "learner": {
+          "enabled": true,
+          "state_entry_id": "ops-learner-operativo-mayor-v1",
+          "scope": [
+            "account_id",
+            "world",
+            "module_id"
+          ],
+          "ask_user_on_relevant_error": false,
+          "deduplicate_questions": true,
+          "require_user_answer": false,
+          "verify_game_mechanics": true,
+          "research_before_question": true,
+          "require_answer_for_preferences": true,
+          "profile_id": "operativo-mayor",
+          "claim_contract": "learning_claim_v1"
+        }
+      }
+    }
+  ],
+  "domain_routing": {
+    "economy": "operativo-orquestador",
+    "construction": "operativo-orquestador",
+    "expansion": "operativo-orquestador",
+    "espionage": "operativo-spy",
+    "diplomacy": "operativo-diplomat",
+    "military": "operativo-general",
+    "research": "operativo-investigator",
+    "religion": "operativo-investigator",
+    "logistics": "operativo-shipper",
+    "world": "operativo-worldlord",
+    "city": "operativo-mayor"
+  },
+  "learning": {
+    "skill_path": "skills/learning-engine/SKILL.md",
+    "profiles_path": "skills/learning-engine/references/profiles.json",
+    "contract_path": "skills/learning-engine/references/learning.schema.json",
+    "implementation": "agent_workflow_and_local_validator",
+    "background_scheduler": false,
+    "policy_version": "1.0.0"
+  }
+}

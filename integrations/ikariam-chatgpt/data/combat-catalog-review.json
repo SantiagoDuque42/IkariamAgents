@@ -1,0 +1,686 @@
+{
+  "schema_version": "1.0.0",
+  "reviewed_at": "2026-11-24",
+  "catalog_sha256": "aab1cd73c66db0d59bd20cc7cb9a5d83d41ee6f1018ecc48da8acc50e987969d",
+  "game_version": "not_certified_for_current_server",
+  "model_version": "1.1.0",
+  "real_holdout_validation": "not_available",
+  "policy": "Current stats remain inherited candidates. Re-read effective in-game Help before promoting changes.",
+  "units": [
+    {
+      "mode": "land",
+      "id": "spearman",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "swordsman",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "hoplite",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "spartan",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "steam-giant",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "slinger",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "archer",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "sulphur-carabineer",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "battering-ram",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "catapult",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "mortar",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "gyrocopter",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "bombardier",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "doctor",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "cook",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-scout",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-axe-swinger",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-war-walker",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-knifeman",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-axe-thrower",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-ram",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-catapult",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-dirigible",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "land",
+      "id": "barbarian-fighter",
+      "statistics_status": "estimated",
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "steam_ram",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "fire_ship",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "ram_ship",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "ballista_ship",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "catapult_ship",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "mortar_ship",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "submarine",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "rocket_ship",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "balloon_carrier",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "paddle_speedboat",
+      "statistics_status": "inherited_unverified",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "tender",
+      "statistics_status": "estimated",
+      "source": "https://ika-sim.com/wiki",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_deckwrecker",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_sail_shredder",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_pyroboat",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_boulder_catapult",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_wedge_paddler",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_powder_pitcher",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_terror_of_the_deep",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_dragonfire",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_dirigible_igniter",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    },
+    {
+      "mode": "naval",
+      "id": "barbarian_nest",
+      "statistics_status": "estimated",
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "fields_to_verify": [
+        "damage",
+        "armor",
+        "hp",
+        "accuracy",
+        "ammo",
+        "size",
+        "weapons"
+      ]
+    }
+  ]
+}

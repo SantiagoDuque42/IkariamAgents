@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0.0",
+  "reviewed_at": "2026-11-24",
+  "current_server_version": "unknown",
+  "sources": [
+    {
+      "id": "milestone3-live",
+      "url": "https://forum.ikariam.gameforge.com/forum/thread/108845-infinite-horizons-milestone-3/",
+      "locator": "post #3, 19 May 2025; rollout 21 May 2025",
+      "access": "read",
+      "type": "official_release",
+      "version": "14.0.0",
+      "environment": "live",
+      "summary": "El anuncio live modifica taller, forja, topes y Chronos. Retira el límite de mercantes y fija límites a reductores y productores. El avance PTS anterior no sustituye este anuncio.",
+      "excerpt": "Workshop bonuses for military land and sea units have been increased by a factor of 5",
+      "findings": [
+        "Revalidar tablas militares y bonificaciones heredadas.",
+        "MAYOR: Chronos no reduce su propia construcción.",
+        "SHIPPER: descartar el antiguo máximo de 180 mercantes.",
+        "Economía: revisar topes de reductores y productores."
+      ],
+      "modules": [
+        "operativo-general",
+        "operativo-mayor",
+        "operativo-shipper",
+        "economy-planner",
+        "expansion-planner"
+      ],
+      "excerpt_sha256": "4cea071948355580f4ac4b0f249936988421d349b5b3c8e0eb2609ce8e74d396"
+    },
+    {
+      "id": "battlefield-help",
+      "url": "https://gameforge.com/en-GB/games/ikariam-battlefield.html",
+      "locator": "Bombers; Attack Order; Ranged Combat Units Compared",
+      "access": "read",
+      "type": "official_help",
+      "version": "unspecified; numerical table includes classic balance",
+      "environment": "unspecified",
+      "summary": "Describe las prioridades terrestres y la reposición por reservas. Su tabla numérica de daño conserva cifras clásicas; no sirve para certificar estadísticas live actuales.",
+      "excerpt": "They first attack enemy artillery, then RCL, then MBL and finally the flank.",
+      "findings": [
+        "Corregir objetivos de bombarderos terrestres.",
+        "Revisar despliegue de espadachines frente a lanceros.",
+        "Conservar estadísticas actuales como heredadas hasta contrastarlas en ayuda observada."
+      ],
+      "modules": [
+        "operativo-general",
+        "military-adviser"
+      ],
+      "excerpt_sha256": "6d9ba886384ce05a206631afc8422b6783dc5ce6e4ddea3e272a447f48dda791"
+    },
+    {
+      "id": "spy-help",
+      "url": "https://gameforge.com/en-GB/games/ikariam-spies.html",
+      "locator": "Training in the Hideout; Protection Against Enemy Espionage",
+      "access": "read",
+      "type": "official_help",
+      "version": "unspecified",
+      "environment": "unspecified",
+      "summary": "Explica el espionaje y la protección local del escondite. Las probabilidades y costes exigen contraste en la interfaz de la cuenta antes de usarlos como parámetros actuales.",
+      "excerpt": "A hideout only protects the city in which it is built.",
+      "findings": [
+        "Separar protección por ciudad.",
+        "Aprender riesgo anunciado, detección y éxito como variables distintas."
+      ],
+      "modules": [
+        "operativo-spy",
+        "operativo-mayor"
+      ],
+      "excerpt_sha256": "435156b485a18d5818da6119925dd75bd097a6fbd7d550d41d483b031637f72f"
+    },
+    {
+      "id": "gods-live",
+      "url": "https://forum.ikariam.gameforge.com/forum/thread/97116-gods-of-olympus/",
+      "locator": "post #2, 21 November 2023; post #3, 29 November 2023",
+      "access": "read",
+      "type": "official_release",
+      "version": "9.0.0 and correction 9.0.1; historical baseline",
+      "environment": "live",
+      "summary": "Introduce Mitología y bendiciones de producción del Santuario. Un mensaje posterior corrige la ayuda sobre el requisito del ayuntamiento: consultar el hilo completo antes de copiar requisitos.",
+      "excerpt": "Fixed wrong information about Town Hall Level 5 requirement in the hel section for the Gods' shrine",
+      "findings": [
+        "Distinguir bendiciones de producción y milagros.",
+        "Conservar correcciones posteriores de una misma fuente."
+      ],
+      "modules": [
+        "operativo-investigator",
+        "research-planner"
+      ],
+      "excerpt_sha256": "6b125798f8db464cf93ce4c4ca2e4287a7599fb5adad33bf65c99d7655e04565"
+    },
+    {
+      "id": "merchant-help-legacy",
+      "url": "https://gameforge.com/en-GB/games/ikariam-merchant-ship.html",
+      "locator": "Maximum Number and Cost Development",
+      "access": "read",
+      "type": "official_help",
+      "version": "legacy; conflicts with 14.0.0 live announcement",
+      "environment": "unspecified",
+      "summary": "La página conserva un tope antiguo de 180 mercantes. El anuncio live de 2025 lo elimina. No importar ese máximo ni capacidad fija como parámetros de la cuenta.",
+      "excerpt": "Each player can purchase a maximum of 180 merchant ships.",
+      "conflicts_with": [
+        "milestone3-live"
+      ],
+      "findings": [
+        "Ejemplo concreto de fuente oficial desactualizada."
+      ],
+      "modules": [
+        "operativo-shipper",
+        "knowledge-review"
+      ],
+      "excerpt_sha256": "3134bfc1c3bdfa15e5917fda84efbd1610a0711947edb74b3d80f58a2fab68ae"
+    },
+    {
+      "id": "wiki-hoplite",
+      "url": "https://ikariam.fandom.com/wiki/Hoplite",
+      "access": "unavailable",
+      "type": "wiki",
+      "version": "unknown",
+      "environment": "unknown",
+      "summary": "Acceso completo bloqueado durante la revisión. No se extrajeron ni certificaron estadísticas de esta página.",
+      "modules": [
+        "operativo-general"
+      ]
+    },
+    {
+      "id": "wiki-spy",
+      "url": "https://ikariam.fandom.com/wiki/Unit-ship%3ASpy",
+      "access": "indexed_only",
+      "type": "wiki",
+      "version": "unknown",
+      "environment": "unknown",
+      "summary": "Se localizó un fragmento indexado sobre riesgo e infiltración. Pendiente lectura y contraste por versión; no activar fórmulas desde el fragmento.",
+      "modules": [
+        "operativo-spy"
+      ]
+    },
+    {
+      "id": "wiki-combat",
+      "url": "https://ikariam.fandom.com/wiki/Combat",
+      "access": "unavailable",
+      "type": "wiki",
+      "version": "unknown",
+      "environment": "unknown",
+      "summary": "Punto de investigación pendiente; no consultado íntegramente.",
+      "modules": [
+        "operativo-general"
+      ]
+    }
+  ],
+  "module_research": {
+    "operativo-orquestador": "Distribuir una revisión de parche a sus consumidores; priorizar lagunas que cambien decisiones.",
+    "operativo-diplomat": "Partir de tratados y mensajes observados; investigar efectos y requisitos concretos, conservar aceptación y vigencia.",
+    "operativo-worldlord": "Medir cobertura y desfase del mapa; usar IDs y diagnósticos de forma. No rellenar habitantes ausentes.",
+    "operativo-mayor": "Comparar construcción y producción previstas con snapshots posteriores, conservando bonos y versión.",
+    "operativo-spy": "Calibrar con informes privados por misión; una frecuencia observada no es una probabilidad universal.",
+    "operativo-investigator": "Revisar árbol y costes efectivos; no confundir santuario con milagros.",
+    "operativo-shipper": "Aprender carga y tránsito por ruta y tipo, separando ida, retorno y confirmación.",
+    "operativo-general": "Separar catálogo, modelo y validación real por teatro y versión."
+  }
+}

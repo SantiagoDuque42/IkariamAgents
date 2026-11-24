@@ -1,0 +1,66 @@
+{
+  "sourceUrl": "https://example.invalid/ikariam-demo",
+  "observedAt": "2026-01-01T00:00:00Z",
+  "sources": {},
+  "fullAllianceLayers": [
+    "DEMO"
+  ],
+  "islands": [
+    {
+      "x": 1,
+      "y": 1,
+      "resource": "Mármol",
+      "resourceBuilding": "Cantera",
+      "resourceLevel": 2,
+      "sawmillLevel": 3,
+      "wonder": "Templo de Poseidón",
+      "capacity": 16,
+      "occupied": 0,
+      "cities": null,
+      "citiesObservedAt": null,
+      "detailUrl": "https://example.invalid/ikariam-demo",
+      "sacCityCount": 0,
+      "sacCities": []
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "resource": "Mármol",
+      "resourceBuilding": "Cantera",
+      "resourceLevel": 2,
+      "sawmillLevel": 3,
+      "wonder": "Templo de Poseidón",
+      "capacity": 16,
+      "occupied": 0,
+      "cities": [],
+      "citiesObservedAt": "2026-01-01T00:00:00Z",
+      "detailUrl": "https://example.invalid/ikariam-demo",
+      "sacCityCount": 0,
+      "sacCities": []
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "resource": "Mármol",
+      "resourceBuilding": "Cantera",
+      "resourceLevel": 2,
+      "sawmillLevel": 3,
+      "wonder": "Templo de Poseidón",
+      "capacity": 16,
+      "occupied": 1,
+      "cities": [
+        {
+          "player": "Jugador ficticio",
+          "alliance": "DEMO",
+          "name": "Ciudad ficticia",
+          "level": 1,
+          "status": "Activo"
+        }
+      ],
+      "citiesObservedAt": "2026-01-01T00:00:00Z",
+      "detailUrl": "https://example.invalid/ikariam-demo",
+      "sacCityCount": 0,
+      "sacCities": []
+    }
+  ]
+}

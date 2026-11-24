@@ -1,0 +1,916 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contratos operativos de Ikariam: áreas y UPGRADERS",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "enum": [
+        "observation_batch",
+        "snapshot",
+        "proposal",
+        "decision",
+        "receipt",
+        "cycle",
+        "debugger_state",
+        "learning_case"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+    },
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "world": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "id",
+    "account_id",
+    "world",
+    "created_at",
+    "producer",
+    "data"
+  ],
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "properties": {
+        "kind": {
+          "const": "observation_batch"
+        },
+        "data": {
+          "$ref": "#/$defs/observation_batch"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "snapshot"
+        },
+        "data": {
+          "$ref": "#/$defs/snapshot"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "proposal"
+        },
+        "data": {
+          "$ref": "#/$defs/proposal"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "decision"
+        },
+        "data": {
+          "$ref": "#/$defs/decision"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "receipt"
+        },
+        "data": {
+          "$ref": "#/$defs/receipt"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "cycle"
+        },
+        "data": {
+          "$ref": "#/$defs/cycle"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "debugger_state"
+        },
+        "data": {
+          "$ref": "#/$defs/debugger_state"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "learning_case"
+        },
+        "data": {
+          "$ref": "#/$defs/learning_case"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "kind": {
+          "enum": [
+            "registry",
+            "capture",
+            "spreadsheet",
+            "transcription",
+            "map",
+            "knowledge",
+            "authorized_adapter"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "ref"
+      ],
+      "additionalProperties": false
+    },
+    "field": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {},
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "quality": {
+          "enum": [
+            "observed",
+            "uncertain"
+          ]
+        }
+      },
+      "required": [
+        "entity",
+        "path",
+        "value",
+        "observed_at",
+        "source_id",
+        "quality"
+      ],
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "observed_quantity": {
+          "type": "number",
+          "minimum": 0
+        },
+        "reserved_quantity": {
+          "type": "number",
+          "minimum": 0
+        },
+        "floor_quantity": {
+          "type": "number",
+          "minimum": 0
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "observed_quantity",
+        "reserved_quantity",
+        "floor_quantity",
+        "observed_at",
+        "source_ref"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domain": {
+          "enum": [
+            "economy",
+            "construction",
+            "logistics",
+            "research",
+            "expansion",
+            "military",
+            "diplomacy",
+            "espionage",
+            "religion",
+            "world",
+            "city"
+          ]
+        },
+        "action_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "costs_known": {
+          "type": "boolean"
+        },
+        "cost_source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claims": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "evidence_required": {
+          "type": "string",
+          "minLength": 1
+        },
+        "module_id": {
+          "enum": [
+            "operativo-orquestador",
+            "operativo-recoleccion",
+            "operativo-estado",
+            "operativo-deliberacion",
+            "operativo-arbitraje",
+            "operativo-ejecucion",
+            "operativo-seguimiento",
+            "operativo-spy",
+            "operativo-diplomat",
+            "operativo-general",
+            "operativo-investigator",
+            "operativo-shipper",
+            "operativo-worldlord",
+            "operativo-mayor"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "idempotency_key",
+        "domain",
+        "action_type",
+        "instructions",
+        "costs_known",
+        "cost_source_ref",
+        "claims",
+        "depends_on",
+        "preconditions",
+        "evidence_required"
+      ],
+      "additionalProperties": false
+    },
+    "observation_batch": {
+      "type": "object",
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "minItems": 1
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "coverage": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sources",
+        "fields",
+        "errors",
+        "coverage"
+      ],
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "source_batch_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "revisions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minProperties": 1
+        },
+        "entities": {
+          "type": "object"
+        },
+        "budgets": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/budget"
+          }
+        },
+        "max_age_minutes": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "confirmed_action_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "issued_idempotency_keys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "source_batch_ids",
+        "revisions",
+        "entities",
+        "budgets",
+        "max_age_minutes",
+        "confirmed_action_ids",
+        "issued_idempotency_keys",
+        "issues"
+      ],
+      "additionalProperties": false
+    },
+    "proposal": {
+      "type": "object",
+      "properties": {
+        "snapshot_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action"
+          }
+        },
+        "expected_effects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "blocking_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "domain",
+        "objective",
+        "alternatives",
+        "expected_effects",
+        "assumptions",
+        "blocking_gaps"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "snapshot_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "basis_revisions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minProperties": 1
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "selected",
+            "blocked",
+            "cancelled",
+            "superseded"
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action"
+          }
+        },
+        "rejected": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "action_id",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "snapshot_id",
+        "basis_revisions",
+        "objective",
+        "status",
+        "expires_at",
+        "actions",
+        "rejected"
+      ],
+      "additionalProperties": false
+    },
+    "receipt": {
+      "type": "object",
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "action_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "execution_mode": {
+          "enum": [
+            "manual",
+            "authorized_adapter"
+          ]
+        },
+        "status": {
+          "enum": [
+            "issued",
+            "confirmed",
+            "failed",
+            "unknown"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "error": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "decision_id",
+        "action_id",
+        "idempotency_key",
+        "execution_mode",
+        "status",
+        "observed_at",
+        "evidence_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "confirmed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "cycle": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "collected",
+            "normalized",
+            "deliberated",
+            "arbitrated",
+            "awaiting_execution",
+            "reconciled",
+            "partial",
+            "blocked",
+            "failed"
+          ]
+        },
+        "output_ids": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "last_event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "status",
+        "output_ids",
+        "last_event",
+        "errors"
+      ],
+      "additionalProperties": false
+    },
+    "debugger_state": {
+      "type": "object",
+      "properties": {
+        "module_id": {
+          "enum": [
+            "operativo-orquestador",
+            "operativo-recoleccion",
+            "operativo-estado",
+            "operativo-deliberacion",
+            "operativo-arbitraje",
+            "operativo-ejecucion",
+            "operativo-seguimiento",
+            "operativo-spy",
+            "operativo-diplomat",
+            "operativo-general",
+            "operativo-investigator",
+            "operativo-shipper",
+            "operativo-worldlord",
+            "operativo-mayor"
+          ]
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "paused",
+            "reconciliation_required"
+          ]
+        },
+        "progress_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "steps_without_progress": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "operation_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "progress_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "error_code": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "operation_key",
+              "progress_key",
+              "error_code"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 64
+        },
+        "reason": {
+          "type": "string"
+        },
+        "used_learning_case_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "module_id",
+        "status",
+        "progress_key",
+        "steps_without_progress",
+        "history",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "learning_case": {
+      "type": "object",
+      "properties": {
+        "module_id": {
+          "enum": [
+            "operativo-orquestador",
+            "operativo-recoleccion",
+            "operativo-estado",
+            "operativo-deliberacion",
+            "operativo-arbitraje",
+            "operativo-ejecucion",
+            "operativo-seguimiento",
+            "operativo-spy",
+            "operativo-diplomat",
+            "operativo-general",
+            "operativo-investigator",
+            "operativo-shipper",
+            "operativo-worldlord",
+            "operativo-mayor"
+          ]
+        },
+        "incident_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "error_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposed_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_kind": {
+          "enum": [
+            "preference",
+            "procedure",
+            "mechanic"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending_user",
+            "answered",
+            "applied",
+            "rejected"
+          ]
+        },
+        "asked": {
+          "type": "boolean"
+        },
+        "user_answer": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "module_id",
+        "incident_key",
+        "error_code",
+        "question",
+        "proposed_rule",
+        "rule_kind",
+        "status",
+        "asked",
+        "user_answer",
+        "evidence_refs"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "answered",
+                  "applied"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "user_answer": {
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "applied"
+              },
+              "rule_kind": {
+                "const": "mechanic"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

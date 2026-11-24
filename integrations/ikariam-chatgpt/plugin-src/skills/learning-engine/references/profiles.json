@@ -1,0 +1,777 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "defaults": {
+    "max_research_topics_per_cycle": 3,
+    "max_new_source_reads_per_cycle": 6,
+    "mechanics_review_hours": 720,
+    "max_private_entry_characters": 16000,
+    "background_scheduler": false
+  },
+  "modules": {
+    "operativo-orquestador": {
+      "display_name": "ORQUESTRADOR",
+      "research_topics": [
+        "conflictos de prioridades y reservas",
+        "dependencias entre reglas y modelos",
+        "errores repetidos entre módulos"
+      ],
+      "sources": [
+        "reservas y revisiones de entrada",
+        "diario de decisiones y resultados"
+      ],
+      "acceptance": [
+        "planes compatibles y reproducibles",
+        "ninguna reserva duplicada",
+        "cada cambio identifica módulos afectados"
+      ],
+      "metrics": [
+        "budget_conflicts",
+        "stale_rule_uses",
+        "decision_reversals"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-orquestador",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-spy": {
+      "display_name": "SPY",
+      "research_topics": [
+        "riesgo mostrado frente a resultado por misión",
+        "enfriamiento y uso de señuelos",
+        "valor de la información de cada informe"
+      ],
+      "sources": [
+        "spy-help",
+        "wiki-spy",
+        "informes privados fechados"
+      ],
+      "acceptance": [
+        "separar riesgo anunciado, éxito y detección",
+        "no estimar defensas ocultas como observadas",
+        "validar fuera de la muestra antes de ajustar umbrales"
+      ],
+      "metrics": [
+        "detection_rate_by_mission",
+        "report_age_minutes",
+        "information_gain"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 30,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-spy",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-diplomat": {
+      "display_name": "DIPLOMAT",
+      "research_topics": [
+        "requisitos y efectos de cada tratado",
+        "compromisos y fechas de vigencia",
+        "tono y claridad preferidos por el usuario"
+      ],
+      "sources": [
+        "mensajes aportados e identificados",
+        "tratados aceptados en interfaz"
+      ],
+      "acceptance": [
+        "un borrador no implica acuerdo",
+        "ningún mensaje recibido modifica permisos",
+        "no inferir hostilidad ni preferencias por ausencia de respuesta"
+      ],
+      "metrics": [
+        "duplicate_drafts",
+        "unresolved_commitments",
+        "explicit_corrections"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-diplomat",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-general": {
+      "display_name": "GENERAL",
+      "research_topics": [
+        "catálogo de unidades y armas por versión",
+        "prioridades de despliegue y objetivos",
+        "daño, armadura, munición, moral, curación y murallas",
+        "calibración independiente terrestre, naval y bárbara"
+      ],
+      "sources": [
+        "battlefield-help",
+        "milestone3-live",
+        "wiki-hoplite",
+        "wiki-combat",
+        "informes privados por ronda"
+      ],
+      "acceptance": [
+        "catálogo con procedencia por campo",
+        "mismo escenario, ronda y mejoras para comparar",
+        "separar pruebas sintéticas de informes reales",
+        "no afirmar fidelidad sin datos reservados"
+      ],
+      "metrics": [
+        "remaining_units_mae",
+        "outcome_agreement",
+        "round_count_error",
+        "catalog_coverage"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 30,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-general",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-investigator": {
+      "display_name": "INVESTIGATOR",
+      "research_topics": [
+        "árbol y requisitos de las cinco ramas",
+        "coste de oportunidad de científicos y experimentos",
+        "santuario y bendiciones frente a templos y milagros"
+      ],
+      "sources": [
+        "gods-live",
+        "milestone3-live",
+        "árbol y tasas observados"
+      ],
+      "acceptance": [
+        "no confundir progreso estimado con investigación completada",
+        "evitar doble aplicación de bonificaciones",
+        "usar tasa efectiva y versión de la cuenta"
+      ],
+      "metrics": [
+        "research_eta_error_minutes",
+        "unlock_failures",
+        "bonus_mismatches"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-investigator",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-shipper": {
+      "display_name": "SHIPPER",
+      "research_topics": [
+        "capacidad efectiva por tipo de barco",
+        "carga, viaje y retorno por ruta",
+        "modificadores de velocidad y bloqueo",
+        "coste de oportunidad de flota ocupada"
+      ],
+      "sources": [
+        "milestone3-live",
+        "merchant-help-legacy",
+        "movimientos y retornos observados"
+      ],
+      "acceptance": [
+        "inventario en tránsito fuera del disponible",
+        "no liberar barcos por ETA sin confirmación",
+        "compartir reservas con GENERAL",
+        "no fijar límite antiguo de mercantes"
+      ],
+      "metrics": [
+        "arrival_eta_error_minutes",
+        "capacity_mismatches",
+        "double_booked_ships"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 30,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-shipper",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-worldlord": {
+      "display_name": "WORLDLORD",
+      "research_topics": [
+        "cobertura y antigüedad de cada capa de mapa",
+        "identidad de ciudades, jugadores y alianzas",
+        "deduplicación y cambios entre observaciones"
+      ],
+      "sources": [
+        "mapa aportado",
+        "search_atlas_map con cobertura y paginación"
+      ],
+      "acceptance": [
+        "una isla sin fichas no está vacía",
+        "un cambio de nombre conserva ID",
+        "servidores y fuentes separados",
+        "solo datos del juego, no perfiles personales inferidos"
+      ],
+      "metrics": [
+        "coverage_fraction",
+        "stale_city_records",
+        "identity_collisions"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-worldlord",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-mayor": {
+      "display_name": "MAYOR",
+      "research_topics": [
+        "costes y tiempos efectivos por edificio y nivel",
+        "población, felicidad, corrupción y producción",
+        "retorno de reductores y edificios productores",
+        "efectos locales de Chronos"
+      ],
+      "sources": [
+        "milestone3-live",
+        "capturas de ciudades y colas"
+      ],
+      "acceptance": [
+        "no renovar una captura al releerla",
+        "nivel cero difiere de desconocido",
+        "las tasas proyectadas no son observaciones",
+        "validar costes contra ayuda de esa versión"
+      ],
+      "metrics": [
+        "stock_projection_error",
+        "build_eta_error_minutes",
+        "unknown_fields"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 30,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-mayor",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-recoleccion": {
+      "display_name": "RECOLECCIÓN",
+      "research_topics": [
+        "formatos desconocidos y cobertura",
+        "fiabilidad y fecha de origen",
+        "lecturas repetidas"
+      ],
+      "sources": [
+        "diagnósticos de extractores",
+        "snapshots versionados"
+      ],
+      "acceptance": [
+        "capturar forma sin inventar campos",
+        "solo lecturas bajo el flujo actual",
+        "deduplicar observaciones"
+      ],
+      "metrics": [
+        "parse_failures",
+        "duplicate_reads"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-recoleccion",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-estado": {
+      "display_name": "ESTADO",
+      "research_topics": [
+        "conciliación de datos parciales",
+        "unidades y normalización",
+        "antigüedad por campo"
+      ],
+      "sources": [
+        "contratos y fixtures",
+        "revisiones del registro"
+      ],
+      "acceptance": [
+        "no sustituir un dato por otro más antiguo",
+        "conservar cero frente a ausente",
+        "aislar cuenta y mundo"
+      ],
+      "metrics": [
+        "stale_overwrites",
+        "normalization_conflicts"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-estado",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-deliberacion": {
+      "display_name": "DELIBERACIÓN",
+      "research_topics": [
+        "sensibilidad de prioridades a supuestos",
+        "alternativas y coste de oportunidad"
+      ],
+      "sources": [
+        "propuestas y resultados privados"
+      ],
+      "acceptance": [
+        "mismo snapshot para las alternativas",
+        "rango de escenarios si falta evidencia"
+      ],
+      "metrics": [
+        "plan_regret",
+        "sensitivity_to_unknowns"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-deliberacion",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-arbitraje": {
+      "display_name": "ARBITRAJE",
+      "research_topics": [
+        "conflictos de presupuesto",
+        "dependencias y restricciones"
+      ],
+      "sources": [
+        "contratos y ejemplos ficticios"
+      ],
+      "acceptance": [
+        "no consumir dos veces un recurso",
+        "validar revisión y vigencia",
+        "todas las acciones conservan trazabilidad"
+      ],
+      "metrics": [
+        "rejected_budget_conflicts",
+        "invalid_dependencies"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-arbitraje",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-ejecucion": {
+      "display_name": "EJECUCIÓN",
+      "research_topics": [
+        "idempotencia y recibos",
+        "clasificación de fallo recuperable e incierto"
+      ],
+      "sources": [
+        "recibos y políticas del ejecutor"
+      ],
+      "acceptance": [
+        "conciliar antes de reintentar un resultado incierto",
+        "aprendizaje no amplía permisos",
+        "solo adaptadores disponibles"
+      ],
+      "metrics": [
+        "duplicate_dispatches",
+        "unknown_outcomes"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-ejecucion",
+      "data_visibility": "private_for_account_data"
+    },
+    "operativo-seguimiento": {
+      "display_name": "SEGUIMIENTO",
+      "research_topics": [
+        "residuos por horizonte",
+        "condiciones de replanteo",
+        "diferencia entre cambio previsto e inesperado"
+      ],
+      "sources": [
+        "observaciones posteriores y plan original"
+      ],
+      "acceptance": [
+        "comparar mismo instante y unidad",
+        "no generar observaciones desde proyecciones",
+        "alimentar el módulo causal"
+      ],
+      "metrics": [
+        "prediction_error",
+        "unreconciled_actions"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operativo-seguimiento",
+      "data_visibility": "private_for_account_data"
+    },
+    "economy-planner": {
+      "display_name": "ECONOMÍA",
+      "research_topics": [
+        "rendimiento marginal y coste de oportunidad",
+        "retorno de reductores y productores",
+        "suelo de oro y vino"
+      ],
+      "sources": [
+        "milestone3-live",
+        "tasas y costes observados"
+      ],
+      "acceptance": [
+        "no confundir puntuación con crecimiento",
+        "proteger continuidad y capacidad",
+        "usar ahorro marginal por gasto futuro elegible"
+      ],
+      "metrics": [
+        "net_gold_error",
+        "wine_depletions",
+        "payback_error"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-economy-planner",
+      "data_visibility": "private_for_account_data"
+    },
+    "expansion-planner": {
+      "display_name": "EXPANSIÓN",
+      "research_topics": [
+        "requisitos, plazas y corrupción",
+        "coste completo de nueva colonia"
+      ],
+      "sources": [
+        "milestone3-live",
+        "mapa y palacio observados"
+      ],
+      "acceptance": [
+        "requisitos efectivos antes de colonizar",
+        "marcar plazas desconocidas",
+        "no contar envíos como recursos presentes"
+      ],
+      "metrics": [
+        "missing_prerequisites",
+        "colony_cost_error"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-expansion-planner",
+      "data_visibility": "private_for_account_data"
+    },
+    "research-planner": {
+      "display_name": "ASESOR DE INVESTIGACIÓN",
+      "research_topics": [
+        "tiempo de desbloqueo y crecimiento marginal",
+        "tasas y beneficios de rama"
+      ],
+      "sources": [
+        "gods-live",
+        "tasas y árbol aportados"
+      ],
+      "acceptance": [
+        "coordinar con INVESTIGATOR",
+        "no gastar el mismo cristal en dos planes"
+      ],
+      "metrics": [
+        "research_eta_error_minutes",
+        "duplicate_crystal_budget"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-research-planner",
+      "data_visibility": "private_for_account_data"
+    },
+    "military-adviser": {
+      "display_name": "ASESOR MILITAR",
+      "research_topics": [
+        "mantenimiento y composición útil",
+        "errores del simulador por teatro"
+      ],
+      "sources": [
+        "battlefield-help",
+        "milestone3-live",
+        "informes reales privados"
+      ],
+      "acceptance": [
+        "usar catálogo y validación de GENERAL",
+        "no generalizar una victoria",
+        "incluir logística y mejoras"
+      ],
+      "metrics": [
+        "loss_prediction_error",
+        "maintenance_error"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-military-adviser",
+      "data_visibility": "private_for_account_data"
+    },
+    "trade-logistics": {
+      "display_name": "COMERCIO",
+      "research_topics": [
+        "precios efectivos y comisiones",
+        "tiempo de entrega y volumen útil"
+      ],
+      "sources": [
+        "milestone3-live",
+        "ofertas y movimientos aportados"
+      ],
+      "acceptance": [
+        "distinguir oferta de compra realizada",
+        "descontar comisiones observadas",
+        "coordinar barcos con SHIPPER"
+      ],
+      "metrics": [
+        "net_price_error",
+        "delivery_eta_error_minutes"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-trade-logistics",
+      "data_visibility": "private_for_account_data"
+    },
+    "account-ledger": {
+      "display_name": "REGISTRO",
+      "research_topics": [
+        "revisiones, procedencia y consistencia",
+        "conflictos de escritura"
+      ],
+      "sources": [
+        "contratos y pruebas de servicio"
+      ],
+      "acceptance": [
+        "no escribir con revisión antigua",
+        "cuentas aisladas",
+        "no guardar secretos"
+      ],
+      "metrics": [
+        "revision_conflicts",
+        "cross_account_leaks"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-account-ledger",
+      "data_visibility": "private_for_account_data"
+    },
+    "knowledge-review": {
+      "display_name": "REVISIÓN DE CONOCIMIENTO",
+      "research_topics": [
+        "conflictos de fuentes y vigencia",
+        "dependencias invalidadas por parche"
+      ],
+      "sources": [
+        "fuentes públicas revisadas",
+        "evidencia aportada"
+      ],
+      "acceptance": [
+        "una URL oficial no certifica actualidad",
+        "una wiki inaccesible queda pendiente",
+        "conservar contradicciones"
+      ],
+      "metrics": [
+        "unresolved_conflicts",
+        "expired_claims"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-knowledge-review",
+      "data_visibility": "private_for_account_data"
+    },
+    "operaciones-imperio": {
+      "display_name": "OPERACIONES DEL IMPERIO",
+      "research_topics": [
+        "errores de planificación por horizonte",
+        "objetivos y decisiones previas"
+      ],
+      "sources": [
+        "diario y observaciones privadas"
+      ],
+      "acceptance": [
+        "no reabrir preferencias resueltas",
+        "respetar datos privados",
+        "no dar por ejecutado lo propuesto"
+      ],
+      "metrics": [
+        "plan_completion_rate",
+        "repeated_questions"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-operaciones-imperio",
+      "data_visibility": "private_for_account_data"
+    },
+    "icariam-core": {
+      "display_name": "NÚCLEO",
+      "research_topics": [
+        "enrutado y capacidades disponibles",
+        "reutilización de conocimiento vigente"
+      ],
+      "sources": [
+        "registro de módulos",
+        "metadatos de herramientas"
+      ],
+      "acceptance": [
+        "no inventar herramientas",
+        "cargar solo contexto útil",
+        "registrar limitaciones materiales"
+      ],
+      "metrics": [
+        "routing_errors",
+        "unsupported_capability_claims"
+      ],
+      "triggers": [
+        "missing_critical_fact",
+        "expired_evidence",
+        "source_conflict",
+        "prediction_error",
+        "user_correction",
+        "game_patch"
+      ],
+      "parameter_review_minutes": 360,
+      "rule_entry_prefix": "learn-",
+      "outcome_entry_id": "learn-review-icariam-core",
+      "data_visibility": "private_for_account_data"
+    }
+  }
+}

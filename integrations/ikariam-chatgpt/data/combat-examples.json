@@ -1,0 +1,138 @@
+[
+  {
+    "id": "demacia-2026-10-28",
+    "title": "Demacia · brecha de muralla",
+    "mode": "land",
+    "description": "Composición publicada. La Intendencia 10 reproduce los siete tramos del informe. El nivel 10 de muralla y las mejoras de taller son ajustables y corresponden a supuestos del escenario.",
+    "source": "https://forum.ikariam.gameforge.com/forum/thread/119566-gr-vs-turk/?postID=1352688",
+    "observed": "28/10/2026. Ganó el atacante tras romper dos de siete tramos. El atacante perdió tres hoplitas y ocho gigantes. El defensor perdió cinco hoplitas.",
+    "fieldLevel": 10,
+    "wallLevel": 10,
+    "maxRounds": 15,
+    "sides": [
+      {
+        "army": {
+          "hoplite": 150,
+          "cook": 30,
+          "sulphur-carabineer": 84,
+          "swordsman": 300,
+          "steam-giant": 124,
+          "gyrocopter": 60,
+          "battering-ram": 30,
+          "mortar": 12,
+          "doctor": 30
+        }
+      },
+      {"army": {"hoplite": 5, "cook": 10}}
+    ]
+  },
+  {
+    "id": "mustang-2026-11-16",
+    "title": "Mustang · informe terrestre",
+    "mode": "land",
+    "description": "Totales publicados, reunidos desde el comienzo como escenario de comparación. El informe no fija los niveles de taller ni la llegada de cada oleada.",
+    "source": "https://forum.ikariam.gameforge.com/forum/thread/120256-papi-chulo-ge-vs-espartakus-zoo-y-estanco-sarr-43-075-8-gp-gana-sarr/?postID=1354126",
+    "observed": "16/11/2026. Victoria defensora. El informe cifra el daño recibido en 65 % para el ataque y 35 % para la defensa.",
+    "fieldLevel": 25,
+    "maxRounds": 36,
+    "sides": [
+      {
+        "army": {
+          "sulphur-carabineer": 1504,
+          "swordsman": 6084,
+          "hoplite": 5392,
+          "gyrocopter": 500,
+          "battering-ram": 500,
+          "mortar": 150,
+          "cook": 55,
+          "bombardier": 267,
+          "doctor": 35,
+          "steam-giant": 5087
+        }
+      },
+      {
+        "army": {
+          "sulphur-carabineer": 948,
+          "swordsman": 11643,
+          "hoplite": 10057,
+          "gyrocopter": 2346,
+          "battering-ram": 206,
+          "mortar": 327,
+          "cook": 222,
+          "bombardier": 640,
+          "slinger": 2,
+          "catapult": 6,
+          "doctor": 20,
+          "spartan": 4100
+        }
+      }
+    ]
+  },
+  {
+    "id": "kursk-2026-11-14",
+    "title": "KURSK · informe naval",
+    "mode": "naval",
+    "description": "Se reúnen las cantidades publicadas para comparar formaciones. La batalla original tuvo oleadas, varias activaciones de Hefesto y retiradas que alteran el resultado.",
+    "source": "https://forum.ikariam.gameforge.com/forum/thread/120265-mok-vs-e3g-gp-241-265-6-gana-mok/",
+    "observed": "14/11/2026. Victoria de MoK. El informe cifra el daño recibido en 52 % para el ataque y 48 % para la defensa.",
+    "fieldLevel": 29,
+    "maxRounds": 36,
+    "sides": [
+      {
+        "army": {
+          "ram_ship": 4164,
+          "fire_ship": 1639,
+          "mortar_ship": 420,
+          "steam_ram": 2842,
+          "rocket_ship": 1290,
+          "paddle_speedboat": 300,
+          "balloon_carrier": 692,
+          "tender": 130
+        }
+      },
+      {
+        "army": {
+          "ram_ship": 4038,
+          "fire_ship": 761,
+          "catapult_ship": 106,
+          "mortar_ship": 43,
+          "steam_ram": 3315,
+          "rocket_ship": 966,
+          "submarine": 226,
+          "paddle_speedboat": 1785,
+          "balloon_carrier": 595,
+          "tender": 175
+        }
+      }
+    ]
+  },
+  {
+    "id": "barbarian-drill",
+    "title": "Asedio bárbaro · práctica",
+    "mode": "land",
+    "description": "Ejercicio ficticio para probar muralla, artillería y reservas. Las fichas PNJ usan estadísticas históricas reescaladas o estimaciones marcadas por unidad.",
+    "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+    "fieldLevel": 10,
+    "wallLevel": 8,
+    "maxRounds": 25,
+    "sides": [
+      {
+        "army": {
+          "hoplite": 170,
+          "swordsman": 90,
+          "mortar": 12,
+          "sulphur-carabineer": 28,
+          "cook": 16
+        }
+      },
+      {
+        "army": {
+          "barbarian-axe-swinger": 100,
+          "barbarian-knifeman": 45,
+          "barbarian-axe-thrower": 32,
+          "barbarian-catapult": 8
+        }
+      }
+    ]
+  }
+]

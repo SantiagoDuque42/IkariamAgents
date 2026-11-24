@@ -1,0 +1,1044 @@
+{
+  "land": [
+    {
+      "id": "spearman",
+      "name": "Lancero",
+      "role": "flank",
+      "damage": 80,
+      "armor": 0,
+      "hp": 260,
+      "accuracy": 0.7,
+      "ammo": null,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki"
+    },
+    {
+      "id": "swordsman",
+      "name": "Espadachín",
+      "role": "flank",
+      "damage": 200,
+      "armor": 0,
+      "hp": 360,
+      "accuracy": 0.9,
+      "ammo": null,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki"
+    },
+    {
+      "id": "hoplite",
+      "name": "Hoplita",
+      "role": "front",
+      "damage": 360,
+      "armor": 20,
+      "hp": 1120,
+      "accuracy": 0.9,
+      "ammo": null,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki"
+    },
+    {
+      "id": "spartan",
+      "name": "Espartano",
+      "role": "front",
+      "damage": 560,
+      "armor": 120,
+      "hp": 1200,
+      "accuracy": 1,
+      "ammo": null,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki",
+      "special": true
+    },
+    {
+      "id": "steam-giant",
+      "name": "Gigante a vapor",
+      "role": "front",
+      "damage": 840,
+      "armor": 60,
+      "hp": 3680,
+      "accuracy": 0.8,
+      "ammo": null,
+      "size": 3,
+      "source": "https://ika-sim.com/wiki"
+    },
+    {
+      "id": "slinger",
+      "name": "Hondero",
+      "role": "ranged",
+      "damage": 60,
+      "armor": 0,
+      "hp": 160,
+      "accuracy": 0.2,
+      "ammo": 5,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki",
+      "weapons": [
+        {
+          "damage": 60,
+          "accuracy": 0.2,
+          "ammo": 5
+        },
+        {
+          "damage": 40,
+          "accuracy": 0.6,
+          "ammo": null
+        }
+      ]
+    },
+    {
+      "id": "archer",
+      "name": "Arquero",
+      "role": "ranged",
+      "damage": 100,
+      "armor": 0,
+      "hp": 320,
+      "accuracy": 0.4,
+      "ammo": 3,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki",
+      "weapons": [
+        {
+          "damage": 100,
+          "accuracy": 0.4,
+          "ammo": 3
+        },
+        {
+          "damage": 100,
+          "accuracy": 0.6,
+          "ammo": null
+        }
+      ]
+    },
+    {
+      "id": "sulphur-carabineer",
+      "name": "Fusilero",
+      "role": "ranged",
+      "damage": 580,
+      "armor": 0,
+      "hp": 240,
+      "accuracy": 0.7,
+      "ammo": 3,
+      "size": 4,
+      "source": "https://ika-sim.com/wiki",
+      "weapons": [
+        {
+          "damage": 580,
+          "accuracy": 0.7,
+          "ammo": 3
+        },
+        {
+          "damage": 60,
+          "accuracy": 0.6,
+          "ammo": null
+        }
+      ]
+    },
+    {
+      "id": "battering-ram",
+      "name": "Ariete",
+      "role": "artillery",
+      "damage": 1600,
+      "armor": 20,
+      "hp": 1760,
+      "accuracy": 0.1,
+      "ammo": null,
+      "size": 5,
+      "source": "https://ika-sim.com/wiki",
+      "weapons": [
+        {
+          "damage": 1600,
+          "accuracy": 0.1,
+          "ammo": null,
+          "target": "wall"
+        },
+        {
+          "damage": 240,
+          "accuracy": 0.7,
+          "ammo": null
+        }
+      ]
+    },
+    {
+      "id": "catapult",
+      "name": "Catapulta",
+      "role": "artillery",
+      "damage": 2660,
+      "armor": 0,
+      "hp": 1080,
+      "accuracy": 0.1,
+      "ammo": 5,
+      "size": 5,
+      "source": "https://ika-sim.com/wiki",
+      "weapons": [
+        {
+          "damage": 2660,
+          "accuracy": 0.1,
+          "ammo": 5
+        },
+        {
+          "damage": 80,
+          "accuracy": 0.2,
+          "ammo": null
+        }
+      ]
+    },
+    {
+      "id": "mortar",
+      "name": "Mortero",
+      "role": "artillery",
+      "damage": 5400,
+      "armor": 0,
+      "hp": 640,
+      "accuracy": 0.1,
+      "ammo": 3,
+      "size": 5,
+      "source": "https://ika-sim.com/wiki",
+      "weapons": [
+        {
+          "damage": 5400,
+          "accuracy": 0.1,
+          "ammo": 3
+        },
+        {
+          "damage": 200,
+          "accuracy": 0.2,
+          "ammo": null
+        }
+      ]
+    },
+    {
+      "id": "gyrocopter",
+      "name": "Girocóptero",
+      "role": "antiAir",
+      "damage": 340,
+      "armor": 0,
+      "hp": 580,
+      "accuracy": 0.8,
+      "ammo": 4,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki"
+    },
+    {
+      "id": "bombardier",
+      "name": "Globo bombardero",
+      "role": "air",
+      "damage": 960,
+      "armor": 0,
+      "hp": 800,
+      "accuracy": 0.2,
+      "ammo": 2,
+      "size": 2,
+      "source": "https://ika-sim.com/wiki"
+    },
+    {
+      "id": "doctor",
+      "name": "Médico",
+      "role": "healer",
+      "damage": 160,
+      "armor": 0,
+      "hp": 240,
+      "accuracy": 0.3,
+      "ammo": null,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki",
+      "heal": 200,
+      "healPerRound": 200
+    },
+    {
+      "id": "cook",
+      "name": "Cocinero",
+      "role": "morale",
+      "damage": 400,
+      "armor": 0,
+      "hp": 440,
+      "accuracy": 0.5,
+      "ammo": null,
+      "size": 2,
+      "source": "https://ika-sim.com/wiki",
+      "morale": 1,
+      "moralePerRound": 1
+    },
+    {
+      "id": "barbarian-scout",
+      "name": "Explorador bárbaro (garrote)",
+      "role": "front",
+      "damage": 100,
+      "armor": 20,
+      "hp": 240,
+      "accuracy": 0.8,
+      "ammo": null,
+      "size": 1,
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/6r0WzDY/batedor-pontua-o.gif"
+    },
+    {
+      "id": "barbarian-axe-swinger",
+      "name": "Gran hacha bárbara",
+      "role": "front",
+      "damage": 360,
+      "armor": 20,
+      "hp": 1120,
+      "accuracy": 0.9,
+      "ammo": null,
+      "size": 1,
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/RbL7pFC/agitador-pontua-o.gif"
+    },
+    {
+      "id": "barbarian-war-walker",
+      "name": "Caminante de guerra bárbaro",
+      "role": "front",
+      "damage": 840,
+      "armor": 60,
+      "hp": 3680,
+      "accuracy": 0.8,
+      "ammo": null,
+      "size": 3,
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/ScPQ9vg/barbara-guerra-pont.gif"
+    },
+    {
+      "id": "barbarian-knifeman",
+      "name": "Clavacuchillos bárbaro",
+      "role": "flank",
+      "damage": 200,
+      "armor": 0,
+      "hp": 360,
+      "accuracy": 0.9,
+      "ammo": null,
+      "size": 1,
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019 con vida, armadura y daño convertidos ×20. Vida 360 corroborada en informe de abril de 2026.",
+      "sourceImage": "https://i.ibb.co/1KzX4pp/clavacuchillos-ponto.gif",
+      "validationSource": "https://forum.ikariam.gameforge.com/forum/thread/107659-infinite-horizons-2/?postID=1322698"
+    },
+    {
+      "id": "barbarian-axe-thrower",
+      "name": "Lanzahachas bárbaro",
+      "role": "ranged",
+      "damage": 200,
+      "armor": 0,
+      "hp": 320,
+      "accuracy": 0.25,
+      "ammo": 7,
+      "size": 1,
+      "weapons": [
+        {
+          "damage": 200,
+          "accuracy": 0.25,
+          "ammo": 7
+        },
+        {
+          "damage": 100,
+          "accuracy": 0.6,
+          "ammo": null
+        }
+      ],
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/gFz3jwD/machado-pont.gif"
+    },
+    {
+      "id": "barbarian-ram",
+      "name": "Ariete bárbaro",
+      "role": "artillery",
+      "damage": 2100,
+      "armor": 20,
+      "hp": 1400,
+      "accuracy": 0.2,
+      "ammo": null,
+      "size": 5,
+      "weapons": [
+        {
+          "damage": 2100,
+          "accuracy": 0.2,
+          "ammo": null,
+          "target": "wall"
+        },
+        {
+          "damage": 200,
+          "accuracy": 0.2,
+          "ammo": null
+        }
+      ],
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/WVD7xzf/ariete-pontua-o.gif"
+    },
+    {
+      "id": "barbarian-catapult",
+      "name": "Catapulta bárbara",
+      "role": "artillery",
+      "damage": 5400,
+      "armor": 0,
+      "hp": 640,
+      "accuracy": 0.2,
+      "ammo": 5,
+      "size": 5,
+      "weapons": [
+        {
+          "damage": 5400,
+          "accuracy": 0.2,
+          "ammo": 5
+        },
+        {
+          "damage": 200,
+          "accuracy": 0.2,
+          "ammo": null
+        }
+      ],
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/yR3tySf/catapulta-barbara-pont.gif"
+    },
+    {
+      "id": "barbarian-dirigible",
+      "name": "Dirigible bárbaro",
+      "role": "air",
+      "damage": 960,
+      "armor": 0,
+      "hp": 800,
+      "accuracy": 0.2,
+      "ammo": 2,
+      "size": 2,
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/gjkXY4y/dirigivel-barbaro-pont.gif"
+    },
+    {
+      "id": "barbarian-fighter",
+      "name": "Caza bárbaro",
+      "role": "antiAir",
+      "damage": 340,
+      "armor": 0,
+      "hp": 580,
+      "accuracy": 0.8,
+      "ammo": 4,
+      "size": 1,
+      "source": "https://forum.ikariam.gameforge.com/forum/thread/8492-tutorial-a-vila-dos-b%C3%A1rbaros-6/",
+      "estimate": true,
+      "estimated": true,
+      "faction": "barbarian",
+      "note": "Ficha de 2019. Vida, armadura y daño convertidos ×20 como aproximación a la escala moderna.",
+      "sourceImage": "https://i.ibb.co/VDSSV7d/ca-a-barbaro-pont.gif"
+    }
+  ],
+  "naval": [
+    {
+      "id": "steam_ram",
+      "name": "Barco-espolón de vapor",
+      "role": "front",
+      "damage": 3320,
+      "armor": 320,
+      "hp": 11520,
+      "accuracy": 0.9,
+      "ammo": null,
+      "size": 5,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 3320,
+          "accuracy": 0.9,
+          "ammo": null
+        }
+      ],
+      "gameClass": "heavy",
+      "speed": 40,
+      "faction": "player"
+    },
+    {
+      "id": "fire_ship",
+      "name": "Barco lanza-llamas",
+      "role": "front",
+      "damage": 1640,
+      "armor": 160,
+      "hp": 4380,
+      "accuracy": 0.5,
+      "ammo": null,
+      "size": 2,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 1640,
+          "accuracy": 0.5,
+          "ammo": null
+        }
+      ],
+      "gameClass": "heavy",
+      "speed": 40,
+      "faction": "player"
+    },
+    {
+      "id": "ram_ship",
+      "name": "Barco-espolón",
+      "role": "flank",
+      "damage": 1500,
+      "armor": 180,
+      "hp": 3080,
+      "accuracy": 0.8,
+      "ammo": null,
+      "size": 3,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 1500,
+          "accuracy": 0.8,
+          "ammo": null
+        }
+      ],
+      "gameClass": "light",
+      "speed": 40,
+      "faction": "player"
+    },
+    {
+      "id": "ballista_ship",
+      "name": "Barco-ballesta",
+      "role": "ranged",
+      "damage": 560,
+      "armor": 280,
+      "hp": 3080,
+      "accuracy": 0.5,
+      "ammo": 7,
+      "size": 2,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 560,
+          "accuracy": 0.5,
+          "ammo": 7
+        },
+        {
+          "damage": 1020,
+          "accuracy": 0.7,
+          "ammo": null
+        }
+      ],
+      "gameClass": "longRange",
+      "speed": 40,
+      "faction": "player"
+    },
+    {
+      "id": "catapult_ship",
+      "name": "Barco-catapulta",
+      "role": "ranged",
+      "damage": 900,
+      "armor": 200,
+      "hp": 2960,
+      "accuracy": 0.3,
+      "ammo": 6,
+      "size": 3,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 900,
+          "accuracy": 0.3,
+          "ammo": 6
+        },
+        {
+          "damage": 620,
+          "accuracy": 0.7,
+          "ammo": null
+        }
+      ],
+      "gameClass": "longRange",
+      "speed": 40,
+      "faction": "player"
+    },
+    {
+      "id": "mortar_ship",
+      "name": "Barco-mortero",
+      "role": "ranged",
+      "damage": 1380,
+      "armor": 120,
+      "hp": 3080,
+      "accuracy": 0.1,
+      "ammo": 5,
+      "size": 4,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 1380,
+          "accuracy": 0.1,
+          "ammo": 5
+        },
+        {
+          "damage": 740,
+          "accuracy": 0.5,
+          "ammo": null
+        }
+      ],
+      "gameClass": "longRange",
+      "speed": 30,
+      "faction": "player"
+    },
+    {
+      "id": "submarine",
+      "name": "Submarino",
+      "role": "artillery",
+      "damage": 2460,
+      "armor": 120,
+      "hp": 2200,
+      "accuracy": 0.8,
+      "ammo": 4,
+      "size": 3,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 2460,
+          "accuracy": 0.8,
+          "ammo": 4
+        },
+        {
+          "damage": 1800,
+          "accuracy": 0.8,
+          "ammo": null
+        }
+      ],
+      "gameClass": "firstStrike",
+      "speed": 40,
+      "faction": "player"
+    },
+    {
+      "id": "rocket_ship",
+      "name": "Barco lanzamisiles",
+      "role": "artillery",
+      "damage": 7600,
+      "armor": 120,
+      "hp": 1300,
+      "accuracy": 0.2,
+      "ammo": 2,
+      "size": 4,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 7600,
+          "accuracy": 0.2,
+          "ammo": 2
+        },
+        {
+          "damage": 400,
+          "accuracy": 0.8,
+          "ammo": null
+        }
+      ],
+      "gameClass": "firstStrike",
+      "speed": 30,
+      "faction": "player"
+    },
+    {
+      "id": "balloon_carrier",
+      "name": "Portaglobos",
+      "role": "air",
+      "damage": 2000,
+      "armor": 0,
+      "hp": 2800,
+      "accuracy": 0.5,
+      "ammo": 5,
+      "size": 5,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 2000,
+          "accuracy": 0.5,
+          "ammo": 5
+        }
+      ],
+      "gameClass": "carrier",
+      "speed": 20,
+      "faction": "player"
+    },
+    {
+      "id": "paddle_speedboat",
+      "name": "Lancha de palas",
+      "role": "antiAir",
+      "damage": 240,
+      "armor": 0,
+      "hp": 400,
+      "accuracy": 0.9,
+      "ammo": 5,
+      "size": 1,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 240,
+          "accuracy": 0.9,
+          "ammo": 5
+        }
+      ],
+      "gameClass": "carrierEvasion",
+      "speed": 60,
+      "faction": "player"
+    },
+    {
+      "id": "tender",
+      "name": "Barco de mantenimiento",
+      "role": "healer",
+      "damage": 300,
+      "armor": 0,
+      "hp": 2800,
+      "accuracy": 0.5,
+      "ammo": null,
+      "size": 6,
+      "source": "https://ika-sim.com/wiki",
+      "sourceCrosscheck": "https://forum.ikariam.gameforge.com/forum/thread/109871-workshop-tests-ship-technology/",
+      "weapons": [
+        {
+          "damage": 300,
+          "accuracy": 0.5,
+          "ammo": null
+        }
+      ],
+      "gameClass": "support",
+      "speed": 30,
+      "heal": 200,
+      "morale": 3,
+      "supportEstimate": true,
+      "sourceSupport": "https://ikariam.fandom.com/wiki/Unit-ship:Tender",
+      "sourceHealingUpdate": "https://forum.ikariam.gameforge.com/forum/thread/115866-version-17-1-0-06-05-2026/",
+      "supportSlotless": true,
+      "faction": "player"
+    },
+    {
+      "id": "barbarian_deckwrecker",
+      "name": "Deckwrecker",
+      "role": "flank",
+      "damage": 1500,
+      "armor": 180,
+      "hp": 3080,
+      "accuracy": 0.8,
+      "ammo": null,
+      "size": 3,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "light",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "ram_ship",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco-espolón. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 1500,
+          "accuracy": 0.8,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco-espolón"
+    },
+    {
+      "id": "barbarian_sail_shredder",
+      "name": "Sail Shredder",
+      "role": "ranged",
+      "damage": 560,
+      "armor": 280,
+      "hp": 3080,
+      "accuracy": 0.5,
+      "ammo": 7,
+      "size": 2,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "longRange",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "ballista_ship",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco-ballesta. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 560,
+          "accuracy": 0.5,
+          "ammo": 7
+        },
+        {
+          "damage": 1020,
+          "accuracy": 0.7,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco-ballesta"
+    },
+    {
+      "id": "barbarian_pyroboat",
+      "name": "Pyroboat",
+      "role": "front",
+      "damage": 1640,
+      "armor": 160,
+      "hp": 4380,
+      "accuracy": 0.5,
+      "ammo": null,
+      "size": 2,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "heavy",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "fire_ship",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco lanza-llamas. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 1640,
+          "accuracy": 0.5,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco lanza-llamas"
+    },
+    {
+      "id": "barbarian_boulder_catapult",
+      "name": "Boulder Catapult",
+      "role": "ranged",
+      "damage": 900,
+      "armor": 200,
+      "hp": 2960,
+      "accuracy": 0.3,
+      "ammo": 6,
+      "size": 3,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "longRange",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "catapult_ship",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco-catapulta. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 900,
+          "accuracy": 0.3,
+          "ammo": 6
+        },
+        {
+          "damage": 620,
+          "accuracy": 0.7,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco-catapulta"
+    },
+    {
+      "id": "barbarian_wedge_paddler",
+      "name": "Wedge Paddler",
+      "role": "front",
+      "damage": 3320,
+      "armor": 320,
+      "hp": 11520,
+      "accuracy": 0.9,
+      "ammo": null,
+      "size": 5,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "heavy",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "steam_ram",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco-espolón de vapor. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 3320,
+          "accuracy": 0.9,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco-espolón de vapor"
+    },
+    {
+      "id": "barbarian_powder_pitcher",
+      "name": "Powder Pitcher",
+      "role": "ranged",
+      "damage": 1380,
+      "armor": 120,
+      "hp": 3080,
+      "accuracy": 0.1,
+      "ammo": 5,
+      "size": 4,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "longRange",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "mortar_ship",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco-mortero. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 1380,
+          "accuracy": 0.1,
+          "ammo": 5
+        },
+        {
+          "damage": 740,
+          "accuracy": 0.5,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco-mortero"
+    },
+    {
+      "id": "barbarian_terror_of_the_deep",
+      "name": "Terror of the Deep",
+      "role": "artillery",
+      "damage": 2460,
+      "armor": 120,
+      "hp": 2200,
+      "accuracy": 0.8,
+      "ammo": 4,
+      "size": 3,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "firstStrike",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "submarine",
+      "note": "Estadísticas estimadas con el perfil análogo de Submarino. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 2460,
+          "accuracy": 0.8,
+          "ammo": 4
+        },
+        {
+          "damage": 1800,
+          "accuracy": 0.8,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Submarino"
+    },
+    {
+      "id": "barbarian_dragonfire",
+      "name": "Dragonfire",
+      "role": "artillery",
+      "damage": 7600,
+      "armor": 120,
+      "hp": 1300,
+      "accuracy": 0.2,
+      "ammo": 2,
+      "size": 4,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "firstStrike",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "rocket_ship",
+      "note": "Estadísticas estimadas con el perfil análogo de Barco lanzamisiles. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 7600,
+          "accuracy": 0.2,
+          "ammo": 2
+        },
+        {
+          "damage": 400,
+          "accuracy": 0.8,
+          "ammo": null
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Barco lanzamisiles"
+    },
+    {
+      "id": "barbarian_dirigible_igniter",
+      "name": "Dirigible Igniter",
+      "role": "antiAir",
+      "damage": 240,
+      "armor": 0,
+      "hp": 400,
+      "accuracy": 0.9,
+      "ammo": 5,
+      "size": 1,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "carrierEvasion",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "paddle_speedboat",
+      "note": "Estadísticas estimadas con el perfil análogo de Lancha de palas. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 240,
+          "accuracy": 0.9,
+          "ammo": 5
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Lancha de palas"
+    },
+    {
+      "id": "barbarian_nest",
+      "name": "Barbarian Nest",
+      "role": "air",
+      "damage": 2000,
+      "armor": 0,
+      "hp": 2800,
+      "accuracy": 0.5,
+      "ammo": 5,
+      "size": 5,
+      "source": "https://codepen.io/panos78/pen/dPyXOKm",
+      "sourceCrosscheck": "https://ikariam.fandom.com/fr/wiki/Flotte_Barbare",
+      "gameClass": "carrier",
+      "barbarian": true,
+      "approximate": true,
+      "proxyId": "balloon_carrier",
+      "note": "Estadísticas estimadas con el perfil análogo de Portaglobos. Los valores propios de este barco bárbaro requieren verificación.",
+      "weapons": [
+        {
+          "damage": 2000,
+          "accuracy": 0.5,
+          "ammo": 5
+        }
+      ],
+      "faction": "barbarian",
+      "estimated": true,
+      "equivalent": "Portaglobos"
+    }
+  ]
+}

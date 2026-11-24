@@ -1,0 +1,238 @@
+{
+  "description": "Fixtures ficticias. Ningún registro debe guardarse en una cuenta real.",
+  "now": "2026-11-24T18:00:00+01:00",
+  "documents": [
+    {
+      "schema_version": "1.0.0",
+      "kind": "observation_batch",
+      "id": "batch-demo-001",
+      "account_id": "demo-account",
+      "world": "demo-world",
+      "created_at": "2026-11-24T18:00:00+01:00",
+      "producer": "operativo-recoleccion",
+      "data": {
+        "sources": [
+          {
+            "id": "fixture-stock-001",
+            "kind": "transcription",
+            "ref": "fixture:inventado"
+          }
+        ],
+        "fields": [
+          {
+            "entity": "city:demo-city",
+            "path": "stocks.wood",
+            "value": 1000,
+            "unit": "wood",
+            "observed_at": "2026-11-24T17:55:00+01:00",
+            "source_id": "fixture-stock-001",
+            "quality": "observed"
+          }
+        ],
+        "errors": [],
+        "coverage": "Ejemplo parcial y ficticio."
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "kind": "snapshot",
+      "id": "snapshot-demo-001",
+      "account_id": "demo-account",
+      "world": "demo-world",
+      "created_at": "2026-11-24T18:00:00+01:00",
+      "producer": "operativo-estado",
+      "data": {
+        "source_batch_ids": [
+          "batch-demo-001"
+        ],
+        "revisions": {
+          "account:demo-account": 1,
+          "city:demo-city": 1,
+          "note:ops-state-v1": 0
+        },
+        "entities": {
+          "city:demo-city": {
+            "name": "Ciudad de ejemplo",
+            "note": "Datos inventados para validación; no pertenecen a ninguna cuenta real."
+          }
+        },
+        "budgets": {
+          "city:demo-city:wood": {
+            "observed_quantity": 1000,
+            "reserved_quantity": 200,
+            "floor_quantity": 100,
+            "observed_at": "2026-11-24T17:55:00+01:00",
+            "source_ref": "fixture-stock-001"
+          },
+          "city:demo-city:construction-slot": {
+            "observed_quantity": 1,
+            "reserved_quantity": 0,
+            "floor_quantity": 0,
+            "observed_at": "2026-11-24T17:55:00+01:00",
+            "source_ref": "fixture-queue-001"
+          },
+          "account:merchant-ships": {
+            "observed_quantity": 5,
+            "reserved_quantity": 0,
+            "floor_quantity": 1,
+            "observed_at": "2026-11-24T17:55:00+01:00",
+            "source_ref": "fixture-ships-001"
+          }
+        },
+        "max_age_minutes": 360,
+        "confirmed_action_ids": [],
+        "issued_idempotency_keys": [],
+        "issues": []
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "kind": "proposal",
+      "id": "proposal-demo-001",
+      "account_id": "demo-account",
+      "world": "demo-world",
+      "created_at": "2026-11-24T18:00:00+01:00",
+      "producer": "operativo-deliberacion",
+      "data": {
+        "snapshot_id": "snapshot-demo-001",
+        "domain": "construction",
+        "objective": "Validar una selección sin doble gasto.",
+        "alternatives": [
+          {
+            "id": "build-demo",
+            "idempotency_key": "demo-world/demo-account/demo-city/warehouse/target-2/cycle-001",
+            "domain": "construction",
+            "action_type": "upgrade_building",
+            "city_id": "demo-city",
+            "instructions": "Ejemplo ficticio: mejorar el almacén solo cuando se confirme nivel y coste.",
+            "costs_known": true,
+            "cost_source_ref": "fixture-cost-001",
+            "claims": {
+              "city:demo-city:wood": 500,
+              "city:demo-city:construction-slot": 1
+            },
+            "depends_on": [],
+            "preconditions": [
+              "Coste ficticio para validar el contrato; no usar como tabla del juego."
+            ],
+            "evidence_required": "Confirmación explícita o captura del edificio al nivel objetivo."
+          },
+          {
+            "id": "transfer-demo",
+            "idempotency_key": "demo-world/demo-account/transfer/cycle-001",
+            "domain": "logistics",
+            "action_type": "transport",
+            "city_id": "demo-city",
+            "instructions": "Ejemplo ficticio de alternativa logística.",
+            "costs_known": true,
+            "cost_source_ref": "fixture-cost-001",
+            "claims": {
+              "city:demo-city:wood": 300,
+              "account:merchant-ships": 2
+            },
+            "depends_on": [],
+            "preconditions": [
+              "Coste ficticio para validar el contrato; no usar como tabla del juego."
+            ],
+            "evidence_required": "Confirmación explícita o captura del edificio al nivel objetivo."
+          }
+        ],
+        "expected_effects": [
+          "Ejemplo de mejora"
+        ],
+        "assumptions": [
+          "Todos los costes son ficticios."
+        ],
+        "blocking_gaps": []
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "kind": "decision",
+      "id": "decision-demo-001",
+      "account_id": "demo-account",
+      "world": "demo-world",
+      "created_at": "2026-11-24T18:00:00+01:00",
+      "producer": "operativo-arbitraje",
+      "data": {
+        "snapshot_id": "snapshot-demo-001",
+        "basis_revisions": {
+          "account:demo-account": 1,
+          "city:demo-city": 1,
+          "note:ops-state-v1": 0
+        },
+        "objective": "Validar arquitectura modular.",
+        "status": "selected",
+        "expires_at": "2026-11-24T18:30:00+01:00",
+        "actions": [
+          {
+            "id": "build-demo",
+            "idempotency_key": "demo-world/demo-account/demo-city/warehouse/target-2/cycle-001",
+            "domain": "construction",
+            "action_type": "upgrade_building",
+            "city_id": "demo-city",
+            "instructions": "Ejemplo ficticio: mejorar el almacén solo cuando se confirme nivel y coste.",
+            "costs_known": true,
+            "cost_source_ref": "fixture-cost-001",
+            "claims": {
+              "city:demo-city:wood": 500,
+              "city:demo-city:construction-slot": 1
+            },
+            "depends_on": [],
+            "preconditions": [
+              "Coste ficticio para validar el contrato; no usar como tabla del juego."
+            ],
+            "evidence_required": "Confirmación explícita o captura del edificio al nivel objetivo."
+          }
+        ],
+        "rejected": [
+          {
+            "action_id": "transfer-demo",
+            "reason": "Las dos alternativas sumarían 800 de madera frente a 700 disponibles."
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "kind": "receipt",
+      "id": "receipt-demo-001",
+      "account_id": "demo-account",
+      "world": "demo-world",
+      "created_at": "2026-11-24T18:00:00+01:00",
+      "producer": "operativo-ejecucion",
+      "data": {
+        "decision_id": "decision-demo-001",
+        "action_id": "build-demo",
+        "idempotency_key": "demo-world/demo-account/demo-city/warehouse/target-2/cycle-001",
+        "execution_mode": "manual",
+        "status": "unknown",
+        "observed_at": "2026-11-24T18:00:00+01:00",
+        "evidence_refs": [],
+        "error": "Ejemplo sin ejecución real."
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "kind": "cycle",
+      "id": "cycle-demo-001",
+      "account_id": "demo-account",
+      "world": "demo-world",
+      "created_at": "2026-11-24T18:00:00+01:00",
+      "producer": "operativo-orquestador",
+      "data": {
+        "status": "awaiting_execution",
+        "output_ids": {
+          "snapshot": [
+            "snapshot-demo-001"
+          ],
+          "decision": [
+            "decision-demo-001"
+          ]
+        },
+        "last_event": "decision.selected",
+        "errors": []
+      }
+    }
+  ]
+}

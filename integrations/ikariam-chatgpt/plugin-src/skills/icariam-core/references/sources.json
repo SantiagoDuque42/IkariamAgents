@@ -1,0 +1,421 @@
+[
+  {
+    "id": "s01",
+    "title": "WikIkariam: índice",
+    "url": "https://ikariam.fandom.com/wiki/Main_Page",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s02",
+    "title": "Recursos",
+    "url": "https://ikariam.fandom.com/wiki/Resources",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s03",
+    "title": "Islas",
+    "url": "https://ikariam.fandom.com/wiki/Island",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s04",
+    "title": "Oro y finanzas",
+    "url": "https://ikariam.fandom.com/wiki/Gold",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s05",
+    "title": "Satisfacción",
+    "url": "https://ikariam.fandom.com/wiki/Happiness",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s06",
+    "title": "Edificios estándar",
+    "url": "https://ikariam.fandom.com/wiki/Buildings/Standard_Buildings",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s07",
+    "title": "Edificios productores",
+    "url": "https://ikariam.fandom.com/wiki/Buildings/Production_Buildings",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s08",
+    "title": "Edificios reductores",
+    "url": "https://ikariam.fandom.com/wiki/Buildings/Reduction_Buildings",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s09",
+    "title": "Corrupción",
+    "url": "https://ikariam.fandom.com/wiki/Corruption",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s10",
+    "title": "Palacio",
+    "url": "https://ikariam.fandom.com/wiki/Building%3APalace",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s11",
+    "title": "Residencia del gobernador",
+    "url": "https://ikariam.fandom.com/wiki/Building%3AGovernor%27s_Residence",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s12",
+    "title": "Investigación",
+    "url": "https://ikariam.fandom.com/wiki/Research",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s13",
+    "title": "Navegación",
+    "url": "https://ikariam.fandom.com/wiki/Seafaring",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s14",
+    "title": "Economía",
+    "url": "https://ikariam.fandom.com/wiki/Economy",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s15",
+    "title": "Ciencia",
+    "url": "https://ikariam.fandom.com/wiki/Science",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s16",
+    "title": "Milicia",
+    "url": "https://ikariam.fandom.com/wiki/Military",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s17",
+    "title": "Mitología",
+    "url": "https://ikariam.fandom.com/wiki/Mythology",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s18",
+    "title": "Dioses económicos",
+    "url": "https://ikariam.fandom.com/wiki/Ikariam%3AGods",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s19",
+    "title": "Santuario de los dioses",
+    "url": "https://ikariam.fandom.com/wiki/Building%3AGods%27_Shrine",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s20",
+    "title": "Maravillas y milagros",
+    "url": "https://ikariam.fandom.com/wiki/Miracles",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s21",
+    "title": "Unidades terrestres",
+    "url": "https://ikariam.fandom.com/wiki/Units",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s22",
+    "title": "Batalla terrestre",
+    "url": "https://ikariam.fandom.com/wiki/Land_battle",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s23",
+    "title": "Batalla naval",
+    "url": "https://ikariam.fandom.com/wiki/Sea_battle",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s24",
+    "title": "Barcos",
+    "url": "https://ikariam.fandom.com/wiki/Ships",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s25",
+    "title": "Depósito de mercantes",
+    "url": "https://ikariam.fandom.com/wiki/Building%3ADockyard",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s26",
+    "title": "Tienda",
+    "url": "https://ikariam.fandom.com/wiki/Building%3ATrading_post",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s27",
+    "title": "Comercio",
+    "url": "https://ikariam.fandom.com/wiki/Trading",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s28",
+    "title": "Fortaleza pirata",
+    "url": "https://ikariam.fandom.com/wiki/Building%3APirate_Fortress",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s29",
+    "title": "Pueblo bárbaro",
+    "url": "https://ikariam.fandom.com/wiki/Barbarian_Village",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s30",
+    "title": "Escondite",
+    "url": "https://ikariam.fandom.com/wiki/Building%3AHideout",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s31",
+    "title": "Alianzas",
+    "url": "https://ikariam.fandom.com/wiki/Alliance",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s32",
+    "title": "Gobiernos",
+    "url": "https://ikariam.fandom.com/wiki/Governments",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s33",
+    "title": "Vacaciones",
+    "url": "https://ikariam.fandom.com/wiki/Vacation",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s34",
+    "title": "Puntuaciones",
+    "url": "https://ikariam.fandom.com/wiki/Scores",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s35",
+    "title": "Tareas diarias: requisitos",
+    "url": "https://ikariam.fandom.com/wiki/Daily_Tasks/Task_1-20",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s36",
+    "title": "Tareas diarias: recompensas",
+    "url": "https://ikariam.fandom.com/wiki/Daily_Tasks/Reward_1-20",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s37",
+    "title": "Ikariam Plus",
+    "url": "https://ikariam.fandom.com/wiki/Ikariam_Plus",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s46",
+    "title": "Guía de inicio",
+    "url": "https://ikariam.fandom.com/wiki/Beginner%27s_Guide",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s47",
+    "title": "Archivo de cartas náuticas",
+    "url": "https://ikariam.fandom.com/wiki/Building%3ASea_Chart_Archive",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s48",
+    "title": "Almacén",
+    "url": "https://ikariam.fandom.com/wiki/Building%3AWarehouse",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s49",
+    "title": "Depósito",
+    "url": "https://ikariam.fandom.com/wiki/Building%3ADump",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s50",
+    "title": "Taller",
+    "url": "https://ikariam.fandom.com/wiki/Building%3AWorkshop",
+    "kind": "wiki",
+    "access": "indexed_excerpt",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s38",
+    "title": "Reglas de Ikariam España",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/2158-reglas-del-juego/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s39",
+    "title": "Versión 14.0.0: límites y Forja de Cronos",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/109542-version-14-0-0-21-05-2025/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s40",
+    "title": "Versión 17.0.0: curación y datos del mundo",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/115331-version-17-0-0-incoming-16-04-2026-10-00-cest/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s41",
+    "title": "Versión 17.3.0: teatro",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/116896-versi%C3%B3n-17-3-0-07-07-2026/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s42",
+    "title": "Versión 17.4.0: transportes y guarnición",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/117391-version-17-04-0/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s43",
+    "title": "Versión 17.5.0: deidades y bendiciones",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/118428-versi%C3%B3n-17-5-0-08-09-2026/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s44",
+    "title": "Versión 17.6.1-r1: correcciones",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/119675-version-17-6-1-r1-14-10-2026/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s45",
+    "title": "Infinite Horizons: hito 2",
+    "url": "https://forum.ikariam.gameforge.com/forum/thread/107634-infinite-horizons-milestone-2/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s51",
+    "title": "Índice oficial de noticias",
+    "url": "https://forum.ikariam.gameforge.com/forum/board/35-news-and-announcements/",
+    "kind": "official",
+    "access": "retrieved_or_indexed",
+    "checked_at": "2026-11-20"
+  },
+  {
+    "id": "s52",
+    "title": "Drive compartido del grupo: progresión y dominancia insular",
+    "url": "https://example.invalid/private-ikariam-drive",
+    "kind": "user_shared_drive",
+    "access": "reference_only_content_not_retrieved",
+    "added_at": "2026-11-24",
+    "checked_at": "2026-11-24",
+    "description": "Carpeta aportada por el usuario para compartir con sus amigos archivos de su progresión en Ikariam y coordinación para la dominancia insular.",
+    "notes": "Enlace registrado como referencia. El intento de lectura web no recuperó el contenido; permisos sin verificar. No implica importación ni sincronización automática."
+  }
+]
