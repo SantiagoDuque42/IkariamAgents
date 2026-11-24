@@ -6,7 +6,7 @@
 // first, at a human pace, to read levels, free spots and towns. Response shapes are unverified until the
 // first real run; anything unrecognised is saved as structure-only diagnostics in the file.
 (async () => {
-  const VERSION = '0.1.0';
+  const VERSION = '0.2.0';
   // Shared helpers for the in-game bookmarklets (Mayor, Cartographer).
 // Written as an ES module so tests can import it; tools/build.mjs inlines it into each bookmarklet
 // (stripping `export`) wherever a bookmarklet source contains the line `/*@shared*/`.
@@ -85,6 +85,74 @@ function parseIsland(json) {
   };
 }
 
+/** The game answers some ajax views with ["custom", ["reload", {link}]]: it wants a full page load of `link`. */
+function reloadLink(json) {
+  const r = find(json, o => Array.isArray(o) && o[0] === 'reload' && o[1] && typeof o[1].link === 'string');
+  return r ? r[1].link : null;
+}
+
+/** A full HTML page embeds the same [[command, data], …] list the ajax view returns; parse it if present. */
+function parseEmbedded(html) {
+  const i = html.indexOf('[["updateGlobalData"');
+  if (i < 0) return null;
+  // walk to the matching closing bracket
+  let depth = 0, inStr = false, esc = false;
+  for (let k = i; k < html.length && k < i + 3e6; k++) {
+    const ch = html[k];
+    if (inStr) { if (esc) esc = false; else if (ch === '\\') esc = true; else if (ch === '"') inStr = false; continue; }
+    if (ch === '"') inStr = true; else if (ch === '[') depth++; else if (ch === ']' && --depth === 0) {
+      try { return parseIsland(JSON.parse(html.slice(i, k + 1))); } catch { return null; }
+    }
+  }
+  return null;
+}
+
+/** Last resort on a full page: read the island fields by name, whatever script wraps them (quotes may be escaped). */
+function parseIslandHtml(html) {
+  const pick = key => { const m = html.match(new RegExp('\\\\?"' + key + '\\\\?"\\s*:\\s*\\\\?"?([^"\\\\,}]{1,60})')); return m ? m[1].trim() : null; };
+  const res = pick('resourceLevel'), trade = pick('tradegoodLevel');
+  if (res == null && trade == null) return null;
+  return {
+    id: pick('islandId') ?? pick('id'), name: null, x: numOrNull(pick('xCoord')), y: numOrNull(pick('yCoord')),
+    tradegood: ORD[pick('tradegood')] || null,
+    woodLvl: numOrNull(res), luxLvl: numOrNull(trade),
+    wonder: pick('wonderName'), wonderLvl: numOrNull(pick('wonderLevel')),
+    spots: null, freeSpots: null, towns: [], _keys: ['(page text)'],
+  };
+}
+
+/** Names of level-ish keys in a page, for diagnostics (names only, never values). */
+const levelKeys = html => [...new Set([...html.matchAll(/\\?"(\w{0,30}(?:[Ll]evel|tradegood|wonder)\w{0,20})\\?"\s*:/g)].map(m => m[1]))].slice(0, 60);
+
+/**
+ * Read one island the way the game UI does: the ajax island view first; when the game answers
+ * "reload", load the page it names (same origin only) and read the island from it.
+ * Returns { island, via } or { island: null, diag }.
+ */
+async function readIsland(client, id) {
+  let last = null;
+  for (const params of [
+    { view: 'island', islandId: id, backgroundView: 'island', currentIslandId: id },
+    { view: 'island', islandId: id },
+  ]) {
+    last = await client.get(params);
+    await pace();
+    const isl = parseIsland(last);
+    if (isl) return { island: isl, via: 'ajax' };
+    const link = reloadLink(last);
+    if (link) {
+      const url = new URL(link, location.origin);
+      if (url.origin !== location.origin) break;
+      const html = await client.getText(url.pathname + url.search);
+      await pace();
+      const a = parseEmbedded(html); if (a) return { island: a, via: 'page-json' };
+      const b = parseIslandHtml(html); if (b) return { island: b, via: 'page-text' };
+      return { island: null, diag: { reload: true, pageLength: html.length, keys: levelKeys(html) } };
+    }
+  }
+  return { island: null, diag: shape(last) };
+}
+
 /** Game client bound to the current tab: carries the actionRequest token like the game UI does. */
 function gameClient() {
   const html = document.documentElement.innerHTML;
@@ -99,7 +167,14 @@ function gameClient() {
     const g = find(j, o => typeof o.actionRequest === 'string'); if (g) ar = g.actionRequest;
     return j;
   };
-  return { get };
+  // Full page load of a same-origin game URL (what the browser does when the game asks for a reload).
+  const getText = async path => {
+    const r = await fetch(path, { credentials: 'same-origin' });
+    const t = await r.text();
+    const m = t.match(/actionRequest["']?\s*[:=]\s*["']([0-9a-f]{20,})/i); if (m) ar = m[1];
+    return t;
+  };
+  return { get, getText };
 }
 
 function relatedCities() {
@@ -194,7 +269,8 @@ async function copyText(text, btn) {
     if (!/ikariam/.test(location.host)) throw new Error('Open your Ikariam game tab first, then click the bookmark.');
     const scope = await askScope();
     const [x0, x1, y0, y1] = scope.bbox;
-    const { get } = gameClient();
+    const { get, getText } = gameClient();
+    const client = { get, getText };
     const diag = {};
     say('Cartographer', `Reading world map ${x0}–${x1} × ${y0}–${y1}…`);
     const area = await get({ action: 'WorldMap', function: 'getJSONArea', x_min: x0, x_max: x1, y_min: y0, y_max: y1 }, { ajax: false });
@@ -205,11 +281,11 @@ async function copyText(text, btn) {
     let opened = 0;
     for (const isl of islands.slice(0, scope.maxIslands)) {
       say('Cartographer', `Opening island ${++opened} of ${Math.min(scope.maxIslands, islands.length)} (${isl.x}:${isl.y})…`);
-      const j = await get({ view: 'island', islandId: isl.id, backgroundView: 'island', currentIslandId: isl.id });
-      const p = parseIsland(j);
+      const r = await readIsland(client, isl.id);
+      const p = r.island;
       if (p) { const { _keys, ...facts } = p; Object.assign(isl, facts, { id: isl.id, x: isl.x, y: isl.y, name: isl.name ?? facts.name, detail: 'island' }); if (p.woodLvl == null) (diag.islandKeys ??= {})[isl.id] = _keys; }
-      else if (!diag.island) diag.island = shape(j); // one example is enough
-      await pace(1800, 3200);
+      else if (!diag.island) diag.island = r.diag; // one example is enough
+      await pace(1000, 2000);
     }
     islands.forEach(i => { i.detail ??= 'map'; });
     const kept = scope.tradegood.length ? islands.filter(i => i.detail === 'island' && scope.tradegood.includes(i.tradegood)) : islands;

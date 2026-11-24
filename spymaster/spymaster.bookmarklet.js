@@ -9,7 +9,7 @@
 // `.targetOwner` (onclick has tbl_mail<reportId>) and `.date`; warehouse reports hold `table.resourcesTable`
 // rows with `.unitname img[src*=icon_<res>.png]` and `.count`. Garrison-report markup is unverified.
 (async () => {
-  const VERSION = '0.1.0';
+  const VERSION = '0.2.0';
   /*@shared*/
   const ID = 'ika-spy';
   const say = (t, b, btns, html) => overlay(ID, t, b, btns, html);
@@ -94,7 +94,8 @@
     if (!related) throw new Error('Could not find your town list on this page. Reload the game and try again.');
     const own = Object.values(related).filter(c => c && c.relationship === 'ownCity');
     const startId = String(related.selectedCityId || own[0].id);
-    const { get } = gameClient();
+    const { get, getText } = gameClient();
+    const client = { get, getText };
     const diag = {};
     const reports = new Map();
     let hideouts = 0;
@@ -145,7 +146,7 @@
         await pace(1200, 2400);
         if (t.islandId) {
           if (!(t.islandId in islandCache)) {
-            islandCache[t.islandId] = parseIsland(await get({ view: 'island', islandId: t.islandId, backgroundView: 'island', currentIslandId: t.islandId }));
+            islandCache[t.islandId] = (await readIsland(client, t.islandId)).island;
             await pace(1200, 2400);
           }
           const isl = islandCache[t.islandId];
