@@ -1,0 +1,40 @@
+{
+  "apps": "./.app.json",
+  "interface": {
+    "capabilities": [],
+    "category": "Other",
+    "defaultPrompt": null,
+    "developerName": "App developer",
+    "displayName": "Ikariam",
+    "longDescription": "Asistente privado de Ikariam: conocimiento contrastado, registro de cuenta y planificación del imperio.",
+    "shortDescription": "Asistente privado de Ikariam: conocimiento contrastado, registro de cuenta y planificación del imperio.",
+    "websiteURL": "https://icariam-cuartel-de-mando.hayanman.chatgpt.site"
+  },
+  "name": "dev-55d640b7110c8191885a58d703125b62",
+  "version": "1.5.0",
+  "description": "Asistente privado de Ikariam: conocimiento contrastado, registro de cuenta y planificación del imperio.",
+  "author": {
+    "name": "App developer"
+  },
+  "keywords": [
+    "ikariam",
+    "icariam",
+    "estrategia",
+    "recursos",
+    "ciudades",
+    "logística",
+    "operaciones",
+    "modular",
+    "spy",
+    "diplomat",
+    "general",
+    "investigator",
+    "shipper",
+    "worldlord",
+    "mayor",
+    "aprendizaje",
+    "evidencia",
+    "validación"
+  ],
+  "skills": "./skills"
+}
