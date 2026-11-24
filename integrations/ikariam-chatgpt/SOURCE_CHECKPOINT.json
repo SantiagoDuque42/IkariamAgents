@@ -1,0 +1,10 @@
+{
+  "captured_at": "2026-11-24",
+  "site_source_commit": "d514e2695384ea054c5ce6f5b6c5c11df2a388d0",
+  "plugin_version": "1.5.0",
+  "plugin_release": "pluginrel_6b05e1bbe68c8191a74acec0885767c8",
+  "base_repository_commit": "9ab1727218547ca2e906bc7f2ca010badcdeeb6e",
+  "public_fixtures": "Fictitious map, empty players and inventory; private observations, reports and project memory omitted.",
+  "learning_policy_version": "1.0.0",
+  "combat_model_version": "1.1.0"
+}

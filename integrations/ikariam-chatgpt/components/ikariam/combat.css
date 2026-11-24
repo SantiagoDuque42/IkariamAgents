@@ -1,0 +1,675 @@
+.combat-workbench {
+  display: grid;
+  align-content: start;
+  gap: 17px;
+  --combat-attack: #88442d;
+  --combat-defense: #176778;
+  --combat-field: #192d3c;
+  --combat-text: #eef9fa;
+  --combat-soft: #b6cbd4;
+}
+
+.combat-hero {
+  padding-block: 24px;
+}
+
+.combat-hero h1 {
+  font-size: clamp(2rem, 4.7vw, 3.3rem);
+}
+
+.combat-mode {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  border: 1px solid #b8d4d65e;
+  border-radius: 11px;
+  background: #0e293568;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.combat-mode button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 6px 13px;
+  border-radius: 8px;
+  color: #e0edef;
+  font-weight: 720;
+  font-size: .9rem;
+}
+
+.combat-mode button[aria-pressed='true'] {
+  background: var(--gold);
+  color: var(--ink-strong);
+}
+
+.combat-mode button:not([aria-pressed='true']):hover {
+  background: #ffffff17;
+}
+
+.combat-settings {
+  padding-block: 15px;
+}
+
+.combat-settings-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+
+.combat-settings-main > label:first-child,
+.combat-settings-main > label:has(#combat-wall-level) {
+  min-width: 122px;
+  flex: 1 1 140px;
+}
+
+.combat-settings-main > label:has(select) {
+  flex: 3 1 245px;
+}
+
+.combat-settings-main input {
+  width: 100%;
+}
+
+.combat-settings-main select,
+.combat-army select {
+  appearance: none;
+  width: 100%;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 6 4.5 4.5L12.5 6' fill='none' stroke='%233b5966' stroke-linecap='round' stroke-width='1.8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.combat-reset {
+  margin-left: auto;
+}
+
+.combat-example-description {
+  margin-top: 12px;
+}
+
+.combat-run-settings,
+.combat-upgrades {
+  margin-top: 14px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+}
+
+.combat-run-settings summary,
+.combat-upgrades summary {
+  width: fit-content;
+  font-size: .91rem;
+  font-weight: 740;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.combat-upgrade-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-block: 10px 7px;
+}
+
+.combat-run-settings .field {
+  max-width: 225px;
+}
+
+.combat-upgrade-grid input,
+.combat-upgrade-grid select {
+  width: 100%;
+}
+
+.combat-army .combat-upgrade-grid .field {
+  flex: 1 1 104px;
+}
+
+.combat-unit-upgrades,
+.combat-unit-workshop {
+  min-width: 0;
+  margin-top: 11px;
+}
+
+.combat-unit-workshop {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 8px 2px;
+}
+
+.combat-unit-workshop legend {
+  max-width: 100%;
+  padding-inline: 4px;
+  color: var(--ink);
+  font-size: .86rem;
+  font-weight: 700;
+}
+
+.combat-layout {
+  display: grid;
+  grid-template-columns: minmax(235px, .95fr) minmax(280px, 1.45fr) minmax(235px, .95fr);
+  grid-template-areas: 'attack board defense';
+  align-items: start;
+  gap: 14px;
+}
+
+.combat-army {
+  padding: 15px;
+  border-top: 3px solid var(--combat-side);
+}
+
+.combat-army-0 {
+  grid-area: attack;
+  --combat-side: var(--combat-attack);
+  --combat-wash: #faf0e9;
+}
+
+.combat-army-1 {
+  grid-area: defense;
+  --combat-side: var(--combat-defense);
+  --combat-wash: #e9f4f7;
+}
+
+.combat-army-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 13px;
+}
+
+.combat-army-head h3 {
+  margin-bottom: 1px;
+}
+
+.combat-army-head p {
+  font-size: .89rem;
+  color: var(--muted);
+}
+
+.combat-emblem {
+  background: var(--combat-wash);
+  color: var(--combat-side);
+  border-radius: 10px;
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+
+.combat-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 6px;
+  align-items: end;
+}
+
+.combat-add-row .button {
+  padding-inline: 8px;
+  font-size: .84rem;
+  gap: 3px;
+}
+
+.combat-add-row select {
+  min-width: 0;
+  background-color: var(--surface);
+  font-weight: 500;
+}
+
+.combat-unit-empty {
+  padding: 16px 9px;
+  border-radius: 8px;
+  border: 1px dashed #becfd6;
+  text-align: center;
+  font-size: .89rem;
+  margin-top: 11px;
+  color: var(--muted);
+}
+
+.combat-unit-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 9px;
+}
+
+.combat-unit-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 65px 29px;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 0;
+}
+
+.combat-unit-list li + li {
+  border-top: 1px solid #edf0f1;
+}
+
+.combat-unit-list label {
+  display: grid;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.combat-unit-list label strong {
+  overflow-wrap: anywhere;
+  font-size: .9rem;
+  font-weight: 740;
+}
+
+.combat-unit-list label span {
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+.combat-unit-list input {
+  width: 100%;
+  height: 36px;
+  padding: 4px 6px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  background: #f7fafa;
+  border: 1px solid #d3e0e5;
+  border-radius: 7px;
+  color: var(--ink);
+  appearance: textfield;
+}
+
+.combat-unit-list input::-webkit-inner-spin-button,
+.combat-unit-list input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.combat-remove {
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  height: 33px;
+  color: var(--muted);
+}
+
+.combat-remove:hover {
+  background: #fbefec;
+  color: var(--combat-attack);
+}
+
+.combat-board {
+  grid-area: board;
+  padding: 16px 15px 11px;
+  border: 1px solid #31515d;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(ellipse at 48% 0%, #315767 0%, transparent 68%),
+    linear-gradient(132deg, #253d4a, var(--combat-field) 50%, #243949);
+  color: var(--combat-text);
+}
+
+.combat-board-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-bottom: 9px;
+}
+
+.combat-board h3 {
+  font-family: Georgia, Cambria, serif;
+  line-height: 1.14;
+  font-size: 1.46rem;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  color: #f8fffc;
+}
+
+.combat-board-head p,
+.combat-board-note {
+  color: var(--combat-soft);
+  font-size: .83rem;
+  line-height: 1.45;
+  margin-top: 5px;
+}
+
+.combat-board-head > span {
+  color: var(--gold);
+  font-weight: 730;
+  font-size: .85rem;
+}
+
+.combat-lines {
+  border-collapse: separate;
+  border-spacing: 4px;
+  table-layout: fixed;
+  width: calc(100% + 8px);
+  margin-left: -4px;
+}
+
+.combat-lines thead th {
+  width: 37%;
+  color: #e0ecef;
+  font-size: .81rem;
+  padding-block: 3px 4px;
+}
+
+.combat-lines thead th:nth-child(2) {
+  width: 26%;
+  color: var(--combat-soft);
+}
+
+.combat-lines td,
+.combat-lines tbody th {
+  min-height: 43px;
+  padding: 7px 5px;
+  border: 1px solid #a4c2ce39;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.combat-lines td {
+  background: #cf7d5622;
+  width: 35%;
+  font-size: .79rem;
+}
+
+.combat-lines td:last-child {
+  background: #64b9d226;
+}
+
+.combat-lines tbody th {
+  color: #e4eff1;
+  background: #0e25349a;
+  line-height: 1.25;
+  font-size: .78rem;
+  font-weight: 720;
+}
+
+.combat-lines tbody th span {
+  display: block;
+  color: var(--combat-soft);
+  font-size: .72rem;
+  font-weight: 450;
+  margin-top: 3px;
+}
+
+.combat-lines ul {
+  list-style: none;
+  padding: 0;
+}
+
+.combat-lines li + li {
+  margin-top: 2px;
+}
+
+.combat-lines li strong {
+  display: inline-block;
+  margin-right: .28em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.combat-lines li span {
+  overflow-wrap: anywhere;
+}
+
+.combat-none {
+  color: #bad1d6;
+  font-size: .79rem;
+}
+
+.combat-run {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 13px;
+}
+
+.combat-run .button {
+  min-height: 45px;
+  padding-inline: 17px;
+}
+
+.combat-warning {
+  background: #fbf3e5;
+  border-left: 3px solid #ab7432;
+  border-radius: 5px;
+  color: #6e451b;
+  padding: 9px 11px 9px 29px;
+  font-size: .9rem;
+  list-style: disc;
+  margin-bottom: 11px;
+}
+
+.combat-result-totals,
+.combat-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.combat-result-totals div {
+  border: 1px solid #dce6e9;
+  background: #f4f8f8;
+  padding: 9px 11px;
+  border-radius: 8px;
+}
+
+.combat-result-totals dt {
+  color: var(--muted);
+  font-size: .89rem;
+  font-weight: 680;
+}
+
+.combat-result-totals dd {
+  color: var(--ink-strong);
+  font-size: 1.38rem;
+  font-weight: 785;
+}
+
+.combat-round-control {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  max-width: 520px;
+  padding-block: 15px;
+  margin-inline: auto;
+}
+
+.combat-round-control label {
+  flex: 1;
+  min-width: 80px;
+  display: grid;
+  gap: 5px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.combat-round-control input {
+  width: 100%;
+  accent-color: var(--teal);
+}
+
+.combat-force-summary {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #dce6e9;
+}
+
+.combat-result-totals + .combat-result-grid {
+  margin-top: 12px;
+}
+
+.combat-force-summary header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 12px;
+  gap: 3px 7px;
+}
+
+.combat-force-summary h4 {
+  font-weight: 790;
+}
+
+.combat-force-summary header span {
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.combat-force-summary meter {
+  width: 100%;
+  height: 10px;
+  margin-block: 6px;
+}
+
+.combat-force-summary meter::-webkit-meter-optimum-value {
+  background: var(--teal);
+}
+
+.combat-table-wrap {
+  overflow-x: auto;
+}
+
+.combat-stat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+
+.combat-stat-table th,
+.combat-stat-table td {
+  padding: 6px 9px;
+  border-bottom: 1px solid #e5ecee;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.combat-stat-table thead th {
+  color: var(--muted);
+  background: #f0f6f6;
+  font-size: .81rem;
+}
+
+.combat-stat-table td:first-child,
+.combat-stat-table th:first-child {
+  text-align: left;
+}
+
+.combat-stat-table tbody th {
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+.combat-stat-table td a + a {
+  margin-left: 7px;
+}
+
+.combat-catalog {
+  padding-block: 13px;
+}
+
+.combat-catalog summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 3px 0;
+  font-size: 1rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.combat-catalog summary::after {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px 4px 1px;
+  border-right: 2px solid var(--teal);
+  border-bottom: 2px solid var(--teal);
+  transform: rotate(45deg);
+}
+
+.combat-catalog[open] summary::after {
+  transform: rotate(225deg);
+  margin-bottom: 0;
+}
+
+.combat-catalog-body {
+  display: grid;
+  gap: 12px;
+  padding-top: 11px;
+}
+
+.combat-catalog-body > p,
+.combat-catalog-body .quiet {
+  color: var(--muted);
+}
+
+.combat-catalog-body .field {
+  max-width: 350px;
+}
+
+.combat-catalog-table td:nth-child(2),
+.combat-catalog-table th:nth-child(2) {
+  text-align: left;
+}
+
+.combat-catalog-table th:first-child small {
+  display: block;
+  max-width: 300px;
+  color: var(--muted);
+  white-space: normal;
+  line-height: 1.4;
+  font-weight: 470;
+}
+
+.combat-weapons summary {
+  margin-top: 3px;
+  font-size: .77rem;
+  color: var(--teal-strong);
+  white-space: normal;
+}
+
+.combat-weapons summary::after {
+  display: none;
+}
+
+@media (max-width: 1050px) {
+  .combat-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'attack defense' 'board board';
+  }
+}
+
+@media (max-width: 675px) {
+  .combat-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 17px 16px 21px;
+  }
+
+  .combat-settings {
+    padding-inline: 12px;
+  }
+
+  .combat-result-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .combat-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'attack' 'defense' 'board';
+  }
+
+  .combat-army {
+    padding: 13px;
+  }
+}
