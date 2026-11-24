@@ -9,4 +9,16 @@ cartographer.map_*.json
 spymaster.reports_*.json
 strategist.orders_*.json
 node_modules/
+node_modules
 __pycache__/
+
+# Public, reviewed knowledge and synthetic fixtures for the ChatGPT integration.
+!integrations/ikariam-chatgpt/data/
+integrations/ikariam-chatgpt/data/*
+!integrations/ikariam-chatgpt/data/knowledge.json
+!integrations/ikariam-chatgpt/data/combat-units.json
+!integrations/ikariam-chatgpt/data/combat-examples.json
+!integrations/ikariam-chatgpt/data/combat-catalog-review.json
+!integrations/ikariam-chatgpt/data/atlas-map.json
+!integrations/ikariam-chatgpt/data/atlas-players.json
+!integrations/ikariam-chatgpt/data/atlas-inventory.json

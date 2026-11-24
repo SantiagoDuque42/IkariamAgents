@@ -65,3 +65,5 @@ npm run test:chatgpt
 
 Los comandos no necesitan conexión al juego. El registro público incluye únicamente
 conocimiento público y fixtures ficticios; los datos vivos permanecen privados.
+Los lanzadores shell invocan Bash explícitamente para funcionar cuando la copia de
+archivos no conserva permisos de ejecución. Una prueba comprueba este arranque.
