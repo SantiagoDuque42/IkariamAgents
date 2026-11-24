@@ -3,7 +3,7 @@
 // then downloads `mayor.snapshot_<server>_<YYYYMMDD-HHmm>.json` (schema mayor.snapshot.v1).
 // "Copy for planner" copies the older format the Empire Planner's importer understands.
 (async () => {
-  const VERSION = '0.2.0';
+  const VERSION = '0.3.0';
   /*@shared*/
   const ID = 'ika-mayor';
   const say = (t, b, btns) => overlay(ID, t, b, btns);
@@ -13,7 +13,7 @@
     if (!related) throw new Error('Could not find your town list on this page. Reload the game and try again.');
     const own = Object.values(related).filter(c => c && c.relationship === 'ownCity');
     const startId = String(related.selectedCityId || (related.selectedCity || '').replace('city_', '') || own[0].id);
-    const { get } = gameClient();
+    const { get, getText } = gameClient();
     const diag = {};
     const payload = { cities: [], islands: {} };
     say('Mayor', `Reading ${own.length} towns…`);
@@ -61,24 +61,16 @@
       await pace();
     }
 
-    // Islands: v0.1 asked view=island without a background view and got no island data (24 Nov 2026).
-    // Try the island background view first, then the bare view; keep the response shape if both fail.
+    // Islands. v0.1 got no island data; v0.2 found the game answers the ajax island view with
+    // ["custom", ["reload", {link}]] (24 Nov 2026). readIsland follows that link like a page load.
+    const client = { get, getText };
     for (const id of [...new Set(payload.cities.map(c => c.islandId))]) {
-      let isl = null, last = null;
-      for (const params of [
-        { view: 'island', islandId: id, backgroundView: 'island', currentIslandId: id },
-        { view: 'island', islandId: id },
-      ]) {
-        last = await get(params);
-        isl = parseIsland(last);
-        await pace();
-        if (isl) break;
-      }
-      if (isl) {
-        const { _keys, towns, ...facts } = isl;
-        payload.islands[id] = { ...facts, towns: towns.length };
-        if (isl.woodLvl == null || isl.luxLvl == null) (diag.islandKeys ??= {})[id] = _keys;
-      } else (diag.island ??= {})[id] = shape(last);
+      const r = await readIsland(client, id);
+      if (r.island) {
+        const { _keys, towns, ...facts } = r.island;
+        payload.islands[id] = { ...facts, towns: towns.length || null, via: r.via };
+        if (facts.woodLvl == null || facts.luxLvl == null) (diag.islandKeys ??= {})[id] = _keys;
+      } else (diag.island ??= {})[id] = r.diag;
     }
     await get({ view: 'city', cityId: startId, backgroundView: 'city', currentCityId: startId });
 

@@ -87,6 +87,74 @@ function parseIsland(json) {
   };
 }
 
+/** The game answers some ajax views with ["custom", ["reload", {link}]]: it wants a full page load of `link`. */
+function reloadLink(json) {
+  const r = find(json, o => Array.isArray(o) && o[0] === 'reload' && o[1] && typeof o[1].link === 'string');
+  return r ? r[1].link : null;
+}
+
+/** A full HTML page embeds the same [[command, data], …] list the ajax view returns; parse it if present. */
+function parseEmbedded(html) {
+  const i = html.indexOf('[["updateGlobalData"');
+  if (i < 0) return null;
+  // walk to the matching closing bracket
+  let depth = 0, inStr = false, esc = false;
+  for (let k = i; k < html.length && k < i + 3e6; k++) {
+    const ch = html[k];
+    if (inStr) { if (esc) esc = false; else if (ch === '\\') esc = true; else if (ch === '"') inStr = false; continue; }
+    if (ch === '"') inStr = true; else if (ch === '[') depth++; else if (ch === ']' && --depth === 0) {
+      try { return parseIsland(JSON.parse(html.slice(i, k + 1))); } catch { return null; }
+    }
+  }
+  return null;
+}
+
+/** Last resort on a full page: read the island fields by name, whatever script wraps them (quotes may be escaped). */
+function parseIslandHtml(html) {
+  const pick = key => { const m = html.match(new RegExp('\\\\?"' + key + '\\\\?"\\s*:\\s*\\\\?"?([^"\\\\,}]{1,60})')); return m ? m[1].trim() : null; };
+  const res = pick('resourceLevel'), trade = pick('tradegoodLevel');
+  if (res == null && trade == null) return null;
+  return {
+    id: pick('islandId') ?? pick('id'), name: null, x: numOrNull(pick('xCoord')), y: numOrNull(pick('yCoord')),
+    tradegood: ORD[pick('tradegood')] || null,
+    woodLvl: numOrNull(res), luxLvl: numOrNull(trade),
+    wonder: pick('wonderName'), wonderLvl: numOrNull(pick('wonderLevel')),
+    spots: null, freeSpots: null, towns: [], _keys: ['(page text)'],
+  };
+}
+
+/** Names of level-ish keys in a page, for diagnostics (names only, never values). */
+const levelKeys = html => [...new Set([...html.matchAll(/\\?"(\w{0,30}(?:[Ll]evel|tradegood|wonder)\w{0,20})\\?"\s*:/g)].map(m => m[1]))].slice(0, 60);
+
+/**
+ * Read one island the way the game UI does: the ajax island view first; when the game answers
+ * "reload", load the page it names (same origin only) and read the island from it.
+ * Returns { island, via } or { island: null, diag }.
+ */
+async function readIsland(client, id) {
+  let last = null;
+  for (const params of [
+    { view: 'island', islandId: id, backgroundView: 'island', currentIslandId: id },
+    { view: 'island', islandId: id },
+  ]) {
+    last = await client.get(params);
+    await pace();
+    const isl = parseIsland(last);
+    if (isl) return { island: isl, via: 'ajax' };
+    const link = reloadLink(last);
+    if (link) {
+      const url = new URL(link, location.origin);
+      if (url.origin !== location.origin) break;
+      const html = await client.getText(url.pathname + url.search);
+      await pace();
+      const a = parseEmbedded(html); if (a) return { island: a, via: 'page-json' };
+      const b = parseIslandHtml(html); if (b) return { island: b, via: 'page-text' };
+      return { island: null, diag: { reload: true, pageLength: html.length, keys: levelKeys(html) } };
+    }
+  }
+  return { island: null, diag: shape(last) };
+}
+
 /** Game client bound to the current tab: carries the actionRequest token like the game UI does. */
 function gameClient() {
   const html = document.documentElement.innerHTML;
@@ -101,7 +169,14 @@ function gameClient() {
     const g = find(j, o => typeof o.actionRequest === 'string'); if (g) ar = g.actionRequest;
     return j;
   };
-  return { get };
+  // Full page load of a same-origin game URL (what the browser does when the game asks for a reload).
+  const getText = async path => {
+    const r = await fetch(path, { credentials: 'same-origin' });
+    const t = await r.text();
+    const m = t.match(/actionRequest["']?\s*[:=]\s*["']([0-9a-f]{20,})/i); if (m) ar = m[1];
+    return t;
+  };
+  return { get, getText };
 }
 
 function relatedCities() {

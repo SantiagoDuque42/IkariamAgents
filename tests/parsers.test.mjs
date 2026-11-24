@@ -34,3 +34,26 @@ test('legacy v0.1 snapshot converts to mayor.snapshot.v1', () => {
   assert.equal(env.payload.cities.length, 5);
   assert.equal(env.payload.islands['800003'].tradegood, 'marble');
 });
+
+import { reloadLink, parseIslandHtml, parseEmbedded, levelKeys } from '../shared/ikariam.js';
+
+test('reloadLink finds the page the game asks to load (shape seen 24 Nov 2026)', () => {
+  const r = [['custom', ['reload', { link: '/index.php?view=island&islandId=800001', isDevHost: 0 }]], ['updateBacklink', { link: 'x', title: 'y' }], ['popupData', null]];
+  assert.equal(reloadLink(r), '/index.php?view=island&islandId=800001');
+  assert.equal(reloadLink([['updateGlobalData', {}]]), null);
+});
+
+test('parseEmbedded reads the command list embedded in a full page', () => {
+  const resp = readFileSync(new URL('./fixtures/island.response.example.json', import.meta.url), 'utf8');
+  const html = `<html><script>ikariam.getClass(ajax.Responder, ${JSON.stringify(JSON.parse(resp))});</script></html>`;
+  const i = parseEmbedded(html);
+  assert.equal(i.woodLvl, 29); assert.equal(i.freeSpots, 2); assert.equal(i.towns.length, 2);
+});
+
+test('parseIslandHtml reads levels by name, also with escaped quotes', () => {
+  const html = 'x = JSON.parse("{\\"id\\":\\"600001\\",\\"tradegood\\":\\"2\\",\\"resourceLevel\\":\\"29\\",\\"tradegoodLevel\\":\\"28\\",\\"wonderLevel\\":\\"5\\"}")';
+  const i = parseIslandHtml(html);
+  assert.equal(i.woodLvl, 29); assert.equal(i.luxLvl, 28); assert.equal(i.tradegood, 'marble'); assert.equal(i.wonderLvl, 5);
+  assert.equal(parseIslandHtml('<html>nothing</html>'), null);
+  assert.deepEqual(levelKeys(html).sort(), ['resourceLevel', 'tradegood', 'tradegoodLevel', 'wonderLevel']);
+});

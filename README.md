@@ -54,3 +54,10 @@ python3 tools/validate.py <file.json>   # validate any store file
 5. Importer: add `'<schema>': importX_` to `HANDLERS` in `sheets/AtlasImporter.gs`. Keep the row-building logic in pure functions so `tests/importer.test.mjs` can test them.
 
 See `docs/ARCHITECTURE.md` for the design.
+
+## ChatGPT integration and module learning
+
+The [ChatGPT integration](integrations/ikariam-chatgpt/README.md) expands the saved
+checkpoint into editable source. Plugin 1.5.0 adds evidence-based learning to every
+module and a versioned combat-report evaluator. See [learning architecture and
+validation](docs/LEARNING.md). Live account data remains private.

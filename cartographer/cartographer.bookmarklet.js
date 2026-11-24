@@ -6,7 +6,7 @@
 // first, at a human pace, to read levels, free spots and towns. Response shapes are unverified until the
 // first real run; anything unrecognised is saved as structure-only diagnostics in the file.
 (async () => {
-  const VERSION = '0.1.0';
+  const VERSION = '0.2.0';
   /*@shared*/
   const ID = 'ika-carto';
   const say = (t, b, btns, html) => overlay(ID, t, b, btns, html);
@@ -51,7 +51,8 @@
     if (!/ikariam/.test(location.host)) throw new Error('Open your Ikariam game tab first, then click the bookmark.');
     const scope = await askScope();
     const [x0, x1, y0, y1] = scope.bbox;
-    const { get } = gameClient();
+    const { get, getText } = gameClient();
+    const client = { get, getText };
     const diag = {};
     say('Cartographer', `Reading world map ${x0}–${x1} × ${y0}–${y1}…`);
     const area = await get({ action: 'WorldMap', function: 'getJSONArea', x_min: x0, x_max: x1, y_min: y0, y_max: y1 }, { ajax: false });
@@ -62,11 +63,11 @@
     let opened = 0;
     for (const isl of islands.slice(0, scope.maxIslands)) {
       say('Cartographer', `Opening island ${++opened} of ${Math.min(scope.maxIslands, islands.length)} (${isl.x}:${isl.y})…`);
-      const j = await get({ view: 'island', islandId: isl.id, backgroundView: 'island', currentIslandId: isl.id });
-      const p = parseIsland(j);
+      const r = await readIsland(client, isl.id);
+      const p = r.island;
       if (p) { const { _keys, ...facts } = p; Object.assign(isl, facts, { id: isl.id, x: isl.x, y: isl.y, name: isl.name ?? facts.name, detail: 'island' }); if (p.woodLvl == null) (diag.islandKeys ??= {})[isl.id] = _keys; }
-      else if (!diag.island) diag.island = shape(j); // one example is enough
-      await pace(1800, 3200);
+      else if (!diag.island) diag.island = r.diag; // one example is enough
+      await pace(1000, 2000);
     }
     islands.forEach(i => { i.detail ??= 'map'; });
     const kept = scope.tradegood.length ? islands.filter(i => i.detail === 'island' && scope.tradegood.includes(i.tradegood)) : islands;
