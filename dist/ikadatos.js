@@ -212,8 +212,8 @@ async function copyText(text, btn) {
     const html = `<div style="display:grid;gap:6px;font-size:13px">
       <label>World (servidor): <input id="d-w" style="width:120px"></label>
       <label><input type="radio" name="d-m" value="page" checked> This page</label>
-      <label><input type="radio" name="d-m" value="islands"> Islands (one per line or comma-separated, e.g. 44:87):</label>
-      <textarea id="d-c" style="width:100%;height:60px;font:12px monospace" placeholder="44:87, 44:90, 43:90"></textarea>
+      <label><input type="radio" name="d-m" value="islands"> Islands (one per line or comma-separated, e.g. 50:50):</label>
+      <textarea id="d-c" style="width:100%;height:60px;font:12px monospace" placeholder="50:50, 51:50, 52:49"></textarea>
       <label>At most <input id="d-n" type="number" value="25" style="width:52px"> islands, about 2 s apart</label></div>`;
     const d = say('Cartographer · ikadatos', 'Extract data from ikadatos for the Strategist.', [{
       label: 'Extract', onClick: (_, el) => {
@@ -239,7 +239,7 @@ async function copyText(text, btn) {
       diag.discovery = discovery();
     } else {
       const list = opt.coords.slice(0, opt.max);
-      if (!list.length) throw new Error('List at least one island coordinate, e.g. 44:87.');
+      if (!list.length) throw new Error('List at least one island coordinate, e.g. 50:50.');
       let n = 0;
       for (const [x, y] of list) {
         say('Cartographer · ikadatos', `Island ${++n} of ${list.length} (${x}:${y})…`);
