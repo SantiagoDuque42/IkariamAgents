@@ -1,0 +1,278 @@
+{
+ "type": "ikariam-snapshot",
+ "version": 1,
+ "takenAt": "2026-01-02T10:00:00.000Z",
+ "server": "s0-example.ikariam.gameforge.com",
+ "cities": [
+  {
+   "id": "900001",
+   "name": "Alpha",
+   "coords": "11:10",
+   "islandId": "800001",
+   "capital": false,
+   "lux": "sulfur",
+   "b": {
+    "townHall": 16,
+    "port": [
+     11
+    ],
+    "shipyard": [
+     4
+    ],
+    "safehouse": 5,
+    "barracks": 9,
+    "tavern": 14,
+    "warehouse": [
+     13,
+     12,
+     15
+    ],
+    "architect": 8,
+    "museum": 2,
+    "carpentering": 12,
+    "academy": 12,
+    "wall": 5,
+    "palaceColony": 4,
+    "forester": 7,
+    "alchemist": 9
+   },
+   "freeSlots": 6,
+   "upgrading": "architect",
+   "units": {
+    "phalanx": 10
+   },
+   "population": 799,
+   "freeCitizens": 154,
+   "stock": {
+    "wood": 33000,
+    "wine": 3000,
+    "marble": 2000,
+    "glass": 3000,
+    "sulfur": 17000
+   },
+   "capacity": 602498,
+   "wineSpendings": 99,
+   "prodPerHour": {
+    "wood": 875,
+    "lux": 533
+   }
+  },
+  {
+   "id": "900002",
+   "name": "Beta",
+   "coords": "12:10",
+   "islandId": "800002",
+   "capital": false,
+   "lux": "glass",
+   "b": {
+    "townHall": 15,
+    "port": [
+     10,
+     6
+    ],
+    "forester": 7,
+    "architect": 10,
+    "tavern": 13,
+    "warehouse": [
+     17,
+     15
+    ],
+    "barracks": 8,
+    "embassy": 5,
+    "glassblowing": 11,
+    "academy": 17,
+    "wall": 5,
+    "branchOffice": 5,
+    "palaceColony": 4,
+    "carpentering": 13,
+    "workshop": 14,
+    "museum": 2
+   },
+   "freeSlots": 5,
+   "upgrading": "architect",
+   "units": {
+    "phalanx": 6
+   },
+   "population": 752,
+   "freeCitizens": 146,
+   "stock": {
+    "wood": 41000,
+    "wine": 6000,
+    "marble": 2000,
+    "glass": 18000,
+    "sulfur": 2000
+   },
+   "capacity": 571775,
+   "wineSpendings": 88,
+   "prodPerHour": {
+    "wood": 834,
+    "lux": 334
+   }
+  },
+  {
+   "id": "900003",
+   "name": "Gamma",
+   "coords": "10:12",
+   "islandId": "800003",
+   "capital": false,
+   "lux": "marble",
+   "b": {
+    "townHall": 20,
+    "port": [
+     10,
+     7
+    ],
+    "stonemason": 13,
+    "barracks": 8,
+    "academy": 13,
+    "carpentering": 16,
+    "forester": 8,
+    "safehouse": 6,
+    "warehouse": [
+     11,
+     6,
+     11
+    ],
+    "tavern": 18,
+    "palaceColony": 4,
+    "wall": 6,
+    "architect": 12,
+    "pirateFortress": 3,
+    "museum": 2,
+    "vineyard": 16
+   },
+   "freeSlots": 5,
+   "upgrading": "architect",
+   "units": {},
+   "population": 862,
+   "freeCitizens": 153,
+   "stock": {
+    "wood": 2000,
+    "wine": 4000,
+    "marble": 11000,
+    "glass": 0,
+    "sulfur": 1000
+   },
+   "capacity": 342542,
+   "wineSpendings": 83,
+   "prodPerHour": {
+    "wood": 18,
+    "lux": 1094
+   }
+  },
+  {
+   "id": "900004",
+   "name": "Delta",
+   "coords": "10:12",
+   "islandId": "800003",
+   "capital": false,
+   "lux": "marble",
+   "b": {
+    "townHall": 16,
+    "port": [
+     6
+    ],
+    "tavern": 12,
+    "warehouse": [
+     15,
+     14
+    ],
+    "barracks": 4,
+    "palaceColony": 4,
+    "carpentering": 10,
+    "academy": 12,
+    "wall": 2,
+    "forester": 1,
+    "architect": 1,
+    "shrineOfOlympus": 4,
+    "stonemason": 3
+   },
+   "freeSlots": 8,
+   "upgrading": "architect",
+   "units": {
+    "phalanx": 9
+   },
+   "population": 683,
+   "freeCitizens": 123,
+   "stock": {
+    "wood": 4000,
+    "wine": 4000,
+    "marble": 12000,
+    "glass": 2000,
+    "sulfur": 2000
+   },
+   "capacity": 467004,
+   "wineSpendings": 78,
+   "prodPerHour": {
+    "wood": 0,
+    "lux": 762
+   }
+  },
+  {
+   "id": "900005",
+   "name": "Epsilon",
+   "coords": "10:10",
+   "islandId": "800004",
+   "capital": true,
+   "lux": "wine",
+   "b": {
+    "townHall": 19,
+    "port": [
+     11,
+     10
+    ],
+    "tavern": 18,
+    "barracks": 12,
+    "warehouse": [
+     10,
+     11,
+     9
+    ],
+    "carpentering": 14,
+    "architect": 15,
+    "academy": 15,
+    "palace": 4,
+    "forester": 8,
+    "wall": 9,
+    "museum": 3,
+    "winegrower": 15,
+    "safehouse": 9,
+    "vineyard": 22
+   },
+   "freeSlots": 5,
+   "upgrading": "carpentering",
+   "units": {
+    "phalanx": 19
+   },
+   "population": 1041,
+   "freeCitizens": 3,
+   "stock": {
+    "wood": 35000,
+    "wine": 5000,
+    "marble": 2000,
+    "glass": 2000,
+    "sulfur": 2000
+   },
+   "capacity": 366621,
+   "wineSpendings": 117,
+   "prodPerHour": {
+    "wood": 1062,
+    "lux": 1062
+   }
+  }
+ ],
+ "islands": {
+  "800003": {
+   "woodLvl": 29,
+   "luxLvl": 28,
+   "lux": "marble",
+   "wonder": null,
+   "wonderLvl": 0
+  }
+ },
+ "gold": 1000000,
+ "ships": 75,
+ "freeShips": 5,
+ "ambrosia": 37,
+ "actionPoints": 1
+}

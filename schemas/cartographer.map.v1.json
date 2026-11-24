@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cartographer.map.v1.json",
+  "title": "Cartographer map v1 — islands, towns and players for a requested area/filter",
+  "allOf": [{ "$ref": "envelope.v1.json" }],
+  "properties": {
+    "schema": { "const": "cartographer.map.v1" },
+    "scope": {
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "source": { "enum": ["game", "ikadatos", "merged"] },
+        "bbox": { "type": "array", "items": { "type": "integer" }, "minItems": 4, "maxItems": 4, "description": "[xMin, xMax, yMin, yMax]" },
+        "tradegood": { "type": "array", "items": { "enum": ["wine", "marble", "glass", "sulfur"] }, "description": "Empty = all" },
+        "maxIslands": { "type": "integer" },
+        "islandsInArea": { "type": "integer" },
+        "opened": { "type": "integer" }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "required": ["islands", "players"],
+      "properties": {
+        "islands": { "type": "array", "items": { "$ref": "#/$defs/island" } },
+        "players": { "type": "array", "items": { "$ref": "#/$defs/player" } }
+      }
+    }
+  },
+  "$defs": {
+    "lux": { "enum": ["wine", "marble", "glass", "sulfur", null] },
+    "island": {
+      "type": "object",
+      "required": ["id", "x", "y", "detail"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": ["string", "null"] },
+        "x": { "type": "number" }, "y": { "type": "number" },
+        "detail": { "enum": ["map", "island"], "description": "map = world-map data only; island = island view opened" },
+        "tradegood": { "$ref": "#/$defs/lux" },
+        "woodLvl": { "type": ["number", "null"] },
+        "luxLvl": { "type": ["number", "null"] },
+        "wonder": { "type": ["string", "null"] },
+        "wonderLvl": { "type": ["number", "null"] },
+        "spots": { "type": ["number", "null"] },
+        "freeSpots": { "type": ["number", "null"] },
+        "towns": { "type": "array", "items": { "$ref": "#/$defs/town" } },
+        "areaRaw": { "type": "array", "description": "Unparsed world-map row, kept until its fields are mapped" },
+        "source": { "type": "string" },
+        "asOf": { "type": "string" }
+      }
+    },
+    "town": {
+      "type": "object",
+      "properties": {
+        "id": { "type": ["string", "null"] },
+        "name": { "type": ["string", "null"] },
+        "player": { "type": ["string", "null"] },
+        "playerId": { "type": ["string", "null"] },
+        "alliance": { "type": ["string", "null"] },
+        "level": { "type": ["number", "null"] },
+        "state": { "type": ["string", "null"], "description": "e.g. active, inactive, vacation, banned (game codes kept as-is until mapped)" }
+      }
+    },
+    "player": {
+      "type": "object",
+      "required": ["name", "source"],
+      "properties": {
+        "id": { "type": ["string", "null"] },
+        "name": { "type": "string" },
+        "alliance": { "type": ["string", "null"] },
+        "score": { "type": ["number", "null"] },
+        "rank": { "type": ["number", "null"] },
+        "state": { "type": ["string", "null"] },
+        "source": { "type": "string" },
+        "asOf": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

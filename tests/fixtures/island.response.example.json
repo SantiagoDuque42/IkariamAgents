@@ -1,0 +1,14 @@
+[
+ ["updateGlobalData", { "headerData": { "gold": "1" } }],
+ ["updateBackgroundData", {
+  "id": "600001", "name": "Exampleia", "xCoord": "20", "yCoord": "21",
+  "tradegood": "4", "resourceLevel": "29", "tradegoodLevel": "28",
+  "wonder": "3", "wonderName": "Hephaestus' Forge", "wonderLevel": "5",
+  "cities": [
+   { "type": "city", "id": "700001", "name": "Farmtown", "ownerName": "Sleeper", "ownerId": "1", "ownerAllyTag": "", "level": "12", "state": "" },
+   { "type": "city", "id": "700003", "name": "Other", "ownerName": "Idle", "ownerId": "2", "ownerAllyTag": "XYZ", "level": "8", "state": "inactive" },
+   { "type": "buildplace", "id": "-1" },
+   { "type": "buildplace", "id": "-1" }
+  ]
+ }]
+]

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "strategist.orders.v1.json",
+  "title": "Strategist orders v1 — the click list the player executes by hand",
+  "allOf": [{ "$ref": "envelope.v1.json" }],
+  "properties": {
+    "schema": { "const": "strategist.orders.v1" },
+    "payload": {
+      "type": "object",
+      "required": ["basis", "goal", "horizonHours", "towns"],
+      "properties": {
+        "basis": {
+          "type": "object",
+          "required": ["snapshot"],
+          "description": "The store files these orders were computed from",
+          "properties": {
+            "snapshot": { "type": "string", "description": "File name of the Mayor snapshot" },
+            "maps": { "type": "array", "items": { "type": "string" } },
+            "doctrineVersion": { "type": "string" }
+          }
+        },
+        "goal": { "type": "string" },
+        "horizonHours": { "type": "number", "exclusiveMinimum": 0 },
+        "towns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["town", "steps"],
+            "properties": {
+              "town": { "type": "string" },
+              "steps": { "type": "array", "items": { "$ref": "#/$defs/step" } }
+            }
+          }
+        },
+        "empire": { "type": "array", "items": { "$ref": "#/$defs/step" }, "description": "Steps not tied to one town (research, government, trader)" },
+        "expected": {
+          "type": "array",
+          "description": "Predicted state at checkpoints, compared later against the next snapshot",
+          "items": {
+            "type": "object",
+            "required": ["atHours"],
+            "properties": {
+              "atHours": { "type": "number" },
+              "population": { "type": "object", "additionalProperties": { "type": "number" } },
+              "prodPerHour": { "type": "object", "additionalProperties": { "type": "number" } }
+            }
+          }
+        },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": ["kind", "text"],
+      "properties": {
+        "kind": { "enum": ["build", "allocate", "wine", "transport", "trade", "research", "government", "military", "other"] },
+        "text": { "type": "string", "description": "Exact instruction as the player would click it" },
+        "params": { "type": "object" },
+        "why": { "type": "string" },
+        "due": { "type": "string", "description": "When to do it (ISO time or 'now')" },
+        "status": { "enum": ["proposed", "accepted", "done", "skipped"], "default": "proposed" }
+      }
+    }
+  }
+}

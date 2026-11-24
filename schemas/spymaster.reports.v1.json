@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spymaster.reports.v1.json",
+  "title": "Spymaster reports v1 — espionage reports from the player's Hideouts, plus public facts about each target",
+  "allOf": [{ "$ref": "envelope.v1.json" }],
+  "properties": {
+    "schema": { "const": "spymaster.reports.v1" },
+    "payload": {
+      "type": "object",
+      "required": ["reports", "targets"],
+      "properties": {
+        "reports": { "type": "array", "items": { "$ref": "#/$defs/report" } },
+        "targets": { "type": "object", "description": "Keyed by target city id", "additionalProperties": { "$ref": "#/$defs/target" } }
+      }
+    }
+  },
+  "$defs": {
+    "res": {
+      "type": "object",
+      "properties": { "wood": { "type": "number" }, "wine": { "type": "number" }, "marble": { "type": "number" }, "glass": { "type": "number" }, "sulfur": { "type": "number" } }
+    },
+    "report": {
+      "type": "object",
+      "required": ["mission", "target"],
+      "properties": {
+        "id": { "type": ["string", "null"], "description": "Game report id (tbl_mail<id>)" },
+        "date": { "type": ["string", "null"], "format": "date-time" },
+        "dateText": { "type": ["string", "null"] },
+        "mission": { "enum": ["warehouse", "garrison", "other"] },
+        "target": {
+          "type": "object",
+          "required": ["city"],
+          "properties": {
+            "cityId": { "type": ["string", "null"] }, "city": { "type": "string" },
+            "x": { "type": ["number", "null"] }, "y": { "type": ["number", "null"] },
+            "player": { "type": ["string", "null"] }
+          }
+        },
+        "resources": { "$ref": "#/$defs/res" },
+        "units": { "type": "object", "additionalProperties": { "type": "number" } },
+        "text": { "type": "string" },
+        "spiedBy": { "type": ["string", "null"] }
+      }
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "islandId": { "type": ["string", "null"] },
+        "tradegood": { "enum": ["wine", "marble", "glass", "sulfur", null] },
+        "warehouseLevels": { "type": "array", "items": { "type": "integer" } },
+        "warehouseTotal": { "type": "integer" },
+        "wall": { "type": ["integer", "null"] },
+        "alliance": { "type": ["string", "null"] },
+        "state": { "type": ["string", "null"] },
+        "townLevel": { "type": ["number", "null"] },
+        "inactive": { "type": "boolean" },
+        "safe": { "type": "number", "description": "Protected amount per resource: 100 + 480·Σwarehouse levels (inactive: 15 + 80·Σ)" }
+      }
+    }
+  }
+}

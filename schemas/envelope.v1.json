@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "envelope.v1.json",
+  "title": "Envelope v1 — wrapper for every file in the data store",
+  "type": "object",
+  "required": ["schema", "producedAt", "producer", "server", "payload"],
+  "properties": {
+    "schema": { "type": "string", "pattern": "^[a-z]+\\.[a-z_]+\\.v[0-9]+$", "description": "<subsystem>.<kind>.v<major>" },
+    "producedAt": { "type": "string", "format": "date-time" },
+    "producer": { "type": "string", "pattern": "^[a-z-]+@[0-9]+\\.[0-9]+\\.[0-9]+$", "description": "<tool>@<semver>" },
+    "server": { "type": "string", "description": "Game server id from the host name, e.g. s74-es" },
+    "player": { "type": ["string", "null"] },
+    "scope": { "type": "object", "description": "What was requested (area, filters, towns)" },
+    "diag": { "type": "object", "description": "Structure of unrecognised responses: key names and types only, never values" },
+    "payload": { "type": "object" }
+  }
+}

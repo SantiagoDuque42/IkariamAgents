@@ -1,0 +1,11 @@
+{
+  "name": "ikariam-agents",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ikariam information system: read-only extractors, data contracts, Drive importer and Strategist engine",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "test": "node --test tests/*.test.mjs && python3 tools/validate.py tests/fixtures/mayor.snapshot.v1.example.json tests/fixtures/spymaster.reports.v1.example.json"
+  }
+}

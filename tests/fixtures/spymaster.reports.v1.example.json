@@ -1,0 +1,28 @@
+{
+ "schema": "spymaster.reports.v1",
+ "producedAt": "2026-01-03T12:00:00.000Z",
+ "producer": "spymaster@0.1.0",
+ "server": "s0-example",
+ "player": "Scout",
+ "scope": { "hideouts": 2, "enriched": true },
+ "payload": {
+  "reports": [
+   { "id": "5002", "date": "2026-01-03T09:30:00.000Z", "dateText": "03.01.2026 10:30:00", "mission": "warehouse",
+     "target": { "cityId": "700001", "city": "Farmtown", "x": 20, "y": 21, "player": "Sleeper" },
+     "resources": { "wood": 143442, "wine": 4847, "marble": 19500, "glass": 13333, "sulfur": 143442 }, "spiedBy": "Scout" },
+   { "id": "5001", "date": "2026-01-02T08:00:00.000Z", "dateText": "02.01.2026 09:00:00", "mission": "warehouse",
+     "target": { "cityId": "700001", "city": "Farmtown", "x": 20, "y": 21, "player": "Sleeper" },
+     "resources": { "wood": 100000, "wine": 1000, "marble": 1000, "glass": 1000, "sulfur": 1000 }, "spiedBy": "Scout" },
+   { "id": "5003", "date": "2026-01-03T09:40:00.000Z", "dateText": "03.01.2026 10:40:00", "mission": "garrison",
+     "target": { "cityId": "700001", "city": "Farmtown", "x": 20, "y": 21, "player": "Sleeper" },
+     "units": { "Hoplita": 10 }, "spiedBy": "Scout" },
+   { "id": "5004", "date": "2026-01-03T11:00:00.000Z", "dateText": "03.01.2026 12:00:00", "mission": "warehouse",
+     "target": { "cityId": "700002", "city": "Newfarm", "x": 22, "y": 21, "player": "Idle" },
+     "resources": { "wood": 30000, "wine": 0, "marble": 20000, "glass": 0, "sulfur": 0 }, "spiedBy": "Scout" }
+  ],
+  "targets": {
+   "700001": { "islandId": "600001", "tradegood": "sulfur", "warehouseLevels": [11], "warehouseTotal": 11, "wall": 1, "alliance": null, "state": null, "inactive": false, "safe": 5380 },
+   "700002": { "islandId": "600002", "tradegood": "marble", "warehouseLevels": [5, 5], "warehouseTotal": 10, "wall": 3, "alliance": "XYZ", "state": "inactive", "inactive": true, "safe": 815 }
+  }
+ }
+}

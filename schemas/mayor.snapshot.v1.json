@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mayor.snapshot.v1.json",
+  "title": "Mayor snapshot v1 — own empire state read from the game",
+  "allOf": [{ "$ref": "envelope.v1.json" }],
+  "properties": {
+    "schema": { "const": "mayor.snapshot.v1" },
+    "payload": {
+      "type": "object",
+      "required": ["cities", "islands", "gold"],
+      "properties": {
+        "cities": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/city" } },
+        "islands": {
+          "type": "object",
+          "description": "Keyed by island id",
+          "additionalProperties": { "$ref": "#/$defs/island" }
+        },
+        "gold": { "type": "number" },
+        "ships": { "type": "number" },
+        "freeShips": { "type": "number" },
+        "ambrosia": { "type": "number" },
+        "actionPoints": { "type": "number" }
+      }
+    }
+  },
+  "$defs": {
+    "res": {
+      "type": "object",
+      "required": ["wood", "wine", "marble", "glass", "sulfur"],
+      "properties": {
+        "wood": { "type": "number" }, "wine": { "type": "number" }, "marble": { "type": "number" },
+        "glass": { "type": "number" }, "sulfur": { "type": "number" }
+      }
+    },
+    "lux": { "enum": ["wine", "marble", "glass", "sulfur", null] },
+    "city": {
+      "type": "object",
+      "required": ["id", "name", "coords", "islandId", "capital", "lux", "b", "freeSlots", "population", "freeCitizens", "stock", "capacity", "wineSpendings", "prodPerHour"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "coords": { "type": "string", "pattern": "^\\d+:\\d+$" },
+        "islandId": { "type": "string" },
+        "capital": { "type": "boolean" },
+        "lux": { "$ref": "#/$defs/lux" },
+        "b": {
+          "type": "object",
+          "description": "Building levels by internal name; warehouse/port/shipyard are arrays (one entry per building)",
+          "additionalProperties": { "oneOf": [{ "type": "integer", "minimum": 1 }, { "type": "array", "items": { "type": "integer", "minimum": 1 } }] }
+        },
+        "freeSlots": { "type": "integer", "minimum": 0 },
+        "upgrading": { "type": ["string", "null"] },
+        "units": { "type": "object", "additionalProperties": { "type": "number" } },
+        "population": { "type": "number", "description": "Current inhabitants (confirmed 24 Nov 2026: below housing in every town)" },
+        "freeCitizens": { "type": "number", "description": "Citizens not assigned as workers or scientists" },
+        "stock": { "$ref": "#/$defs/res" },
+        "capacity": { "type": "number" },
+        "wineSpendings": { "type": "number", "description": "Wine consumed per hour, after Wine Press" },
+        "prodPerHour": {
+          "type": "object", "required": ["wood", "lux"],
+          "properties": { "wood": { "type": "number" }, "lux": { "type": "number" } }
+        }
+      }
+    },
+    "island": {
+      "type": "object",
+      "properties": {
+        "id": { "type": ["string", "null"] },
+        "name": { "type": ["string", "null"] },
+        "x": { "type": ["number", "null"] }, "y": { "type": ["number", "null"] },
+        "tradegood": { "$ref": "#/$defs/lux" },
+        "lux": { "$ref": "#/$defs/lux", "description": "Legacy name of tradegood (v0.1 snapshots)" },
+        "woodLvl": { "type": ["number", "null"] },
+        "luxLvl": { "type": ["number", "null"] },
+        "wonder": { "type": ["string", "null"] },
+        "wonderLvl": { "type": ["number", "null"] },
+        "spots": { "type": ["number", "null"] },
+        "freeSpots": { "type": ["number", "null"] },
+        "towns": { "type": ["number", "null"] }
+      }
+    }
+  }
+}
