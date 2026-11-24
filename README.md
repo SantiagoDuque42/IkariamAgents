@@ -16,6 +16,7 @@ An information system for Ikariam: extractors that read the game (only when you 
 | **Spymaster** | Spy reports from your Hideouts + target warehouse/wall/inactive → Farmeos | `spymaster.reports.v1` | v0.1 |
 | **Strategist** | Reads the store + doctrine, simulates, emits orders | `strategist.orders.v1` | engine in `strategist/engine`, protocol in `strategist/PROTOCOL.md` |
 | **Basileus** | Executes approved orders in your Chrome (Claude in Chrome): builds, transports, workers/wine | `basileus.journal.v1` | B0: contract, policy, playbook; see `docs/BASILEUS.md` |
+| **Empire Planner** (`planner/ikariam-empire-planner.html`) | Standalone planner: import a Mayor snapshot, get worker/wine allocation, build queue, projection, building-cost calculator. Open the file in any browser; data stays in that browser | — | shareable copy, starts from an example empire |
 | Planned exporters | Military history, transports, … (each to its own spreadsheet) | one schema each | see "Adding an exporter" |
 
 ## Rules

@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ikariam Empire Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Aegean ledger: marble paper, sea-ink text, bronze accent. Layout: control strip, tab nav, dense tables in cards. */
+  --bg: #f3f2ee; --panel: #ffffff; --ink: #18243a; --muted: #5d6779; --line: #dcdfe5; --accent: #9a6a24; --sea: #1f4e79;
+  --good: #2f7d4f; --warn: #b7791f; --bad: #b3362f;
+  --r-wood: #8a5a2b; --r-wine: #8b2f57; --r-marble: #6f7e94; --r-glass: #2a96a8; --r-sulfur: #c4a01c;
+  --display: "Marcellus", "Cormorant Garamond", Georgia, serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1522; --panel: #152033; --ink: #e6e9ef; --muted: #9aa6b8; --line: #26344b; --accent: #d6a656; --sea: #7fb2e5;
+  --good: #5fbf86; --warn: #e3b04b; --bad: #ef7b73;
+  --r-wood: #c08a55; --r-wine: #d06a95; --r-marble: #aab6c8; --r-glass: #59c7d8; --r-sulfur: #e7c74a; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0e1522; --panel: #152033; --ink: #e6e9ef; --muted: #9aa6b8; --line: #26344b; --accent: #d6a656; --sea: #7fb2e5;
+  --good: #5fbf86; --warn: #e3b04b; --bad: #ef7b73;
+  --r-wood: #c08a55; --r-wine: #d06a95; --r-marble: #aab6c8; --r-glass: #59c7d8; --r-sulfur: #e7c74a; color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 20px 18px 60px; display: grid; gap: 18px; }
+header.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; }
+h1 { font: 400 30px/1.1 var(--display); margin: 0; letter-spacing: .01em; text-wrap: balance; }
+h2 { font: 400 22px/1.2 var(--display); margin: 0 0 10px; text-wrap: balance; }
+h3 { font: 600 16px/1.3 var(--body); margin: 0; }
+h4 { font: 600 14px/1.3 var(--body); margin: 0 0 6px; }
+.sub, .muted { color: var(--muted); font-size: 12.5px; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: end; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.controls label, fieldset label { display: grid; gap: 3px; font-size: 12px; color: var(--muted); }
+input, select, textarea, button { font: inherit; color: var(--ink); }
+input, select, textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; font-size: 13.5px; }
+input[type="number"] { width: 110px; font-family: var(--mono); }
+label.chk { display: flex; align-items: center; gap: 6px; color: var(--ink); font-size: 13px; }
+button { background: var(--sea); color: #fff; border: 0; border-radius: 7px; padding: 7px 13px; cursor: pointer; font-weight: 500; }
+button.ghost { background: transparent; color: var(--sea); border: 1px solid var(--line); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+nav { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+nav a { padding: 8px 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; font-weight: 500; }
+nav a.on { color: var(--ink); border-bottom-color: var(--accent); }
+.status { font: 12px var(--mono); color: var(--muted); }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; overflow-x: auto; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 10px; padding: 12px 14px; }
+.kl { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.kv { font: 500 22px/1.25 var(--mono); margin-top: 2px; }
+.kv2 { font: 500 16px/1.3 var(--mono); }
+.ks { font-size: 12px; color: var(--muted); }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { text-align: left; font-weight: 600; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--line); padding: 6px 8px; white-space: nowrap; }
+td { border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.city { font-weight: 600; }
+table.tight td, table.tight th { padding: 4px 6px; font-size: 12.5px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+.queues { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.qcard { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--bg); }
+.qcard ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13px; }
+ul.plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 13.5px; }
+.when { font: 11.5px var(--mono); color: var(--accent); margin-right: 4px; }
+.cost { font: 12px var(--mono); margin-right: 6px; white-space: nowrap; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 3px; vertical-align: 0; }
+.d-wood { background: var(--r-wood); } .d-wine { background: var(--r-wine); } .d-marble { background: var(--r-marble); } .d-glass { background: var(--r-glass); } .d-sulfur { background: var(--r-sulfur); }
+.rc { font-size: 12px; font-weight: 600; padding: 1px 7px; border-radius: 99px; color: #fff; }
+.rc-wood { background: var(--r-wood); } .rc-wine { background: var(--r-wine); } .rc-marble { background: var(--r-marble); } .rc-glass { background: var(--r-glass); } .rc-sulfur { background: var(--r-sulfur); color: #222; }
+.pill { font-size: 11px; padding: 0 6px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+.pill.new { border-color: var(--good); color: var(--good); }
+.pill.exp { border-color: var(--accent); color: var(--accent); }
+.pill.cap { border-color: var(--sea); color: var(--sea); }
+.steps { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.steps li::marker { font-family: var(--mono); color: var(--accent); }
+.steps ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 3px; font-size: 14px; }
+.steps ul li::marker { font-family: inherit; color: var(--muted); }
+.note { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+.ccards { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; }
+.ccard { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 10px; overflow-x: auto; }
+.ccard header { display: grid; gap: 2px; }
+.cgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.satbar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; font-size: 10.5px; }
+.satbar span { background: var(--sea); color: #fff; padding: 3px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-right: 1px solid var(--panel); min-width: 6px; }
+.satbar span:nth-child(odd) { background: color-mix(in srgb, var(--sea) 70%, var(--accent)); }
+canvas { width: 100%; height: 260px; display: block; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; }
+fieldset { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px 12px; margin: 0; display: flex; flex-wrap: wrap; gap: 10px 14px; background: var(--panel); }
+fieldset legend { font-weight: 600; padding: 0 4px; }
+.cityed { display: grid; gap: 10px; }
+.cityed .row { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.cityed .bl input { width: 70px; font-family: var(--mono); }
+label.wide input { width: min(520px, 100%); }
+textarea { width: 100%; min-height: 140px; font: 12px var(--mono); }
+.edgrid { display: grid; gap: 12px; }
+.prose { max-width: 75ch; }
+.prose p { margin: 0 0 10px; }
+.phase { border-left: 3px solid var(--accent); padding: 2px 0 2px 12px; margin-bottom: 14px; }
+.phase h3 { margin-bottom: 4px; }
+.calcgrid { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: end; margin: 8px 0 12px; }
+.calcgrid label, #tab-calc fieldset label { display: grid; gap: 3px; font-size: 12px; color: var(--muted); }
+#tab-calc fieldset { margin-bottom: 12px; }
+#tab-calc table td.lv { font-family: var(--mono); color: var(--muted); }
+#tab-calc tr.tot td { font-weight: 600; border-top: 2px solid var(--line); }
+.formula { font: 12.5px var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; display: inline-block; }
+@media (max-width: 520px) { .cgrid { grid-template-columns: repeat(2, 1fr); } .ccards { grid-template-columns: 1fr; } h1 { font-size: 25px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><h1>Ikariam Empire Planner</h1><div class="sub">Your empire · a model of the game's own formulas, re-run on every change · everything stays in this browser</div></div>
+    <div class="status" id="status">Loading…</div>
+  </header>
+
+  <section class="controls" aria-label="Plan settings">
+    <label for="goal">Goal
+      <select id="goal"><option value="economy">Pure economic growth</option><option value="expansion">Expansion-weighted (glass, sulphur count more)</option><option value="military">Economy + army (sulphur counts more, 3M gold kept)</option></select></label>
+    <label for="days">Horizon (days) <input id="days" type="number" min="7" max="90" value="30"></label>
+    <label class="chk" for="exp"><input id="exp" type="checkbox" checked> Found a new town</label>
+    <label for="expStart">Start Palace/GR prep on day <input id="expStart" type="number" min="0" max="60" value="0"></label>
+    <label for="expLux">New town's island <select id="expLux"><option value="marble">Marble</option><option value="wine">Wine</option><option value="glass">Crystal</option><option value="sulfur">Sulphur</option></select></label>
+    <label for="expEvery">Then another town every (days, 0 = no) <input id="expEvery" type="number" min="0" max="60" value="0"></label>
+    <label for="mkt">Buy marble on market (/day) <input id="mkt" type="number" min="0" value="0"></label>
+    <label for="mktp">at gold each <input id="mktp" type="number" min="1" value="15"></label>
+  </section>
+
+  <nav aria-label="Sections"><a href="#plan">Plan</a><a href="#cities">Towns</a><a href="#projection">Projection</a><a href="#strategy">Strategy</a><a href="#state">Update state</a><a href="#calc">Calculator</a><a href="#mechanics">Mechanics</a></nav>
+
+  <section class="tab" id="tab-plan">
+    <div class="kpis" id="kpis"></div>
+    <div class="card" style="margin-top:14px">
+      <h2>Do this now</h2>
+      <p class="sub">This planner starts with an example empire (Alpha, Beta…). Replace it with yours in four steps; nothing leaves your computer.</p>
+      <ol class="steps">
+        <li><b>Install the snapshot bookmark</b> (tab <b>Update state</b> → "Import from the game"): make a new bookmark and paste the code as its address.</li>
+        <li><b>In your game tab, click the bookmark.</b> It only reads (your towns, buildings, population, stock, wine, troops, island levels) and changes nothing. It also downloads a .json copy. Press <b>Copy for planner</b>.</li>
+        <li><b>Paste it in Update state and press Import game snapshot.</b> Your towns replace the example ones.</li>
+        <li><b>Fill in what the game page doesn't show:</b> research (cost reductions, Holiday, Well Digging, Helping Hands…), government, Gods' Shrine level and favour, which +20% items are active, Premium Trader uses, and sawmill/mine levels if the import notes ask for them. Then press <b>Save and recompute</b>.</li>
+        <li><b>Read the plan:</b> workers and wine per town and the build queue below; best next builds in <b>Towns</b>; growth in <b>Projection</b>; exact building costs in <b>Calculator</b>. Use <b>Copy JSON</b> in Update state to back up your data or move it to another browser.</li>
+      </ol>
+    </div>
+    <div class="card"><h2>Workers and taverns right now</h2><div id="alloc"></div>
+      <p class="note">"Right now" uses the current population and empty warehouses. Crystal and sulphur towns put everyone on their luxury good until the Palace and Governor's Residences are paid, then shift to wood up to the sawmill cap. Population beyond the sawmill + mine caps goes to the academy.</p></div>
+    <div class="card"><h2>Build queue: next jobs per town</h2><div class="queues" id="queues"></div>
+      <p class="note">Times are hours from now in the simulation (D = day). The order is what matters: each town builds one thing at a time, ranked by payback (cost ÷ extra output per hour, plus build time).</p></div>
+    <div class="grid2">
+      <div class="card"><h2>Transport routes, first 3 days</h2><div id="routes"></div><p class="note">Ships carry 500 each; sailing time ≈ 20 min per island of distance, 10 min within an island.</p></div>
+      <div class="card"><h2>Premium Trader uses</h2><div id="trader"></div></div>
+    </div>
+    <div class="card"><h2>First week, per town</h2><div class="queues" id="week"></div></div>
+    <div class="grid2">
+      <div class="card"><h2>Milestones</h2><div id="milestones"></div></div>
+      <div class="card"><h2>Where the towns end up</h2><div id="endstate"></div></div>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-cities" hidden><div class="ccards" id="citycards"></div></section>
+
+  <section class="tab" id="tab-projection" hidden>
+    <div class="card"><h2>Production per hour</h2><div class="legend" id="legend"></div><canvas id="chartProd" aria-label="Production per hour by resource over the horizon"></canvas></div>
+    <div class="card"><h2>Total population</h2><canvas id="chartPop" aria-label="Total population over the horizon"></canvas></div>
+    <div class="card"><div id="projtable"></div></div>
+  </section>
+
+  <section class="tab" id="tab-strategy" hidden>
+    <div class="card prose">
+      <h2>How growth works in this model</h2>
+      <div class="phase"><h3>1 · Fill the housing you already have</h3><p>Serve wine at the tavern's full level, put every citizen to work (gold is usually idle early), and turn on any +20% production items. Empty housing fills in days, and it is the cheapest growth there is.</p></div>
+      <div class="phase"><h3>2 · Build by payback</h3><p>The Plan and Towns tabs rank builds by payback: cost divided by the extra output per hour, plus build time. Museums, Carpenter/Architect levels, Forester and luxury-bonus buildings usually come first.</p></div>
+      <div class="phase"><h3>3 · Expand</h3><p>Before founding a new town, raise the Palace and every Governor's Residence to the new number of towns, so corruption stays at 0. Turn on "Found a new town" above to simulate it and see when it pays off.</p></div>
+      <div class="phase"><h3>4 · Compound</h3><p>Town Hall + Tavern pairs as satisfaction allows, cost reducers in the towns that build most (check them with the Calculator), Gods' Shrine levels, and research from citizens the island caps can't employ.</p></div>
+      <h2>Rules of thumb</h2>
+      <ul>
+        <li><b>Marble is often the binding resource:</b> upgrades need about as much marble as wood, and few towns mine it.</li>
+        <li><b>Population beats taxes</b> while gold is idle.</li>
+        <li><b>Satisfaction must exceed housing</b>, or the town never fills: a Town Hall level without a matching tavern or museum gain is wasted.</li>
+        <li><b>Keep a wine buffer</b> of about 36 hours of consumption in every town.</li>
+        <li><b>Corruption</b> = 1 − (residence level + 1) ÷ number of towns. Raise every residence before founding a town, never after.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-state" hidden>
+    <div class="card prose" id="snapcard"><h2>Import from the game</h2>
+      <p>The snapshot bookmark reads your towns straight from the game: building levels, population, warehouse stock, wine served, troops and ships, free building grounds, and sawmill and mine levels. It only reads; it changes nothing in your game.</p>
+      <ol class="steps">
+        <li><b>Once:</b> create a new bookmark in your browser, name it "Ikariam snapshot", and paste the code below as its URL (or drag this link to your bookmarks bar: <a id="bmLink" href="#">Ikariam snapshot</a>).</li>
+        <li><b>Each time:</b> open your game tab, click the bookmark and wait about 10 seconds. It saves a file for the Drive inbox and shows a box: press <b>Copy for planner</b>.</li>
+        <li>Paste it here and press <b>Import game snapshot</b>. Research, gods, favour and your free-ground plans are kept; everything the game shows is replaced.</li>
+      </ol>
+      <textarea id="snapIn" aria-label="Paste the game snapshot here" placeholder="Paste the snapshot here"></textarea>
+      <p><button type="button" id="importSnap">Import game snapshot</button> <span class="sub" id="snapmsg"></span></p>
+      <details><summary>Bookmark code</summary><textarea id="bmCode" aria-label="Bookmarklet code" readonly>javascript:%2F%2F%20Mayor%20%E2%80%94%20snapshot%20of%20your%20own%20empire%2C%20as%20a%20bookmarklet.%20Read-only.%0A%2F%2F%20Click%20it%20in%20your%20Ikariam%20tab%3A%20it%20opens%20each%20of%20your%20towns%20and%20their%20islands%20the%20way%20the%20game%20UI%20does%2C%0A%2F%2F%20then%20downloads%20%60mayor.snapshot_%3Cserver%3E_%3CYYYYMMDD-HHmm%3E.json%60%20(schema%20mayor.snapshot.v1).%0A%2F%2F%20%22Copy%20for%20planner%22%20copies%20the%20older%20format%20the%20Empire%20Planner's%20importer%20understands.%0A(async%20()%20%3D%3E%20%7B%0A%20%20const%20VERSION%20%3D%20'0.3.0'%3B%0A%20%20%2F%2F%20Shared%20helpers%20for%20the%20in-game%20bookmarklets%20(Mayor%2C%20Cartographer).%0A%2F%2F%20Written%20as%20an%20ES%20module%20so%20tests%20can%20import%20it%3B%20tools%2Fbuild.mjs%20inlines%20it%20into%20each%20bookmarklet%0A%2F%2F%20(stripping%20%60export%60)%20wherever%20a%20bookmarklet%20source%20contains%20the%20line%20%60%2F*%40shared*%2F%60.%0A%2F%2F%20Everything%20here%20is%20read-only%3A%20it%20issues%20the%20same%20GET%20requests%20the%20game%20UI%20makes%20when%20you%20open%20a%20view.%0A%0Aconst%20ORD%20%3D%20%7B%201%3A%20'wine'%2C%202%3A%20'marble'%2C%203%3A%20'glass'%2C%204%3A%20'sulfur'%20%7D%3B%0Aconst%20ARMY%20%3D%20%5B''%2C%20'phalanx'%2C%20'steamgiant'%2C%20'spearman'%2C%20'swordsman'%2C%20'slinger'%2C%20'archer'%2C%20'marksman'%2C%20'ram'%2C%20''%2C%20'catapult'%2C%20'mortar'%2C%20'gyrocopter'%2C%20'bombardier'%2C%20'cook'%2C%20'medic'%2C%20'spartan'%5D%3B%0Aconst%20NAVY%20%3D%20%5B''%2C%20'ship_flamethrower'%2C%20'ship_steamboat'%2C%20'ship_ram'%2C%20'ship_ballista'%2C%20'ship_catapult'%2C%20'ship_mortar'%2C%20'ship_rocketship'%2C%20'ship_submarine'%2C%20''%2C%20'ship_paddlespeedship'%2C%20'ship_ballooncarrier'%2C%20'ship_tender'%5D%3B%0A%0Aconst%20sleep%20%3D%20ms%20%3D%3E%20new%20Promise(r%20%3D%3E%20setTimeout(r%2C%20ms))%3B%0A%2F**%20Human-paced%20delay%20between%20requests%3A%20uniform%20in%20%5Bmin%2C%20max%5D%20ms.%20*%2F%0Aconst%20pace%20%3D%20(min%20%3D%20700%2C%20max%20%3D%201400)%20%3D%3E%20sleep(min%20%2B%20Math.random()%20*%20(max%20-%20min))%3B%0A%0A%2F**%20Depth-first%20search%20for%20the%20first%20object%20satisfying%20%60test%60.%20*%2F%0Afunction%20find(o%2C%20test%2C%20depth%20%3D%200)%20%7B%0A%20%20if%20(!o%20%7C%7C%20typeof%20o%20!%3D%3D%20'object'%20%7C%7C%20depth%20%3E%208)%20return%20null%3B%0A%20%20if%20(test(o))%20return%20o%3B%0A%20%20for%20(const%20k%20of%20Object.keys(o))%20%7B%20const%20r%20%3D%20find(o%5Bk%5D%2C%20test%2C%20depth%20%2B%201)%3B%20if%20(r)%20return%20r%3B%20%7D%0A%20%20return%20null%3B%0A%7D%0A%0Aconst%20num%20%3D%20v%20%3D%3E%20%7B%20const%20n%20%3D%20parseFloat(String(v%20%3F%3F%20'').replace(%2F%5B%5E%5Cd.%5C-%5D%2Fg%2C%20''))%3B%20return%20isNaN(n)%20%3F%200%20%3A%20n%3B%20%7D%3B%0Aconst%20numOrNull%20%3D%20v%20%3D%3E%20(v%20%3D%3D%20null%20%7C%7C%20v%20%3D%3D%3D%20''%20%3F%20null%20%3A%20num(v))%3B%0A%0A%2F**%0A%20*%20Structural%20summary%20of%20an%20unknown%20response%3A%20key%20names%2C%20types%20and%20array%20lengths%20only%2C%20never%20values.%0A%20*%20Exception%3A%20a%20short%20alphanumeric%20string%20at%20index%200%20of%20an%20array%20is%20kept%2C%20because%20Ikariam's%20ajax%0A%20*%20responses%20are%20lists%20of%20%5Bcommand%2C%20data%5D%20pairs%20(%22updateGlobalData%22%2C%20%22changeView%22%2C%20%E2%80%A6).%0A%20*%2F%0Afunction%20shape(o%2C%20depth%20%3D%200)%20%7B%0A%20%20if%20(Array.isArray(o))%20%7B%0A%20%20%20%20if%20(depth%20%3E%204)%20return%20%60array(%24%7Bo.length%7D)%60%3B%0A%20%20%20%20return%20o.slice(0%2C%204).map((x%2C%20i)%20%3D%3E%20(i%20%3D%3D%3D%200%20%26%26%20typeof%20x%20%3D%3D%3D%20'string'%20%26%26%20%2F%5E%5BA-Za-z_%5D%7B1%2C40%7D%24%2F.test(x))%20%3F%20x%20%3A%20shape(x%2C%20depth%20%2B%201)).concat(o.length%20%3E%204%20%3F%20%5B%60%E2%80%A6%24%7Bo.length%7D%60%5D%20%3A%20%5B%5D)%3B%0A%20%20%7D%0A%20%20if%20(o%20%26%26%20typeof%20o%20%3D%3D%3D%20'object')%20%7B%0A%20%20%20%20if%20(depth%20%3E%204)%20return%20'object'%3B%0A%20%20%20%20const%20r%20%3D%20%7B%7D%3B%20for%20(const%20k%20of%20Object.keys(o).slice(0%2C%2080))%20r%5Bk%5D%20%3D%20shape(o%5Bk%5D%2C%20depth%20%2B%201)%3B%20return%20r%3B%0A%20%20%7D%0A%20%20return%20o%20%3D%3D%3D%20null%20%3F%20'null'%20%3A%20typeof%20o%3B%0A%7D%0A%0A%2F**%0A%20*%20Extract%20island%20facts%20from%20an%20island-view%20response.%0A%20*%20Expected%20shape%20(to%20be%20confirmed%20on%20a%20real%20response)%3A%20an%20object%20with%20%60tradegood%60%20plus%0A%20*%20%60resourceLevel%60%20%2F%20%60tradegoodLevel%60%2C%20optionally%20%60wonder*%60%2C%20%60xCoord%60%2F%60yCoord%60%20and%20a%20%60cities%60%20list%0A%20*%20whose%20free%20spots%20have%20a%20type%20like%20%22buildplace%22.%20Returns%20null%20when%20no%20such%20object%20exists.%0A%20*%2F%0Afunction%20parseIsland(json)%20%7B%0A%20%20const%20isl%20%3D%20find(json%2C%20o%20%3D%3E%20!Array.isArray(o)%20%26%26%20'tradegood'%20in%20o%20%26%26%20('resourceLevel'%20in%20o%20%7C%7C%20'tradegoodLevel'%20in%20o%20%7C%7C%20('cities'%20in%20o%20%26%26%20'xCoord'%20in%20o)))%3B%0A%20%20if%20(!isl)%20return%20null%3B%0A%20%20const%20pick%20%3D%20(...ks)%20%3D%3E%20%7B%20for%20(const%20k%20of%20ks)%20if%20(isl%5Bk%5D%20!%3D%20null%20%26%26%20isl%5Bk%5D%20!%3D%3D%20'')%20return%20num(isl%5Bk%5D)%3B%20return%20null%3B%20%7D%3B%0A%20%20const%20list%20%3D%20Array.isArray(isl.cities)%20%3F%20isl.cities%20%3A%20(isl.cities%20%26%26%20typeof%20isl.cities%20%3D%3D%3D%20'object'%20%3F%20Object.values(isl.cities)%20%3A%20%5B%5D)%3B%0A%20%20const%20isFree%20%3D%20c%20%3D%3E%20%2Fbuildplace%7Cempty%7Cfree%2Fi.test(String(c%3F.type%20%3F%3F%20''))%3B%0A%20%20const%20towns%20%3D%20list.filter(c%20%3D%3E%20c%20%26%26%20!isFree(c)).map(c%20%3D%3E%20(%7B%0A%20%20%20%20id%3A%20c.id%20!%3D%20null%20%3F%20String(c.id)%20%3A%20null%2C%0A%20%20%20%20name%3A%20c.name%20%3F%3F%20null%2C%0A%20%20%20%20player%3A%20c.ownerName%20%3F%3F%20c.owner%20%3F%3F%20null%2C%0A%20%20%20%20playerId%3A%20c.ownerId%20!%3D%20null%20%3F%20String(c.ownerId)%20%3A%20null%2C%0A%20%20%20%20alliance%3A%20c.ownerAllyTag%20%3F%3F%20c.allyTag%20%3F%3F%20null%2C%0A%20%20%20%20level%3A%20numOrNull(c.level)%2C%0A%20%20%20%20state%3A%20c.state%20%7C%7C%20null%2C%0A%20%20%7D))%3B%0A%20%20return%20%7B%0A%20%20%20%20id%3A%20isl.id%20!%3D%20null%20%3F%20String(isl.id)%20%3A%20null%2C%0A%20%20%20%20name%3A%20isl.name%20%3F%3F%20null%2C%0A%20%20%20%20x%3A%20numOrNull(isl.xCoord)%2C%20y%3A%20numOrNull(isl.yCoord)%2C%0A%20%20%20%20tradegood%3A%20ORD%5Bisl.tradegood%5D%20%7C%7C%20null%2C%0A%20%20%20%20woodLvl%3A%20pick('resourceLevel'%2C%20'woodLevel'%2C%20'sawmillLevel')%2C%0A%20%20%20%20luxLvl%3A%20pick('tradegoodLevel'%2C%20'luxuryLevel'%2C%20'mineLevel')%2C%0A%20%20%20%20wonder%3A%20isl.wonderName%20%7C%7C%20null%2C%0A%20%20%20%20wonderLvl%3A%20pick('wonderLevel')%2C%0A%20%20%20%20spots%3A%20list.length%20%7C%7C%20null%2C%0A%20%20%20%20freeSpots%3A%20list.length%20%3F%20list.filter(isFree).length%20%3A%20null%2C%0A%20%20%20%20towns%2C%0A%20%20%20%20_keys%3A%20Object.keys(isl)%2C%0A%20%20%7D%3B%0A%7D%0A%0A%2F**%20The%20game%20answers%20some%20ajax%20views%20with%20%5B%22custom%22%2C%20%5B%22reload%22%2C%20%7Blink%7D%5D%5D%3A%20it%20wants%20a%20full%20page%20load%20of%20%60link%60.%20*%2F%0Afunction%20reloadLink(json)%20%7B%0A%20%20const%20r%20%3D%20find(json%2C%20o%20%3D%3E%20Array.isArray(o)%20%26%26%20o%5B0%5D%20%3D%3D%3D%20'reload'%20%26%26%20o%5B1%5D%20%26%26%20typeof%20o%5B1%5D.link%20%3D%3D%3D%20'string')%3B%0A%20%20return%20r%20%3F%20r%5B1%5D.link%20%3A%20null%3B%0A%7D%0A%0A%2F**%20A%20full%20HTML%20page%20embeds%20the%20same%20%5B%5Bcommand%2C%20data%5D%2C%20%E2%80%A6%5D%20list%20the%20ajax%20view%20returns%3B%20parse%20it%20if%20present.%20*%2F%0Afunction%20parseEmbedded(html)%20%7B%0A%20%20const%20i%20%3D%20html.indexOf('%5B%5B%22updateGlobalData%22')%3B%0A%20%20if%20(i%20%3C%200)%20return%20null%3B%0A%20%20%2F%2F%20walk%20to%20the%20matching%20closing%20bracket%0A%20%20let%20depth%20%3D%200%2C%20inStr%20%3D%20false%2C%20esc%20%3D%20false%3B%0A%20%20for%20(let%20k%20%3D%20i%3B%20k%20%3C%20html.length%20%26%26%20k%20%3C%20i%20%2B%203e6%3B%20k%2B%2B)%20%7B%0A%20%20%20%20const%20ch%20%3D%20html%5Bk%5D%3B%0A%20%20%20%20if%20(inStr)%20%7B%20if%20(esc)%20esc%20%3D%20false%3B%20else%20if%20(ch%20%3D%3D%3D%20'%5C%5C')%20esc%20%3D%20true%3B%20else%20if%20(ch%20%3D%3D%3D%20'%22')%20inStr%20%3D%20false%3B%20continue%3B%20%7D%0A%20%20%20%20if%20(ch%20%3D%3D%3D%20'%22')%20inStr%20%3D%20true%3B%20else%20if%20(ch%20%3D%3D%3D%20'%5B')%20depth%2B%2B%3B%20else%20if%20(ch%20%3D%3D%3D%20'%5D'%20%26%26%20--depth%20%3D%3D%3D%200)%20%7B%0A%20%20%20%20%20%20try%20%7B%20return%20parseIsland(JSON.parse(html.slice(i%2C%20k%20%2B%201)))%3B%20%7D%20catch%20%7B%20return%20null%3B%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20return%20null%3B%0A%7D%0A%0A%2F**%20Last%20resort%20on%20a%20full%20page%3A%20read%20the%20island%20fields%20by%20name%2C%20whatever%20script%20wraps%20them%20(quotes%20may%20be%20escaped).%20*%2F%0Afunction%20parseIslandHtml(html)%20%7B%0A%20%20const%20pick%20%3D%20key%20%3D%3E%20%7B%20const%20m%20%3D%20html.match(new%20RegExp('%5C%5C%5C%5C%3F%22'%20%2B%20key%20%2B%20'%5C%5C%5C%5C%3F%22%5C%5Cs*%3A%5C%5Cs*%5C%5C%5C%5C%3F%22%3F(%5B%5E%22%5C%5C%5C%5C%2C%7D%5D%7B1%2C60%7D)'))%3B%20return%20m%20%3F%20m%5B1%5D.trim()%20%3A%20null%3B%20%7D%3B%0A%20%20const%20res%20%3D%20pick('resourceLevel')%2C%20trade%20%3D%20pick('tradegoodLevel')%3B%0A%20%20if%20(res%20%3D%3D%20null%20%26%26%20trade%20%3D%3D%20null)%20return%20null%3B%0A%20%20return%20%7B%0A%20%20%20%20id%3A%20pick('islandId')%20%3F%3F%20pick('id')%2C%20name%3A%20null%2C%20x%3A%20numOrNull(pick('xCoord'))%2C%20y%3A%20numOrNull(pick('yCoord'))%2C%0A%20%20%20%20tradegood%3A%20ORD%5Bpick('tradegood')%5D%20%7C%7C%20null%2C%0A%20%20%20%20woodLvl%3A%20numOrNull(res)%2C%20luxLvl%3A%20numOrNull(trade)%2C%0A%20%20%20%20wonder%3A%20pick('wonderName')%2C%20wonderLvl%3A%20numOrNull(pick('wonderLevel'))%2C%0A%20%20%20%20spots%3A%20null%2C%20freeSpots%3A%20null%2C%20towns%3A%20%5B%5D%2C%20_keys%3A%20%5B'(page%20text)'%5D%2C%0A%20%20%7D%3B%0A%7D%0A%0A%2F**%20Names%20of%20level-ish%20keys%20in%20a%20page%2C%20for%20diagnostics%20(names%20only%2C%20never%20values).%20*%2F%0Aconst%20levelKeys%20%3D%20html%20%3D%3E%20%5B...new%20Set(%5B...html.matchAll(%2F%5C%5C%3F%22(%5Cw%7B0%2C30%7D(%3F%3A%5BLl%5Devel%7Ctradegood%7Cwonder)%5Cw%7B0%2C20%7D)%5C%5C%3F%22%5Cs*%3A%2Fg)%5D.map(m%20%3D%3E%20m%5B1%5D))%5D.slice(0%2C%2060)%3B%0A%0A%2F**%0A%20*%20Read%20one%20island%20the%20way%20the%20game%20UI%20does%3A%20the%20ajax%20island%20view%20first%3B%20when%20the%20game%20answers%0A%20*%20%22reload%22%2C%20load%20the%20page%20it%20names%20(same%20origin%20only)%20and%20read%20the%20island%20from%20it.%0A%20*%20Returns%20%7B%20island%2C%20via%20%7D%20or%20%7B%20island%3A%20null%2C%20diag%20%7D.%0A%20*%2F%0Aasync%20function%20readIsland(client%2C%20id)%20%7B%0A%20%20let%20last%20%3D%20null%3B%0A%20%20for%20(const%20params%20of%20%5B%0A%20%20%20%20%7B%20view%3A%20'island'%2C%20islandId%3A%20id%2C%20backgroundView%3A%20'island'%2C%20currentIslandId%3A%20id%20%7D%2C%0A%20%20%20%20%7B%20view%3A%20'island'%2C%20islandId%3A%20id%20%7D%2C%0A%20%20%5D)%20%7B%0A%20%20%20%20last%20%3D%20await%20client.get(params)%3B%0A%20%20%20%20await%20pace()%3B%0A%20%20%20%20const%20isl%20%3D%20parseIsland(last)%3B%0A%20%20%20%20if%20(isl)%20return%20%7B%20island%3A%20isl%2C%20via%3A%20'ajax'%20%7D%3B%0A%20%20%20%20const%20link%20%3D%20reloadLink(last)%3B%0A%20%20%20%20if%20(link)%20%7B%0A%20%20%20%20%20%20const%20url%20%3D%20new%20URL(link%2C%20location.origin)%3B%0A%20%20%20%20%20%20if%20(url.origin%20!%3D%3D%20location.origin)%20break%3B%0A%20%20%20%20%20%20const%20html%20%3D%20await%20client.getText(url.pathname%20%2B%20url.search)%3B%0A%20%20%20%20%20%20await%20pace()%3B%0A%20%20%20%20%20%20const%20a%20%3D%20parseEmbedded(html)%3B%20if%20(a)%20return%20%7B%20island%3A%20a%2C%20via%3A%20'page-json'%20%7D%3B%0A%20%20%20%20%20%20const%20b%20%3D%20parseIslandHtml(html)%3B%20if%20(b)%20return%20%7B%20island%3A%20b%2C%20via%3A%20'page-text'%20%7D%3B%0A%20%20%20%20%20%20return%20%7B%20island%3A%20null%2C%20diag%3A%20%7B%20reload%3A%20true%2C%20pageLength%3A%20html.length%2C%20keys%3A%20levelKeys(html)%20%7D%20%7D%3B%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20return%20%7B%20island%3A%20null%2C%20diag%3A%20shape(last)%20%7D%3B%0A%7D%0A%0A%2F**%20Game%20client%20bound%20to%20the%20current%20tab%3A%20carries%20the%20actionRequest%20token%20like%20the%20game%20UI%20does.%20*%2F%0Afunction%20gameClient()%20%7B%0A%20%20const%20html%20%3D%20document.documentElement.innerHTML%3B%0A%20%20let%20ar%20%3D%20(window.ikariam%20%26%26%20(window.ikariam.model%3F.actionRequest%20%7C%7C%20window.ikariam.getModel%3F.()%3F.actionRequest))%0A%20%20%20%20%7C%7C%20document.querySelector('input%5Bname%3DactionRequest%5D')%3F.value%0A%20%20%20%20%7C%7C%20(html.match(%2FactionRequest%5B%22'%5D%3F%5Cs*%5B%3A%3D%5D%5Cs*%5B%22'%5D(%5B0-9a-f%5D%7B20%2C%7D)%2Fi)%20%7C%7C%20%5B%5D)%5B1%5D%3B%0A%20%20const%20get%20%3D%20async%20(params%2C%20%7B%20ajax%20%3D%20true%20%7D%20%3D%20%7B%7D)%20%3D%3E%20%7B%0A%20%20%20%20const%20q%20%3D%20new%20URLSearchParams(%7B%20...params%2C%20...(ajax%20%3F%20%7B%20ajax%3A%201%20%7D%20%3A%20%7B%7D)%20%7D)%3B%20if%20(ar)%20q.set('actionRequest'%2C%20ar)%3B%0A%20%20%20%20const%20r%20%3D%20await%20fetch('%2Findex.php%3F'%20%2B%20q%2C%20%7B%20credentials%3A%20'same-origin'%2C%20headers%3A%20%7B%20'X-Requested-With'%3A%20'XMLHttpRequest'%20%7D%20%7D)%3B%0A%20%20%20%20const%20t%20%3D%20await%20r.text()%3B%0A%20%20%20%20let%20j%3B%20try%20%7B%20j%20%3D%20JSON.parse(t)%3B%20%7D%20catch%20%7B%20return%20%7B%20_nonJson%3A%20true%2C%20status%3A%20r.status%2C%20length%3A%20t.length%20%7D%3B%20%7D%0A%20%20%20%20const%20g%20%3D%20find(j%2C%20o%20%3D%3E%20typeof%20o.actionRequest%20%3D%3D%3D%20'string')%3B%20if%20(g)%20ar%20%3D%20g.actionRequest%3B%0A%20%20%20%20return%20j%3B%0A%20%20%7D%3B%0A%20%20%2F%2F%20Full%20page%20load%20of%20a%20same-origin%20game%20URL%20(what%20the%20browser%20does%20when%20the%20game%20asks%20for%20a%20reload).%0A%20%20const%20getText%20%3D%20async%20path%20%3D%3E%20%7B%0A%20%20%20%20const%20r%20%3D%20await%20fetch(path%2C%20%7B%20credentials%3A%20'same-origin'%20%7D)%3B%0A%20%20%20%20const%20t%20%3D%20await%20r.text()%3B%0A%20%20%20%20const%20m%20%3D%20t.match(%2FactionRequest%5B%22'%5D%3F%5Cs*%5B%3A%3D%5D%5Cs*%5B%22'%5D(%5B0-9a-f%5D%7B20%2C%7D)%2Fi)%3B%20if%20(m)%20ar%20%3D%20m%5B1%5D%3B%0A%20%20%20%20return%20t%3B%0A%20%20%7D%3B%0A%20%20return%20%7B%20get%2C%20getText%20%7D%3B%0A%7D%0A%0Afunction%20relatedCities()%20%7B%0A%20%20const%20html%20%3D%20document.documentElement.innerHTML%3B%0A%20%20let%20related%20%3D%20window.dataSetForView%3F.relatedCityData%20%7C%7C%20window.ikariam%3F.model%3F.relatedCityData%3B%0A%20%20if%20(!related)%20%7B%20const%20m%20%3D%20html.match(%2FrelatedCityData%3A%5Cs*JSON%5C.parse%5C('(.%2B%3F)'%5C)%2F)%3B%20if%20(m)%20related%20%3D%20JSON.parse(m%5B1%5D.replace(%2F%5C%5C%22%2Fg%2C%20'%22').replace(%2F%5C%5C%5C%5C%2Fg%2C%20'%5C%5C'))%3B%20%7D%0A%20%20return%20related%20%7C%7C%20null%3B%0A%7D%0A%0Aconst%20serverId%20%3D%20()%20%3D%3E%20location.host.split('.')%5B0%5D%3B%20%2F%2F%20e.g.%20%22s74-es%22%0A%0Afunction%20stamp(d%20%3D%20new%20Date())%20%7B%0A%20%20const%20p%20%3D%20n%20%3D%3E%20String(n).padStart(2%2C%20'0')%3B%0A%20%20return%20%60%24%7Bd.getFullYear()%7D%24%7Bp(d.getMonth()%20%2B%201)%7D%24%7Bp(d.getDate())%7D-%24%7Bp(d.getHours())%7D%24%7Bp(d.getMinutes())%7D%60%3B%0A%7D%0A%0Afunction%20envelope(schema%2C%20producer%2C%20payload%2C%20extra%20%3D%20%7B%7D)%20%7B%0A%20%20return%20%7B%20schema%2C%20producedAt%3A%20new%20Date().toISOString()%2C%20producer%2C%20server%3A%20serverId()%2C%20player%3A%20null%2C%20scope%3A%20%7B%7D%2C%20...extra%2C%20payload%20%7D%3B%0A%7D%0A%0A%2F**%20Save%20a%20JSON%20file%20through%20the%20browser's%20normal%20download%20(lands%20in%20the%20download%20folder%2C%20e.g.%20the%20Drive%20inbox).%20*%2F%0Afunction%20download(obj%2C%20filename)%20%7B%0A%20%20const%20blob%20%3D%20new%20Blob(%5BJSON.stringify(obj%2C%20null%2C%201)%5D%2C%20%7B%20type%3A%20'application%2Fjson'%20%7D)%3B%0A%20%20const%20a%20%3D%20document.createElement('a')%3B%0A%20%20a.href%20%3D%20URL.createObjectURL(blob)%3B%20a.download%20%3D%20filename%3B%20document.body.appendChild(a)%3B%20a.click()%3B%0A%20%20setTimeout(()%20%3D%3E%20%7B%20URL.revokeObjectURL(a.href)%3B%20a.remove()%3B%20%7D%2C%203000)%3B%0A%7D%0A%0A%2F**%20Small%20floating%20panel.%20buttons%3A%20%5B%7Blabel%2C%20onClick%7D%5D%20%3B%20html%3A%20trusted%20static%20markup%20only.%20*%2F%0Afunction%20overlay(id%2C%20title%2C%20body%2C%20buttons%20%3D%20%5B%5D%2C%20html%20%3D%20'')%20%7B%0A%20%20document.getElementById(id)%3F.remove()%3B%0A%20%20const%20d%20%3D%20document.createElement('div')%3B%0A%20%20d.id%20%3D%20id%3B%0A%20%20d.style.cssText%20%3D%20'position%3Afixed%3Bz-index%3A99999%3Btop%3A40px%3Bleft%3A50%25%3Btransform%3AtranslateX(-50%25)%3Bwidth%3Amin(640px%2C92vw)%3Bbackground%3A%23fff%3Bcolor%3A%23222%3Bborder%3A2px%20solid%20%239a6a24%3Bborder-radius%3A10px%3Bpadding%3A14px%3Bfont%3A14px%2F1.4%20sans-serif%3Bbox-shadow%3A0%206px%2030px%20rgba(0%2C0%2C0%2C.4)'%3B%0A%20%20d.innerHTML%20%3D%20'%3Cb%3E%3C%2Fb%3E%3Cp%20style%3D%22margin%3A6px%200%3Bwhite-space%3Apre-wrap%22%3E%3C%2Fp%3E'%20%2B%20html%20%2B%20'%3Cdiv%20class%3D%22ika-btns%22%20style%3D%22display%3Aflex%3Bgap%3A8px%3Bflex-wrap%3Awrap%3Bmargin-top%3A8px%22%3E%3C%2Fdiv%3E'%3B%0A%20%20d.querySelector('b').textContent%20%3D%20title%3B%20d.querySelector('p').textContent%20%3D%20body%3B%0A%20%20const%20bar%20%3D%20d.querySelector('.ika-btns')%3B%0A%20%20for%20(const%20b%20of%20%5B...buttons%2C%20%7B%20label%3A%20'Close'%2C%20onClick%3A%20()%20%3D%3E%20d.remove()%20%7D%5D)%20%7B%0A%20%20%20%20const%20el%20%3D%20document.createElement('button')%3B%20el.textContent%20%3D%20b.label%3B%20el.style.cssText%20%3D%20'padding%3A5px%2012px%3Bcursor%3Apointer'%3B%0A%20%20%20%20el.onclick%20%3D%20()%20%3D%3E%20b.onClick(el%2C%20d)%3B%20bar.appendChild(el)%3B%0A%20%20%7D%0A%20%20document.body.appendChild(d)%3B%0A%20%20return%20d%3B%0A%7D%0A%0Aasync%20function%20copyText(text%2C%20btn)%20%7B%0A%20%20try%20%7B%20await%20navigator.clipboard.writeText(text)%3B%20%7D%0A%20%20catch%20%7B%20const%20ta%20%3D%20document.createElement('textarea')%3B%20ta.value%20%3D%20text%3B%20document.body.appendChild(ta)%3B%20ta.select()%3B%20document.execCommand('copy')%3B%20ta.remove()%3B%20%7D%0A%20%20if%20(btn)%20btn.textContent%20%3D%20'Copied'%3B%0A%7D%0A%0A%20%20const%20ID%20%3D%20'ika-mayor'%3B%0A%20%20const%20say%20%3D%20(t%2C%20b%2C%20btns)%20%3D%3E%20overlay(ID%2C%20t%2C%20b%2C%20btns)%3B%0A%20%20try%20%7B%0A%20%20%20%20if%20(!%2Fikariam%2F.test(location.host))%20throw%20new%20Error('Open%20your%20Ikariam%20game%20tab%20first%2C%20then%20click%20the%20bookmark.')%3B%0A%20%20%20%20const%20related%20%3D%20relatedCities()%3B%0A%20%20%20%20if%20(!related)%20throw%20new%20Error('Could%20not%20find%20your%20town%20list%20on%20this%20page.%20Reload%20the%20game%20and%20try%20again.')%3B%0A%20%20%20%20const%20own%20%3D%20Object.values(related).filter(c%20%3D%3E%20c%20%26%26%20c.relationship%20%3D%3D%3D%20'ownCity')%3B%0A%20%20%20%20const%20startId%20%3D%20String(related.selectedCityId%20%7C%7C%20(related.selectedCity%20%7C%7C%20'').replace('city_'%2C%20'')%20%7C%7C%20own%5B0%5D.id)%3B%0A%20%20%20%20const%20%7B%20get%2C%20getText%20%7D%20%3D%20gameClient()%3B%0A%20%20%20%20const%20diag%20%3D%20%7B%7D%3B%0A%20%20%20%20const%20payload%20%3D%20%7B%20cities%3A%20%5B%5D%2C%20islands%3A%20%7B%7D%20%7D%3B%0A%20%20%20%20say('Mayor'%2C%20%60Reading%20%24%7Bown.length%7D%20towns%E2%80%A6%60)%3B%0A%0A%20%20%20%20for%20(const%20c%20of%20own)%20%7B%0A%20%20%20%20%20%20const%20j%20%3D%20await%20get(%7B%20view%3A%20'cityMilitary'%2C%20cityId%3A%20c.id%2C%20backgroundView%3A%20'city'%2C%20currentCityId%3A%20c.id%20%7D)%3B%0A%20%20%20%20%20%20let%20bg%20%3D%20find(j%2C%20o%20%3D%3E%20Array.isArray(o.position)%20%26%26%20'islandXCoord'%20in%20o)%3B%0A%20%20%20%20%20%20let%20hd%20%3D%20find(j%2C%20o%20%3D%3E%20o.currentResources%20%26%26%20o.maxResources)%3B%0A%20%20%20%20%20%20if%20(!bg%20%7C%7C%20!hd)%20%7B%0A%20%20%20%20%20%20%20%20await%20pace(400%2C%20800)%3B%0A%20%20%20%20%20%20%20%20const%20j2%20%3D%20await%20get(%7B%20view%3A%20'city'%2C%20cityId%3A%20c.id%2C%20backgroundView%3A%20'city'%2C%20currentCityId%3A%20c.id%20%7D)%3B%0A%20%20%20%20%20%20%20%20bg%20%3D%20bg%20%7C%7C%20find(j2%2C%20o%20%3D%3E%20Array.isArray(o.position)%20%26%26%20'islandXCoord'%20in%20o)%3B%0A%20%20%20%20%20%20%20%20hd%20%3D%20hd%20%7C%7C%20find(j2%2C%20o%20%3D%3E%20o.currentResources%20%26%26%20o.maxResources)%3B%0A%20%20%20%20%20%20%20%20if%20(!bg%20%7C%7C%20!hd)%20%7B%20(diag.city%20%3F%3F%3D%20%7B%7D)%5Bc.id%5D%20%3D%20shape(j2)%3B%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20if%20(!bg%20%7C%7C%20!hd)%20throw%20new%20Error('Unexpected%20game%20response%20for%20'%20%2B%20c.name)%3B%0A%20%20%20%20%20%20const%20b%20%3D%20%7B%7D%3B%20let%20freeSlots%20%3D%200%2C%20upgrading%20%3D%20null%3B%0A%20%20%20%20%20%20bg.position.forEach(p%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20let%20k%20%3D%20String(p.building%20%7C%7C%20'')%3B%0A%20%20%20%20%20%20%20%20if%20(%2FbuildingGround%2F.test(k))%20%7B%20if%20(%2Fland%2F.test(k))%20freeSlots%2B%2B%3B%20return%3B%20%7D%0A%20%20%20%20%20%20%20%20if%20(%2FconstructionSite%2F.test(k))%20%7B%20k%20%3D%20k.replace(%2F%5Cs*constructionSite%2F%2C%20'')%3B%20upgrading%20%3D%20k.trim()%3B%20%7D%0A%20%20%20%20%20%20%20%20k%20%3D%20k.trim()%3B%20const%20L%20%3D%20parseInt(p.level)%20%7C%7C%200%3B%20if%20(!k%20%7C%7C%20!L)%20return%3B%0A%20%20%20%20%20%20%20%20if%20(%5B'warehouse'%2C%20'port'%2C%20'shipyard'%5D.includes(k))%20(b%5Bk%5D%20%3D%20b%5Bk%5D%20%7C%7C%20%5B%5D).push(L)%3B%20else%20b%5Bk%5D%20%3D%20L%3B%0A%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%20%20const%20r%20%3D%20hd.currentResources%2C%20units%20%3D%20%7B%7D%3B%0A%20%20%20%20%20%20const%20view%20%3D%20find(j%2C%20o%20%3D%3E%20Array.isArray(o)%20%26%26%20o%5B0%5D%20%3D%3D%3D%20'cityMilitary'%20%26%26%20typeof%20o%5B1%5D%20%3D%3D%3D%20'string')%3B%0A%20%20%20%20%20%20if%20(view)%20%7B%0A%20%20%20%20%20%20%20%20const%20doc%20%3D%20new%20DOMParser().parseFromString(view%5B1%5D%2C%20'text%2Fhtml')%3B%0A%20%20%20%20%20%20%20%20const%20cells%20%3D%20sel%20%3D%3E%20%5B...doc.querySelectorAll(sel%20%2B%20'%20.militaryList%20.count%20td')%5D.map(td%20%3D%3E%20num(td.textContent))%3B%0A%20%20%20%20%20%20%20%20cells('%23tabUnits').forEach((n%2C%20i)%20%3D%3E%20%7B%20if%20(ARMY%5Bi%5D%20%26%26%20n)%20units%5BARMY%5Bi%5D%5D%20%3D%20n%3B%20%7D)%3B%0A%20%20%20%20%20%20%20%20cells('%23tabShips').forEach((n%2C%20i)%20%3D%3E%20%7B%20if%20(NAVY%5Bi%5D%20%26%26%20n)%20units%5BNAVY%5Bi%5D%5D%20%3D%20n%3B%20%7D)%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20payload.cities.push(%7B%0A%20%20%20%20%20%20%20%20id%3A%20String(bg.id)%2C%20name%3A%20bg.name%2C%20coords%3A%20%60%24%7Bbg.islandXCoord%7D%3A%24%7Bbg.islandYCoord%7D%60%2C%20islandId%3A%20String(bg.islandId)%2C%0A%20%20%20%20%20%20%20%20capital%3A%20!!bg.isCapital%2C%20lux%3A%20ORD%5Bhd.producedTradegood%5D%20%7C%7C%20null%2C%20b%2C%20freeSlots%2C%20upgrading%2C%20units%2C%0A%20%20%20%20%20%20%20%20population%3A%20num(r.population)%2C%20freeCitizens%3A%20num(r.citizens)%2C%0A%20%20%20%20%20%20%20%20stock%3A%20%7B%20wood%3A%20num(r.resource)%2C%20wine%3A%20num(r%5B1%5D)%2C%20marble%3A%20num(r%5B2%5D)%2C%20glass%3A%20num(r%5B3%5D)%2C%20sulfur%3A%20num(r%5B4%5D)%20%7D%2C%0A%20%20%20%20%20%20%20%20capacity%3A%20num(hd.maxResources%3F.resource)%2C%20wineSpendings%3A%20num(hd.wineSpendings)%2C%0A%20%20%20%20%20%20%20%20prodPerHour%3A%20%7B%20wood%3A%20Math.round(num(hd.resourceProduction)%20*%203600)%2C%20lux%3A%20Math.round(num(hd.tradegoodProduction)%20*%203600)%20%7D%2C%0A%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%20%20payload.gold%20%3D%20num(hd.gold)%3B%20payload.ships%20%3D%20num(hd.maxTransporters)%3B%20payload.freeShips%20%3D%20num(hd.freeTransporters)%3B%0A%20%20%20%20%20%20if%20(hd.ambrosia%20!%3D%20null)%20payload.ambrosia%20%3D%20num(hd.ambrosia)%3B%0A%20%20%20%20%20%20if%20(hd.maxActionPoints%20!%3D%20null)%20payload.actionPoints%20%3D%20num(hd.maxActionPoints)%3B%0A%20%20%20%20%20%20say('Mayor'%2C%20%60Read%20%24%7Bpayload.cities.length%7D%20of%20%24%7Bown.length%7D%20towns%E2%80%A6%60)%3B%0A%20%20%20%20%20%20await%20pace()%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20%2F%2F%20Islands.%20v0.1%20got%20no%20island%20data%3B%20v0.2%20found%20the%20game%20answers%20the%20ajax%20island%20view%20with%0A%20%20%20%20%2F%2F%20%5B%22custom%22%2C%20%5B%22reload%22%2C%20%7Blink%7D%5D%5D%20(24%20Nov%202026).%20readIsland%20follows%20that%20link%20like%20a%20page%20load.%0A%20%20%20%20const%20client%20%3D%20%7B%20get%2C%20getText%20%7D%3B%0A%20%20%20%20for%20(const%20id%20of%20%5B...new%20Set(payload.cities.map(c%20%3D%3E%20c.islandId))%5D)%20%7B%0A%20%20%20%20%20%20const%20r%20%3D%20await%20readIsland(client%2C%20id)%3B%0A%20%20%20%20%20%20if%20(r.island)%20%7B%0A%20%20%20%20%20%20%20%20const%20%7B%20_keys%2C%20towns%2C%20...facts%20%7D%20%3D%20r.island%3B%0A%20%20%20%20%20%20%20%20payload.islands%5Bid%5D%20%3D%20%7B%20...facts%2C%20towns%3A%20towns.length%20%7C%7C%20null%2C%20via%3A%20r.via%20%7D%3B%0A%20%20%20%20%20%20%20%20if%20(facts.woodLvl%20%3D%3D%20null%20%7C%7C%20facts.luxLvl%20%3D%3D%20null)%20(diag.islandKeys%20%3F%3F%3D%20%7B%7D)%5Bid%5D%20%3D%20_keys%3B%0A%20%20%20%20%20%20%7D%20else%20(diag.island%20%3F%3F%3D%20%7B%7D)%5Bid%5D%20%3D%20r.diag%3B%0A%20%20%20%20%7D%0A%20%20%20%20await%20get(%7B%20view%3A%20'city'%2C%20cityId%3A%20startId%2C%20backgroundView%3A%20'city'%2C%20currentCityId%3A%20startId%20%7D)%3B%0A%0A%20%20%20%20const%20env%20%3D%20envelope('mayor.snapshot.v1'%2C%20'mayor%40'%20%2B%20VERSION%2C%20payload%2C%20%7B%20scope%3A%20%7B%20towns%3A%20own.length%20%7D%20%7D)%3B%0A%20%20%20%20if%20(Object.keys(diag).length)%20env.diag%20%3D%20diag%3B%0A%20%20%20%20const%20fname%20%3D%20%60mayor.snapshot_%24%7Benv.server%7D_%24%7Bstamp()%7D.json%60%3B%0A%20%20%20%20window.__atlasLast%20%3D%20env%3B%20%2F%2F%20lets%20a%20Claude-in-Chrome%20session%20read%20the%20result%20without%20a%20download%0A%20%20%20%20if%20(!window.__atlasNoDownload)%20download(env%2C%20fname)%3B%0A%20%20%20%20const%20legacy%20%3D%20%7B%20type%3A%20'ikariam-snapshot'%2C%20version%3A%201%2C%20takenAt%3A%20env.producedAt%2C%20server%3A%20location.host%2C%20...payload%20%7D%3B%0A%20%20%20%20const%20nIsl%20%3D%20Object.keys(payload.islands).length%3B%0A%20%20%20%20say('Mayor%3A%20snapshot%20ready'%2C%0A%20%20%20%20%20%20%60%24%7Bpayload.cities.length%7D%20towns%2C%20%24%7BnIsl%7D%20islands.%20Saved%20as%20%24%7Bfname%7D.%60%20%2B%20(env.diag%20%3F%20'%5CnSome%20game%20responses%20had%20an%20unexpected%20shape%3B%20the%20file%20includes%20their%20structure%20(no%20values)%20so%20the%20parser%20can%20be%20fixed.'%20%3A%20'')%2C%0A%20%20%20%20%20%20%5B%7B%20label%3A%20'Download%20again'%2C%20onClick%3A%20()%20%3D%3E%20download(env%2C%20fname)%20%7D%2C%20%7B%20label%3A%20'Copy%20for%20planner'%2C%20onClick%3A%20btn%20%3D%3E%20copyText(JSON.stringify(legacy)%2C%20btn)%20%7D%5D)%3B%0A%20%20%7D%20catch%20(e)%20%7B%0A%20%20%20%20say('Mayor%20failed'%2C%20e.message%20%2B%20'%20%E2%80%94%20nothing%20in%20your%20game%20was%20changed.')%3B%0A%20%20%7D%0A%7D)()%3B%0A</textarea><p><button type="button" class="ghost" id="copyBm">Copy bookmark code</button> <span class="sub" id="bmmsg"></span></p></details>
+    </div>
+    <div class="card prose"><h2>Update your state</h2><p>Change the numbers after you play, then press <b>Save and recompute</b>. Your data is saved in this browser on this computer. Use Copy JSON below to back it up or move it to another browser.</p>
+      <p><button type="button" id="applyState">Save and recompute</button> <span class="sub" id="edmsg"></span></p><p class="sub" id="savestate"></p></div>
+    <div class="edgrid" id="ed-global"></div>
+    <div class="edgrid" id="ed-cities"></div>
+    <div class="card"><h2>State as JSON</h2><textarea id="io" aria-label="State as JSON"></textarea>
+      <p><button type="button" id="copyJson">Copy JSON</button> <button type="button" class="ghost" id="importJson">Import from the box</button> <button type="button" class="ghost" id="resetState">Reset to the example</button> <span class="sub" id="iomsg"></span></p></div>
+  </section>
+
+  <section class="tab" id="tab-calc" hidden>
+    <div class="card">
+      <h2>Building cost calculator</h2>
+      <p class="sub">Exact cost of taking one building from one level to another. Each level costs base × (1 − total reduction %), rounded down; research, reducer buildings and the extra % add up, they don't multiply. Reducer levels are capped at 50.</p>
+      <div class="calcgrid">
+        <label for="c-town">Town <select id="c-town"></select></label>
+        <label for="c-b">Building <select id="c-b"></select></label>
+        <label for="c-from">From level <input id="c-from" type="number" min="0" value="0"></label>
+        <label for="c-to">To level <input id="c-to" type="number" min="1" value="1"></label>
+      </div>
+      <fieldset><legend>Reductions</legend>
+        <label class="chk"><input id="c-pulley" type="checkbox" checked> Pulley (2%)</label>
+        <label class="chk"><input id="c-geometry" type="checkbox" checked> Geometry (4%)</label>
+        <label class="chk"><input id="c-spirit" type="checkbox" checked> Spirit Level (8%)</label>
+        <label for="c-r-wood">Carpenter (wood) <input id="c-r-wood" type="number" min="0" max="50" value="0"></label>
+        <label for="c-r-wine">Wine Press (wine) <input id="c-r-wine" type="number" min="0" max="50" value="0"></label>
+        <label for="c-r-marble">Architect (marble) <input id="c-r-marble" type="number" min="0" max="50" value="0"></label>
+        <label for="c-r-glass">Optician (crystal) <input id="c-r-glass" type="number" min="0" max="50" value="0"></label>
+        <label for="c-r-sulfur">Firework Test Area (sulphur) <input id="c-r-sulfur" type="number" min="0" max="50" value="0"></label>
+        <label for="c-extra">Extra % (event, etc.) <input id="c-extra" type="number" min="0" max="100" step="0.5" value="0"></label>
+      </fieldset>
+      <div id="c-out"></div>
+    </div>
+  </section>
+
+  <section class="tab" id="tab-mechanics" hidden>
+    <div class="card prose">
+      <h2>Formulas the planner uses</h2>
+      <p><b>Housing</b> <span class="formula">2·⌊10·L^1.5⌋ + 40</span> (Town Hall L ≤ 40) + 50 Holiday + 50 capital (Well Digging) + 200 capital (Utopia) + 20 per Economic Future. Matched real towns exactly when checked.</p>
+      <p><b>Satisfaction</b> = 196 + 25 Holiday + 50 capital + tavern-level bonus (12, 24, 36… 236 at 18) + wine-served bonus (60 per step, rising: 1,182 at level 18) + museum (20, 41, 63, 88…) + 50 per cultural good, then × (1 − corruption). Real populations sat within about 20 of these values when checked.</p>
+      <p><b>Growth</b>: population moves toward satisfaction with a 50-hour time constant: <span class="formula">P(t) = S − (S − P₀)·e^(−t/50)</span>, i.e. 0.02 × (S − P) per hour, capped at housing.</p>
+      <p><b>Wine</b> consumed per hour at serving level n (0, 4, 8, 13, 18 … 150 at 18), × (1 − Wine Press level %).</p>
+      <p><b>Production</b>: 1 per worker per hour × (1 + 2% per Forester/luxury-bonus level + 20% boost + god blessing). Helping Hands adds 50% more workers at ¼ output. Worker caps by island level (sawmill 34 = 858, mine 33 = 1,079).</p>
+      <p><b>Gold</b>: 3 per taxed citizen per hour; a scientist costs 6 (3 with Letter Chute) and produces 1.14 research points with Paper, Ink and Mechanical Pen.</p>
+      <p><b>Costs</b>: base cost × (1 − 14% research − reducer level %), reducers capped at level 50. Base costs for every level come from the in-game help tables.</p>
+      <p><b>Gods' Shrine</b>: maximum blessing 3 + 2 × level %; without Favour a blessed town gets 40% of it, with 1,000 Favour the full amount.</p>
+      <p><b>Corruption</b>: 1 − (Governor's Residence level + 1) ÷ towns; none in the capital while Palace ≥ number of colonies.</p>
+      <h2>Assumptions to confirm</h2>
+      <ul>
+        <li>Confirmed in the game (Nov 2026): Town Hall 19→20 with Carpenter 12, Architect 14 and all three cost researches costs 28,817 wood and 29,458 marble, exactly as modelled.</li>
+        <li>Free building grounds and island levels come from the snapshot or from what you type in Update state.</li>
+        <li>The Gods' Shrine blesses as many towns as its level, in the order you list.</li>
+        <li>The +20% items apply to all towns.</li>
+        <li>The Premium Trader swaps resources 1:1 in one town per use, up to warehouse capacity.</li>
+        <li>Resources flow freely between your towns (the model pools stock; ships take time in reality).</li>
+      </ul>
+      <h2>Sources</h2>
+      <ul class="sub">
+        <li>Building cost tables: in-game help, as scraped by the IkaEasy extension (github.com/RandGor/IkaEasy, Oct 2026).</li>
+        <li>Housing, satisfaction, wine and museum tables, build-time formulas: Ikariam Empire Overview userscript (github.com/oliezekat/IkariamEmpireOverview).</li>
+        <li>Island worker caps: "Donation Table" thread, official Ikariam forum.</li>
+        <li>Research costs, Gods' Shrine, Resources, Helping Hands: ikariam.fandom.com.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+<script type="module">
+// ---- costs.js ----
+// Base building costs per level, index = level-1, order [wood,wine,marble,glass,sulfur]
+// Source: in-game Help tables scraped by IkaEasy v4 (RandGor/IkaEasy, Oct 2026)
+const COSTS={"townHall":[[0,0,0,0,0],[118,0,0,0,0],[248,0,0,0,0],[422,0,0,0,0],[652,0,267,0,0],[952,0,444,0,0],[1343,0,689,0,0],[1846,0,1022,0,0],[2492,0,1475,0,0],[3316,0,2085,0,0],[4363,0,2903,0,0],[5688,0,3996,0,0],[7360,0,5450,0,0],[9462,0,7376,0,0],[12098,0,9922,0,0],[15397,0,13276,0,0],[19515,0,17685,0,0],[24645,0,23466,0,0],[31024,0,31032,0,0],[38943,0,40915,0,0],[48759,0,53802,0,0],[60906,0,70577,0,0],[75920,0,92384,0,0],[94453,0,120692,0,0],[117304,0,157392,0,0],[145447,0,204915,0,0],[180072,0,266384,0,0],[222631,0,345810,0,0],[274895,0,448337,0,0],[339023,0,580562,0,0],[417643,0,750942,0,0],[513958,0,970304,0,0],[631864,0,1252515,0,0],[776102,0,1615313,0,0],[952440,0,2081388,0,0],[1167886,0,2679747,0,0],[1430960,0,3447452,0,0],[1752011,0,4431846,0,0],[2143604,0,5693374,0,0],[2620995,0,7309181,0,0],[3202699,0,9377690,0,0],[3911176,0,12024426,0,0],[4773667,0,15409422,0,0],[5823201,0,19736642,0,0],[7099813,0,25265952,0,0],[8652017,0,32328344,0,0],[10538589,0,41345276,0,0],[12830714,0,52853241,0,0],[15614591,0,67534979,0,0],[18994567,0,86259109,0,0],[23096939,0,110130443,0,0],[28074524,0,140553860,0,0],[34112197,0,179315369,0,0],[41433569,0,228684958,0,0],[50309037,0,291547093,0,0],[61065520,0,371566227,0,0],[74098190,0,473396708,0,0],[89884629,0,602948945,0,0],[109001918,0,767726837,0,0],[132147228,0,977255499,0,0],[160162677,0,1243623348,0,0],[194065281,0,1582169029,0,0],[235083080,0,2012351748,0,0],[284698685,0,2558853811,0,0],[344701763,0,3252977145,0,0],[417252304,0,4134411925,0,0]],"academy":[[34,0,0,0,0],[45,0,0,0,0],[64,0,0,0,0],[92,0,0,0,0],[136,0,0,224,0],[201,0,0,306,0],[299,0,0,432,0],[444,0,0,623,0],[655,0,0,912,0],[962,0,0,1345,0],[1404,0,0,1990,0],[2041,0,0,2944,0],[2950,0,0,4349,0],[4245,0,0,6412,0],[6084,0,0,9429,0],[8685,0,0,13825,0],[12354,0,0,20213,0],[17518,0,0,29474,0],[24770,0,0,42866,0],[34930,0,0,62191,0],[49139,0,0,90024,0],[68977,0,0,130036,0],[96628,0,0,187464,0],[135113,0,0,269763,0],[188600,0,0,387539,0],[262845,0,0,555861,0],[365781,0,0,796132,0],[508333,0,0,1138714,0],[705545,0,0,1626653,0],[978106,0,0,2320929,0],[1354459,0,0,3307871,0],[1873675,0,0,4709607,0],[2589401,0,0,6698809,0],[3575245,0,0,9519462,0],[4932155,0,0,13516116,0],[6798502,0,0,19175079,0],[9363856,0,0,27182379,0],[12887807,0,0,38505308,0],[17725664,0,0,54507092,0],[24363545,0,0,77108082,0],[33466242,0,0,109012258,0],[45942544,0,0,154025415,0],[63034293,0,0,217501974,0],[86437820,0,0,306972238,0],[118469445,0,0,433022666,0],[162290984,0,0,610530905,0],[222216933,0,0,860397999,0],[304132802,0,0,1211977313,0],[416064676,0,0,1706479424,0],[568954467,0,0,2401743957,0]],"warehouse":[[118,0,0,0,0],[153,0,0,0,0],[201,0,0,0,0],[263,0,86,0,0],[346,0,137,0,0],[452,0,204,0,0],[589,0,289,0,0],[764,0,397,0,0],[985,0,534,0,0],[1266,0,707,0,0],[1619,0,923,0,0],[2061,0,1195,0,0],[2615,0,1533,0,0],[3304,0,1953,0,0],[4161,0,2474,0,0],[5224,0,3118,0,0],[6539,0,3913,0,0],[8163,0,4892,0,0],[10165,0,6095,0,0],[12628,0,7573,0,0],[15655,0,9384,0,0],[19369,0,11600,0,0],[23920,0,14308,0,0],[29490,0,17614,0,0],[36298,0,21645,0,0],[44612,0,26555,0,0],[54753,0,32530,0,0],[67113,0,39792,0,0],[82163,0,48613,0,0],[100473,0,59317,0,0],[122731,0,72297,0,0],[149768,0,88024,0,0],[182589,0,107067,0,0],[222401,0,130109,0,0],[270664,0,157972,0,0],[329136,0,191644,0,0],[399936,0,232313,0,0],[485615,0,281405,0,0],[589244,0,340635,0,0],[714523,0,412059,0,0],[865899,0,498147,0,0],[1048725,0,601861,0,0],[1269436,0,726755,0,0],[1535772,0,877090,0,0],[1857030,0,1057976,0,0],[2244386,0,1275536,0,0],[2711262,0,1537106,0,0],[3273779,0,1851477,0,0],[3951291,0,2229174,0,0],[4767033,0,2682801,0,0],[5748889,0,3227447,0,0],[6930312,0,3881171,0,0],[8351439,0,4665579,0,0],[10060402,0,5606524,0,0],[12114919,0,6734925,0,0],[14584188,0,8087759,0,0],[17551149,0,9709237,0,0],[21115202,0,11652210,0,0],[25395449,0,13979844,0,0],[30534570,0,16767626,0,0],[36703469,0,20105743,0,0],[44106818,0,24101937,0,0],[52989690,0,28884892,0,0],[63645488,0,34608287,0,0],[76425421,0,41455620,0,0],[91749831,0,49645960,0,0],[110121726,0,59440807,0,0],[132142951,0,71152262,0,0],[158533509,0,85152773,0,0],[190154638,0,101886734,0,0],[228036381,0,121884322,0,0],[273410508,0,145777967,0,0],[327749836,0,174321978,0,0],[392815183,0,208415922,0,0],[470711420,0,249132465,0,0],[563954404,0,297750529,0,0],[675550868,0,355794770,0,0],[809093789,0,425082595,0,0],[968876206,0,507780123,0,0],[1160027065,0,606468818,0,0],[1388673318,0,724224798,0,0],[1662133346,0,864713238,0,0],[1989147742,0,1032300721,0,0],[2380154640,0,1232188941,0,0],[2847618161,0,1470573814,0,0]],"tavern":[[65,0,0,0,0],[111,0,0,0,0],[172,0,0,0,0],[252,0,49,0,0],[357,0,56,0,0],[491,0,66,0,0],[662,0,79,0,0],[879,0,98,0,0],[1153,0,125,0,0],[1497,0,162,0,0],[1928,0,214,0,0],[2465,0,285,0,0],[3132,0,381,0,0],[3958,0,514,0,0],[4979,0,693,0,0],[6237,0,937,0,0],[7786,0,1266,0,0],[9687,0,1710,0,0],[12017,0,2308,0,0],[14868,0,3112,0,0],[18352,0,4189,0,0],[22602,0,5631,0,0],[27780,0,7559,0,0],[34082,0,10133,0,0],[41743,0,13563,0,0],[51045,0,18130,0,0],[62329,0,24204,0,0],[76006,0,32273,0,0],[92566,0,42981,0,0],[112602,0,57179,0,0],[136824,0,75985,0,0],[166085,0,100877,0,0],[201408,0,133795,0,0],[244021,0,177298,0,0],[295396,0,234745,0,0],[357296,0,310556,0,0],[431835,0,410539,0,0],[521545,0,542317,0,0],[629456,0,715903,0,0],[759196,0,944433,0,0],[915107,0,1245140,0,0],[1102381,0,1640619,0,0],[1327229,0,2160487,0,0],[1597075,0,2843554,0,0],[1920794,0,3740651,0,0],[2308989,0,4918343,0,0],[2774329,0,6463762,0,0],[3331942,0,8490934,0,0],[3999895,0,11149032,0,0],[4799754,0,14633158,0,0],[5757258,0,19198412,0,0],[6903120,0,25178254,0,0],[8273982,0,33008464,0,0],[9913549,0,43258397,0,0],[11873940,0,56671747,0,0],[14217294,0,74219702,0,0],[17017689,0,97170250,0,0],[20363412,0,127178516,0,0],[24359672,0,166404505,0,0],[29131815,0,217666519,0,0],[34829161,0,284641052,0,0],[41629555,0,372123173,0,0],[49744783,0,486365659,0,0],[59427011,0,635520637,0,0],[70976437,0,830214611,0,0],[84750391,0,1084297072,0,0],[101174138,0,1415814927,0,0],[120753733,0,1848280716,0,0],[144091277,0,2412322940,0,0],[171903052,0,3147833354,0,0]],"palace":[[621,0,0,0,0],[5067,0,1221,0,0],[14922,0,2743,0,2993],[35635,9760,6330,0,7524],[77682,18090,14455,20036,17728],[160954,36260,32372,36913,40101],[322861,75121,71101,73059,88188],[633202,156978,153545,149309,189978],[1221325,327341,326934,308230,402866],[2325576,678453,688032,636230,843766],[4382951,1396259,1433963,1307742,1749519],[8191214,2853769,2964360,2673192,3597583],[15201180,5796117,6085968,5433606,7346434],[28042396,11706278,12421274,10986180,14912996],[51466444,23525973,25222524,22106452,30118390],[94036143,47073381,50989413,44291771,60556963],[171144741,93825300,102677063,88401538,121282082],[310402929,186366298,206045134,175835827,242060454],[561235268,369042504,412201170,348674710,481624481],[1011950004,728757004,822340320,689497719,955627336],[1820060719,1435499430,1636465888,1360066463,1891391698],[3266078968,2821226214,3249200175,2676717428,3734981712],[5848832679,5533180363,6437952588,5257111646,7360329382],[10454179023,10831537959,12732020922,10305531195,14477189882],[18653314480,21166587854,25135775043,20166895886,28426058968],[33229717869,41296779750,49544082920,39401464922,55725452915],[59109102787,80452328037,97509826873,76867506345,109080630148],[104999185097,156518221314,191650002247,149753535406,213228631864],[186278695277,304114337859,376196691518,291378218702,416283408562],[330083439180,590190453919,737571972670,566265859641,811738180663]],"palaceColony":[[499,0,0,0,0],[4690,0,1229,0,0],[14021,0,3015,0,3038],[33715,10619,7176,0,7361],[73851,18478,16497,20945,17131],[153645,35701,36829,36764,38626],[309381,72704,80305,70834,84983],[609013,151003,171871,143096,183447],[1178962,314696,362413,294523,390071],[2253058,653580,755058,608746,819434],[4261638,1349488,1557658,1255520,1704434],[7993260,2768846,3187111,2577735,3516178],[14887354,5646946,6476102,5265079,7203584],[27562545,11453781,13081615,10699616,14670852],[50768236,23118434,26290071,21641681,29726494],[93094987,46460108,52600478,43588048,59965169],[170042922,93009045,104830791,87455521,120491215],[309516851,185556479,208201173,174873076,241271883],[561651487,369054235,412225873,348599453,481632442],[1016352781,731985298,813921918,692996404,958782590],[1834572005,1448200944,1603035750,1374202620,1903870896],[3303992302,2858709877,3150052490,2718854424,3771976337],[5938065770,5631362181,6177235498,5368136633,7457653556],[10651951957,11072234267,12090625934,10578881383,14716810759],[19074744886,21732141463,23623746667,20811407901,28991492282],[34103020026,42586740231,46084336912,40875947402,57020629713],[60881313460,83330382225,89766643617,80166204326,111982594552],[108537305227,162830670767,174614571646,157006880024,219620508765],[193250111725,317771361940,339227989378,307108442987,430170833117],[343671692725,619407688860,658242870743,599995681652,841574016486]],"museum":[[444,0,218,0,0],[772,0,521,0,0],[1359,0,1073,0,0],[2369,0,2042,0,0],[4063,0,3701,0,0],[6851,0,6480,0,0],[11371,0,11069,0,0],[18614,0,18553,0,0],[30109,0,30642,0,0],[48209,0,50009,0,0],[76519,0,80827,0,0],[120543,0,129580,0,0],[188670,0,206321,0,0],[293640,0,326588,0,0],[454765,0,514343,0,0],[701255,0,806460,0,0],[1077201,0,1259563,0,0],[1649046,0,1960450,0,0],[2516748,0,3041951,0,0],[3830457,0,4707016,0,0],[5815403,0,7265293,0,0],[8809004,0,11188591,0,0],[13316125,0,17194910,0,0],[20091332,0,26375637,0,0],[30261187,0,40387927,0,0],[45505976,0,61745438,0,0],[68329529,0,94257374,0,0],[102459575,0,143691046,0,0],[153441407,0,218771029,0,0],[229517607,0,332685003,0,0],[342930972,0,505351822,0,0],[511853072,0,766835664,0,0],[763237383,0,1162482579,0,0],[1137038037,0,1760644292,0,0],[1692444828,0,2664286633,0,0],[2517093724,0,4028427942,0,0],[3740666824,0,6086323349,0,0],[5554964954,0,9188763911,0,0],[8243521216,0,13863034479,0,0],[12225273190,0,20901328346,0,0],[18118943395,0,31493284284,0,0],[26837912520,0,47424590290,0,0],[39729978483,0,71374479368,0,0],[58783167344,0,107361204408,0,0],[86928713578,0,161408875854,0,0],[128486945063,0,242545338021,0,0],[189823275214,0,364294956277,0,0],[280313022883,0,546911100944,0,0],[413760045065,0,820713886868,0,0],[610482062587,0,1231078954391,0,0]],"port":[[38,0,0,0,0],[90,0,0,0,0],[161,0,0,0,0],[256,0,0,0,0],[381,0,0,0,0],[544,0,231,0,0],[755,0,332,0,0],[1027,0,468,0,0],[1375,0,649,0,0],[1818,0,889,0,0],[2380,0,1205,0,0],[3089,0,1621,0,0],[3982,0,2164,0,0],[5102,0,2872,0,0],[6505,0,3793,0,0],[8255,0,4986,0,0],[10436,0,6530,0,0],[13147,0,8521,0,0],[16511,0,11085,0,0],[20678,0,14381,0,0],[25833,0,18611,0,0],[32199,0,24029,0,0],[40052,0,30961,0,0],[49725,0,39817,0,0],[61627,0,51118,0,0],[76256,0,65520,0,0],[94217,0,83856,0,0],[116250,0,107177,0,0],[143252,0,136808,0,0],[176316,0,174423,0,0],[216770,0,222134,0,0],[266228,0,282600,0,0],[326652,0,359176,0,0],[400422,0,456081,0,0],[490428,0,578629,0,0],[600173,0,733508,0,0],[733911,0,929124,0,0],[896794,0,1176049,0,0],[1095068,0,1487566,0,0],[1336300,0,1880361,0,0],[1629653,0,2375390,0,0],[1986223,0,2998956,0,0],[2419438,0,3784068,0,0],[2945548,0,4772137,0,0],[3584209,0,6015095,0,0],[4359192,0,7578051,0,0],[5299237,0,9542612,0,0],[6439084,0,12011033,0,0],[7820712,0,15111408,0,0],[9494838,0,19004156,0,0],[11522723,0,23890128,0,0],[13978341,0,30020738,0,0],[16951007,0,37710615,0,0],[20548530,0,47353406,0,0],[24901014,0,59441515,0,0],[30165444,0,74590741,0,0],[36531197,0,93571043,0,0],[44226686,0,117344929,0,0],[53527353,0,147115375,0,0],[64765297,0,184385608,0,0],[78340853,0,231033694,0,0],[94736536,0,289405577,0,0],[114533812,0,362431113,0,0],[138433274,0,453768784,0,0],[167278924,0,567986112,0,0],[202087363,0,710784606,0,0],[244082913,0,889280151,0,0],[294739837,0,1112352479,0,0],[355833121,0,1391080693,0,0],[429499508,0,1739285957,0,0],[518310888,0,2174207639,0,0],[625362495,0,2717345639,0,0],[754378926,0,3395509616,0,0],[909841536,0,4242125791,0,0]],"shipyard":[[84,0,0,0,0],[128,0,0,0,0],[190,0,0,0,0],[276,0,0,0,0],[394,0,0,0,0],[552,0,725,0,0],[764,0,918,0,0],[1046,0,1175,0,0],[1418,0,1513,0,0],[1906,0,1957,0,0],[2542,0,2535,0,0],[3371,0,3287,0,0],[4444,0,4260,0,0],[5830,0,5515,0,0],[7615,0,7130,0,0],[9907,0,9202,0,0],[12845,0,11854,0,0],[16600,0,15241,0,0],[21392,0,19559,0,0],[27495,0,25054,0,0],[35256,0,32035,0,0],[45108,0,40889,0,0],[57600,0,52103,0,0],[73416,0,66288,0,0],[93417,0,84210,0,0],[118680,0,106825,0,0],[150556,0,135333,0,0],[190735,0,171234,0,0],[241333,0,216402,0,0],[304994,0,273177,0,0],[385024,0,344483,0,0],[485552,0,433969,0,0],[611733,0,546185,0,0],[770000,0,686805,0,0],[968379,0,862899,0,0],[1216878,0,1083277,0,0],[1527967,0,1358905,0,0],[1917188,0,1703436,0,0],[2403892,0,2133857,0,0],[3012175,0,2671296,0,0],[3772023,0,3342022,0,0],[4720743,0,4178689,0,0],[5904734,0,5221868,0,0],[7381687,0,6521957,0,0],[9223306,0,8141538,0,0],[11518694,0,10158304,0,0],[14378537,0,12668676,0,0],[17940294,0,15792287,0,0],[22374635,0,19677534,0,0],[27893402,0,24508442,0,0]],"barracks":[[36,0,0,0,0],[61,0,0,0,0],[97,0,0,0,0],[146,0,0,0,0],[212,0,0,0,0],[300,0,0,0,0],[416,0,0,0,0],[569,0,0,0,0],[768,0,133,0,0],[1027,0,320,0,0],[1360,0,561,0,0],[1790,0,871,0,0],[2341,0,1268,0,0],[3045,0,1774,0,0],[3943,0,2419,0,0],[5084,0,3237,0,0],[6531,0,4274,0,0],[8362,0,5585,0,0],[10676,0,7238,0,0],[13592,0,9321,0,0],[17264,0,11940,0,0],[21880,0,15227,0,0],[27673,0,19349,0,0],[34935,0,24510,0,0],[44028,0,30964,0,0],[55399,0,39026,0,0],[69606,0,49087,0,0],[87337,0,61629,0,0],[109447,0,77250,0,0],[136992,0,96688,0,0],[171279,0,120857,0,0],[213927,0,150884,0,0],[266933,0,188162,0,0],[332769,0,234409,0,0],[414484,0,291745,0,0],[515846,0,362783,0,0],[641501,0,450747,0,0],[797182,0,559605,0,0],[989960,0,694248,0,0],[1228548,0,860696,0,0],[1523687,0,1066360,0,0],[1888605,0,1320358,0,0],[2339594,0,1633905,0,0],[2896709,0,2020794,0,0],[3584636,0,2497980,0,0],[4433747,0,3086299,0,0],[5481399,0,3811353,0,0],[6773536,0,4704588,0,0],[8366637,0,5804620,0,0],[10330125,0,7158856,0,0]],"wall":[[108,0,0,0,0],[224,0,213,0,0],[376,0,374,0,0],[575,0,583,0,0],[830,0,852,0,0],[1155,0,1195,0,0],[1568,0,1631,0,0],[2088,0,2179,0,0],[2739,0,2866,0,0],[3552,0,3724,0,0],[4562,0,4790,0,0],[5812,0,6110,0,0],[7355,0,7739,0,0],[9255,0,9745,0,0],[11588,0,12208,0,0],[14446,0,15225,0,0],[17939,0,18914,0,0],[22201,0,23416,0,0],[27393,0,28900,0,0],[33706,0,35569,0,0],[41372,0,43668,0,0],[50667,0,53488,0,0],[61924,0,65383,0,0],[75539,0,79771,0,0],[91989,0,97157,0,0],[111843,0,118142,0,0],[135783,0,143447,0,0],[164621,0,173934,0,0],[199330,0,210631,0,0],[241072,0,254767,0,0],[291232,0,307809,0,0],[351464,0,371507,0,0],[423739,0,447949,0,0],[510409,0,539624,0,0],[614275,0,649499,0,0],[738675,0,781107,0,0],[887583,0,938658,0,0],[1065731,0,1127163,0,0],[1278750,0,1352588,0,0],[1533339,0,1622028,0,0],[1837468,0,1943927,0,0],[2200609,0,2328322,0,0],[2634024,0,2787146,0,0],[3151098,0,3334583,0,0],[3767730,0,3987485,0,0],[4502806,0,4765867,0,0],[5378751,0,5693503,0,0],[6422188,0,6798617,0,0],[7664717,0,8114710,0,0],[9143835,0,9681542,0,0]],"embassy":[[181,0,117,0,0],[223,0,167,0,0],[280,0,237,0,0],[355,0,330,0,0],[454,0,456,0,0],[582,0,622,0,0],[746,0,839,0,0],[957,0,1122,0,0],[1225,0,1488,0,0],[1565,0,1959,0,0],[1994,0,2563,0,0],[2532,0,3333,0,0],[3207,0,4314,0,0],[4050,0,5557,0,0],[5099,0,7130,0,0],[6404,0,9114,0,0],[8021,0,11611,0,0],[10022,0,14747,0,0],[12493,0,18679,0,0],[15541,0,23600,0,0],[19293,0,29748,0,0],[23906,0,37418,0,0],[29570,0,46974,0,0],[36516,0,58864,0,0],[45023,0,73642,0,0],[55431,0,91987,0,0],[68153,0,114737,0,0],[83688,0,142923,0,0],[102641,0,177811,0,0],[125745,0,220956,0,0],[153886,0,274271,0,0],[188136,0,340100,0,0],[229792,0,421322,0,0],[280422,0,521466,0,0],[341918,0,644861,0,0],[416566,0,796808,0,0],[507128,0,983803,0,0],[616935,0,1213799,0,0],[750005,0,1496532,0,0],[911185,0,1843913,0,0],[1106319,0,2270514,0,0],[1342449,0,2794154,0,0],[1628062,0,3436613,0,0],[1973380,0,4224511,0,0],[2390712,0,5190369,0,0],[2894879,0,6373908,0,0],[3503717,0,7823631,0,0],[4238691,0,9598744,0,0],[5125621,0,11771507,0,0],[6195562,0,14430087,0,0],[7485859,0,17682033,0,0],[9041403,0,21658506,0,0],[10916154,0,26519433,0,0],[13174952,0,32459766,0,0],[15895700,0,39717109,0,0],[19171974,0,48580984,0,0],[23116156,0,59404112,0,0],[27863188,0,72616121,0,0],[33575072,0,88740216,0,0],[40446263,0,108413447,0,0],[48710125,0,132411341,0,0],[58646677,0,161677840,0,0],[70591859,0,197361675,0,0],[84948638,0,240860576,0,0],[102200309,0,293874960,0,0],[122926415,0,358473161,0,0],[147821815,0,437170653,0,0],[177719508,0,533026255,0,0],[213617955,0,649758954,0,0],[256713784,0,791889743,0,0],[308440920,0,964913814,0,0],[370517426,0,1175509574,0,0],[445001535,0,1431792339,0,0],[534358695,0,1743622221,0,0],[641541773,0,2122977740,0,0],[770086993,0,2584409161,0,0],[924228684,0,3145588495,0,0],[1109036514,0,3827976726,0,0]],"branchOffice":[[63,0,0,0,0],[152,0,0,0,0],[278,0,0,0,0],[449,0,0,0,0],[681,0,494,0,0],[991,0,674,0,0],[1403,0,913,0,0],[1944,0,1227,0,0],[2653,0,1639,0,0],[3574,0,2175,0,0],[4768,0,2870,0,0],[6307,0,3767,0,0],[8286,0,4920,0,0],[10820,0,6399,0,0],[14058,0,8290,0,0],[18184,0,10700,0,0],[23428,0,13766,0,0],[30081,0,17658,0,0],[38503,0,22589,0,0],[49147,0,28824,0,0],[62576,0,36697,0,0],[79494,0,46621,0,0],[100778,0,59115,0,0],[127518,0,74823,0,0],[161074,0,94547,0,0],[203133,0,119286,0,0],[255797,0,150284,0,0],[321672,0,189083,0,0],[403995,0,237602,0,0],[506784,0,298223,0,0],[635019,0,373902,0,0],[794874,0,468304,0,0],[993998,0,585975,0,0],[1241864,0,732545,0,0],[1550195,0,914991,0,0],[1933500,0,1141950,0,0],[2409721,0,1424111,0,0],[3001041,0,1774699,0,0],[3734876,0,2210071,0,0],[4645098,0,2750444,0,0],[5773538,0,3420809,0,0],[7171843,0,4252036,0,0],[8903756,0,5282253,0,0],[11047926,0,6558537,0,0],[13701367,0,8138994,0,0],[16983708,0,10095321,0,0],[21042427,0,12515969,0,0],[26059285,0,15510020,0,0],[32258238,0,19211966,0,0],[39915158,0,23787590,0,0],[49369795,0,29441194,0,0],[61040457,0,36424488,0,0],[75442070,0,45047521,0,0],[93208340,0,55692120,0,0],[115118996,0,68828401,0,0],[142133229,0,85035064,0,0],[175430758,0,105024330,0,0],[216462250,0,129672573,0,0],[267011199,0,160057943,0,0],[329269880,0,197506578,0,0],[405932554,0,243649349,0,0],[500309818,0,300491522,0,0],[616468905,0,370498286,0,0],[759405766,0,456699728,0,0],[935256130,0,562819667,0,0],[1151554329,0,693433752,0,0],[1417550664,0,854163441,0,0],[1744600489,0,1051913980,0,0],[2146641189,0,1295166327,0,0],[2640776811,0,1594335201,0,0],[3247994585,0,1962208198,0,0],[3994042984,0,2414484249,0,0]],"workshop":[[171,0,63,0,0],[275,0,116,0,0],[402,0,180,0,0],[553,0,259,0,0],[735,0,354,0,0],[950,0,468,0,0],[1206,0,605,0,0],[1507,0,768,0,0],[1860,0,962,0,0],[2275,0,1191,0,0],[2759,0,1461,0,0],[3324,0,1779,0,0],[3980,0,2153,0,0],[4741,0,2590,0,0],[5623,0,3102,0,0],[6643,0,3699,0,0],[7821,0,4394,0,0],[9178,0,5203,0,0],[10740,0,6142,0,0],[12536,0,7231,0,0],[14599,0,8493,0,0],[16965,0,9954,0,0],[19676,0,11642,0,0],[22780,0,13591,0,0],[26329,0,15839,0,0],[30385,0,18431,0,0],[35017,0,21416,0,0],[40301,0,24850,0,0],[46326,0,28799,0,0],[53189,0,33336,0,0],[61004,0,38546,0,0],[69896,0,44524,0,0],[80008,0,51379,0,0],[91501,0,59236,0,0],[104555,0,68236,0,0],[119377,0,78540,0,0],[136196,0,90331,0,0],[155273,0,103815,0,0],[176902,0,119231,0,0],[201412,0,136847,0,0],[229177,0,156967,0,0],[260616,0,179938,0,0],[296201,0,206155,0,0],[336465,0,236065,0,0],[382006,0,270175,0,0],[433499,0,309061,0,0],[491701,0,353377,0,0],[557468,0,403866,0,0],[631758,0,461368,0,0],[715651,0,526838,0,0]],"safehouse":[[79,0,0,0,0],[148,0,0,0,0],[232,0,0,0,0],[334,0,87,0,0],[457,0,123,0,0],[605,0,168,0,0],[781,0,224,0,0],[990,0,291,0,0],[1238,0,372,0,0],[1530,0,470,0,0],[1874,0,589,0,0],[2278,0,730,0,0],[2750,0,900,0,0],[3302,0,1103,0,0],[3946,0,1344,0,0],[4696,0,1630,0,0],[5567,0,1970,0,0],[6577,0,2373,0,0],[7748,0,2848,0,0],[9103,0,3410,0,0],[10668,0,4073,0,0],[12476,0,4853,0,0],[14560,0,5770,0,0],[16961,0,6848,0,0],[19724,0,8113,0,0],[22901,0,9597,0,0],[26552,0,11335,0,0],[30742,0,13369,0,0],[35549,0,15749,0,0],[41060,0,18530,0,0],[47373,0,21777,0,0],[54600,0,25567,0,0],[62869,0,29988,0,0],[72324,0,35140,0,0],[83129,0,41142,0,0],[95472,0,48130,0,0],[109563,0,56261,0,0],[125643,0,65718,0,0],[143983,0,76711,0,0],[164892,0,89485,0,0],[188720,0,104320,0,0],[215863,0,121542,0,0],[246772,0,141527,0,0],[281953,0,164709,0,0],[321984,0,191589,0,0],[367518,0,222746,0,0],[419294,0,258848,0,0],[478147,0,300664,0,0],[545025,0,349084,0,0],[620998,0,405133,0,0],[707280,0,469994,0,0],[805241,0,545028,0,0],[916430,0,631808,0,0],[1042602,0,732145,0,0],[1185738,0,848124,0,0],[1348081,0,982152,0,0],[1532161,0,1136996,0,0],[1740842,0,1315849,0,0],[1977359,0,1522382,0,0],[2245364,0,1760827,0,0]],"forester":[[219,0,0,0,0],[277,0,67,0,0],[365,0,114,0,0],[493,0,183,0,0],[677,0,282,0,0],[938,0,422,0,0],[1303,0,619,0,0],[1811,0,893,0,0],[2511,0,1272,0,0],[3471,0,1791,0,0],[4780,0,2500,0,0],[6556,0,3463,0,0],[8957,0,4767,0,0],[12189,0,6524,0,0],[16529,0,8886,0,0],[22339,0,12052,0,0],[30095,0,16285,0,0],[40427,0,21929,0,0],[54159,0,29440,0,0],[72377,0,39415,0,0],[96502,0,52642,0,0],[128398,0,70149,0,0],[170502,0,93286,0,0],[226005,0,123823,0,0],[299076,0,164072,0,0],[395156,0,217057,0,0],[521350,0,286731,0,0],[686920,0,378251,0,0],[903934,0,498349,0,0],[1188113,0,655799,0,0],[1559914,0,862037,0,0],[2045951,0,1131957,0,0],[2680825,0,1484943,0,0],[3509497,0,1946215,0,0],[4590363,0,2548570,0,0],[5999234,0,3334630,0,0],[7834482,0,4359771,0,0],[10223701,0,5695902,0,0],[13332318,0,7436363,0,0],[17374727,0,9702264,0,0],[22628674,0,12650686,0,0],[29453848,0,16485294,0,0],[38315888,0,21470051,0,0],[49817388,0,27946958,0,0],[64737919,0,36358975,0,0],[84085687,0,47279646,0,0],[109164190,0,61451363,0,0],[141658199,0,79834790,0,0],[183744665,0,103672678,0,0],[238235716,0,134572257,0,0],[308763015,0,174611567,0,0],[400015379,0,226476674,0,0],[518044987,0,293638709,0,0],[670661903,0,380582225,0,0],[867942282,0,493099698,0,0],[1122882900,0,638671271,0,0],[1452243986,0,826954314,0,0],[1877634334,0,1070414450,0,0],[2426908106,0,1385138785,0,0],[3135962562,0,1791883777,0,0],[4051051404,0,2317425233,0,0]],"glassblowing":[[231,0,0,0,0],[294,0,80,0,0],[388,0,128,0,0],[524,0,197,0,0],[721,0,296,0,0],[999,0,437,0,0],[1389,0,635,0,0],[1931,0,912,0,0],[2679,0,1293,0,0],[3705,0,1817,0,0],[5103,0,2534,0,0],[7000,0,3508,0,0],[9565,0,4827,0,0],[13019,0,6607,0,0],[17658,0,9001,0,0],[23867,0,12213,0,0],[32158,0,16509,0,0],[43203,0,22243,0,0],[57886,0,29881,0,0],[77367,0,40032,0,0],[103167,0,53501,0,0],[137281,0,71344,0,0],[182319,0,94944,0,0],[241696,0,126115,0,0],[319874,0,167232,0,0],[422683,0,221402,0,0],[557728,0,292688,0,0],[734931,0,386399,0,0],[967219,0,509467,0,0],[1271430,0,670936,0,0],[1669486,0,882601,0,0],[2189901,0,1159836,0,0],[2869754,0,1522669,0,0],[3757232,0,1997174,0,0],[4914928,0,2617284,0,0],[6424109,0,3427138,0,0],[8390239,0,4484121,0,0],[10950125,0,5862811,0,0],[14281162,0,7660088,0,0],[18613275,0,10001754,0,0],[24244366,0,13051100,0,0],[31560268,0,17020006,0,0],[41060521,0,22183296,0,0],[53391660,0,28897318,0,0],[69390195,0,37623972,0,0],[90138092,0,48961787,0,0],[117034361,0,63686093,0,0],[151887423,0,82800949,0,0],[197034258,0,107606250,0,0],[255494043,0,139784419,0,0],[331166263,0,181512398,0,0],[429086062,0,235606256,0,0],[555753362,0,305707931,0,0],[719556937,0,396526266,0,0],[931320746,0,514148126,0,0],[1205007650,0,666439857,0,0],[1558625676,0,863565256,0,0],[2015394930,0,1118653715,0,0],[2605249852,0,1448661968,0,0],[3366772886,0,1875485321,0,0],[4349683022,0,2427390379,0,0]],"alchemist":[[225,0,0,0,0],[286,0,83,0,0],[377,0,135,0,0],[510,0,212,0,0],[701,0,322,0,0],[971,0,479,0,0],[1351,0,698,0,0],[1879,0,1002,0,0],[2608,0,1421,0,0],[3608,0,1996,0,0],[4973,0,2780,0,0],[6826,0,3844,0,0],[9332,0,5281,0,0],[12710,0,7216,0,0],[17247,0,9814,0,0],[23325,0,13291,0,0],[31445,0,17932,0,0],[42269,0,24113,0,0],[56666,0,32328,0,0],[75779,0,43225,0,0],[101105,0,57653,0,0],[134612,0,76725,0,0],[178873,0,101898,0,0],[237258,0,135078,0,0],[314174,0,178753,0,0],[415381,0,236174,0,0],[548396,0,311580,0,0],[723032,0,410502,0,0],[952083,0,540142,0,0],[1252225,0,709882,0,0],[1645175,0,931927,0,0],[2159201,0,1222157,0,0],[2831084,0,1601209,0,0],[3708647,0,2095901,0,0],[4854048,0,2741056,0,0],[6348032,0,3581877,0,0],[8295448,0,4677012,0,0],[10832381,0,6102517,0,0],[14135388,0,7956991,0,0],[18433436,0,10368196,0,0],[24023354,0,13501625,0,0],[31289801,0,17571569,0,0],[40731075,0,22855399,0,0],[52992468,0,29712019,0,0],[68909347,0,38605676,0,0],[89562805,0,50136690,0,0],[116351507,0,65081100,0,0],[151084440,0,84441797,0,0],[196100619,0,109514474,0,0],[254423546,0,141972642,0,0],[329960465,0,183977224,0,0],[427759363,0,238317787,0,0],[554340377,0,308594524,0,0],[718123064,0,399452679,0,0],[929977166,0,516884494,0,0],[1203932418,0,668618021,0,0],[1558093184,0,864617745,0,0],[2015816796,0,1117729006,0,0],[2607231378,0,1444507426,0,0],[3371190634,0,1866286254,0,0],[4357790990,0,2410549657,0,0]],"winegrower":[[231,0,0,0,0],[294,0,83,0,0],[388,0,133,0,0],[524,0,206,0,0],[721,0,311,0,0],[999,0,460,0,0],[1389,0,669,0,0],[1931,0,959,0,0],[2679,0,1360,0,0],[3705,0,1909,0,0],[5103,0,2660,0,0],[7000,0,3679,0,0],[9565,0,5057,0,0],[13020,0,6916,0,0],[17658,0,9413,0,0],[23867,0,12759,0,0],[32158,0,17229,0,0],[43204,0,23190,0,0],[57887,0,31120,0,0],[77368,0,41649,0,0],[103169,0,55604,0,0],[137284,0,74071,0,0],[182323,0,98470,0,0],[241701,0,130662,0,0],[319882,0,173079,0,0],[422694,0,228903,0,0],[557743,0,302288,0,0],[734951,0,398654,0,0],[967247,0,525073,0,0],[1271469,0,690763,0,0],[1669538,0,907730,0,0],[2189971,0,1191607,0,0],[2869849,0,1562737,0,0],[3757360,0,2047577,0,0],[4915100,0,2680522,0,0],[6424340,0,3506260,0,0],[8390549,0,4582831,0,0],[10950541,0,5985583,0,0],[14281719,0,7812290,0,0],[18614019,0,10189778,0,0],[24245360,0,13282495,0,0],[31561594,0,17303591,0,0],[41062287,0,22529243,0,0],[53394009,0,29317171,0,0],[69393318,0,38130559,0,0],[90142239,0,49568956,0,0],[117039862,0,64408192,0,0],[151894714,0,83651900,0,0],[197043912,0,108598039,0,0],[255506818,0,140924741,0,0],[331183153,0,182801082,0,0],[429108374,0,237029979,0,0],[555782817,0,307232502,0,0],[719595793,0,398085540,0,0],[931371969,0,515628234,0,0],[1205075131,0,667656969,0,0],[1558714520,0,864234452,0,0],[2015511825,0,1118345706,0,0],[2605403565,0,1446743216,0,0],[3366974896,0,1871035622,0,0],[4349948359,0,2419089875,0,0]],"stonemason":[[229,0,0,0,0],[288,0,83,0,0],[376,0,133,0,0],[505,0,206,0,0],[690,0,311,0,0],[954,0,460,0,0],[1323,0,669,0,0],[1837,0,959,0,0],[2547,0,1360,0,0],[3522,0,1909,0,0],[4853,0,2660,0,0],[6661,0,3679,0,0],[9108,0,5057,0,0],[12408,0,6916,0,0],[16844,0,9413,0,0],[22789,0,12759,0,0],[30737,0,17229,0,0],[41337,0,23190,0,0],[55445,0,31120,0,0],[74184,0,41649,0,0],[99031,0,55604,0,0],[131922,0,74071,0,0],[175395,0,98470,0,0],[232776,0,130662,0,0],[308412,0,173079,0,0],[407991,0,228903,0,0],[538944,0,302288,0,0],[710973,0,398654,0,0],[936736,0,525073,0,0],[1232739,0,690763,0,0],[1620495,0,907730,0,0],[2128021,0,1191607,0,0],[2791789,0,1562737,0,0],[3659254,0,2047577,0,0],[4792128,0,2680522,0,0],[6270626,0,3506260,0,0],[8198965,0,4582831,0,0],[10712494,0,5985583,0,0],[13986913,0,7812290,0,0],[18250212,0,10189778,0,0],[23798127,0,13282495,0,0],[31014120,0,17303591,0,0],[40395228,0,22529243,0,0],[52585482,0,29317171,0,0],[68419105,0,38130559,0,0],[88976328,0,49568956,0,0],[115655515,0,64408192,0,0],[150266307,0,83651900,0,0],[195149923,0,108598039,0,0],[253334457,0,140924741,0,0],[328735356,0,182801082,0,0],[426414121,0,237029979,0,0],[552912125,0,307232502,0,0],[716681218,0,398085540,0,0],[928639131,0,515628234,0,0],[1202885669,0,667656969,0,0],[1557626105,0,864234452,0,0],[2016361500,0,1118345706,0,0],[2609422837,0,1446743216,0,0],[3375947964,0,1871035622,0,0],[4366428737,0,2419089875,0,0]],"carpentering":[[55,0,0,0,0],[87,0,0,0,0],[127,0,0,0,0],[178,0,0,0,0],[242,0,0,0,0],[320,0,0,0,0],[416,0,0,0,0],[533,0,330,0,0],[676,0,392,0,0],[848,0,470,0,0],[1056,0,566,0,0],[1307,0,686,0,0],[1608,0,833,0,0],[1968,0,1015,0,0],[2398,0,1238,0,0],[2911,0,1512,0,0],[3521,0,1847,0,0],[4245,0,2256,0,0],[5104,0,2755,0,0],[6122,0,3362,0,0],[7325,0,4099,0,0],[8745,0,4993,0,0],[10421,0,6077,0,0],[12395,0,7389,0,0],[14719,0,8976,0,0],[17452,0,10892,0,0],[20663,0,13203,0,0],[24432,0,15990,0,0],[28853,0,19346,0,0],[34034,0,23385,0,0],[40101,0,28241,0,0],[47203,0,34077,0,0],[55508,0,41084,0,0],[65216,0,49492,0,0],[76556,0,59576,0,0],[89795,0,71660,0,0],[105244,0,86136,0,0],[123262,0,103465,0,0],[144265,0,124200,0,0],[168737,0,148998,0,0],[197238,0,178640,0,0],[230416,0,214058,0,0],[269023,0,256358,0,0],[313930,0,306856,0,0],[366145,0,367117,0,0],[426835,0,439000,0,0],[497350,0,524716,0,0],[579253,0,626889,0,0],[674351,0,748636,0,0],[784736,0,893662,0,0]],"optician":[[88,0,0,0,0],[121,0,21,0,0],[162,0,52,0,0],[214,0,91,0,0],[278,0,138,0,0],[356,0,196,0,0],[451,0,267,0,0],[567,0,353,0,0],[707,0,457,0,0],[875,0,583,0,0],[1077,0,734,0,0],[1318,0,914,0,0],[1606,0,1129,0,0],[1949,0,1386,0,0],[2355,0,1691,0,0],[2838,0,2053,0,0],[3408,0,2481,0,0],[4082,0,2987,0,0],[4877,0,3585,0,0],[5813,0,4289,0,0],[6914,0,5117,0,0],[8206,0,6091,0,0],[9723,0,7234,0,0],[11500,0,8575,0,0],[13581,0,10146,0,0],[16014,0,11985,0,0],[18858,0,14136,0,0],[22178,0,16648,0,0],[26052,0,19582,0,0],[30568,0,23004,0,0],[35829,0,26994,0,0],[41953,0,31642,0,0],[49077,0,37053,0,0],[57361,0,43350,0,0],[66987,0,50671,0,0],[78167,0,59181,0,0],[91143,0,69065,0,0],[106198,0,80541,0,0],[123655,0,93858,0,0],[143890,0,109304,0,0],[167332,0,127212,0,0],[194479,0,147965,0,0],[225904,0,172006,0,0],[262267,0,199844,0,0],[304327,0,232066,0,0],[352960,0,269351,0,0],[409173,0,312478,0,0],[474124,0,362345,0,0],[549150,0,419987,0,0],[635784,0,486596,0,0]],"fireworker":[[247,0,114,0,0],[288,0,153,0,0],[338,0,201,0,0],[400,0,262,0,0],[475,0,336,0,0],[566,0,426,0,0],[676,0,537,0,0],[807,0,671,0,0],[964,0,832,0,0],[1151,0,1026,0,0],[1372,0,1258,0,0],[1635,0,1536,0,0],[1944,0,1866,0,0],[2309,0,2259,0,0],[2738,0,2724,0,0],[3241,0,3276,0,0],[3830,0,3927,0,0],[4518,0,4695,0,0],[5322,0,5599,0,0],[6260,0,6662,0,0],[7351,0,7911,0,0],[8621,0,9375,0,0],[10096,0,11091,0,0],[11807,0,13099,0,0],[13792,0,15446,0,0],[16091,0,18188,0,0],[18752,0,21388,0,0],[21829,0,25119,0,0],[25384,0,29465,0,0],[29490,0,34526,0,0],[34227,0,40412,0,0],[39690,0,47256,0,0],[45985,0,55208,0,0],[53236,0,64440,0,0],[61583,0,75154,0,0],[71185,0,87580,0,0],[82226,0,101984,0,0],[94916,0,118673,0,0],[109493,0,137999,0,0],[126232,0,160370,0,0],[145444,0,186252,0,0],[167485,0,216186,0,0],[192762,0,250790,0,0],[221738,0,290778,0,0],[254944,0,336969,0,0],[292983,0,390308,0,0],[336543,0,451879,0,0],[386409,0,522927,0,0],[443476,0,604886,0,0],[508765,0,699401,0,0]],"vineyard":[[286,0,108,0,0],[327,0,142,0,0],[378,0,186,0,0],[440,0,240,0,0],[515,0,307,0,0],[607,0,389,0,0],[718,0,489,0,0],[851,0,611,0,0],[1010,0,759,0,0],[1200,0,936,0,0],[1425,0,1149,0,0],[1692,0,1404,0,0],[2007,0,1709,0,0],[2379,0,2072,0,0],[2817,0,2503,0,0],[3331,0,3015,0,0],[3933,0,3621,0,0],[4639,0,4337,0,0],[5463,0,5183,0,0],[6426,0,6179,0,0],[7548,0,7352,0,0],[8854,0,8730,0,0],[10374,0,10349,0,0],[12139,0,12248,0,0],[14189,0,14473,0,0],[16565,0,17077,0,0],[19319,0,20123,0,0],[22506,0,23682,0,0],[26194,0,27838,0,0],[30456,0,32686,0,0],[35380,0,38340,0,0],[41065,0,44927,0,0],[47623,0,52596,0,0],[55184,0,61520,0,0],[63896,0,71899,0,0],[73931,0,83963,0,0],[85482,0,97978,0,0],[98772,0,114250,0,0],[114056,0,133135,0,0],[131624,0,155042,0,0],[151809,0,180443,0,0],[174992,0,209883,0,0],[201607,0,243990,0,0],[232150,0,283489,0,0],[267188,0,329213,0,0],[307368,0,382126,0,0],[353430,0,443336,0,0],[406216,0,514120,0,0],[466690,0,595948,0,0],[535948,0,690515,0,0]],"architect":[[146,0,85,0,0],[201,0,116,0,0],[271,0,154,0,0],[357,0,200,0,0],[464,0,256,0,0],[593,0,324,0,0],[751,0,405,0,0],[942,0,503,0,0],[1171,0,619,0,0],[1446,0,757,0,0],[1776,0,920,0,0],[2169,0,1112,0,0],[2636,0,1339,0,0],[3191,0,1606,0,0],[3848,0,1918,0,0],[4625,0,2284,0,0],[5541,0,2711,0,0],[6620,0,3210,0,0],[7888,0,3791,0,0],[9379,0,4467,0,0],[11126,0,5252,0,0],[13173,0,6163,0,0],[15568,0,7220,0,0],[18368,0,8443,0,0],[21637,0,9858,0,0],[25450,0,11494,0,0],[29894,0,13384,0,0],[35069,0,15564,0,0],[41090,0,18079,0,0],[48092,0,20976,0,0],[56227,0,24312,0,0],[65673,0,28151,0,0],[76634,0,32566,0,0],[89345,0,37640,0,0],[104077,0,43468,0,0],[121142,0,50160,0,0],[140899,0,57838,0,0],[163762,0,66645,0,0],[190205,0,76741,0,0],[220775,0,88310,0,0],[256102,0,101561,0,0],[296907,0,116731,0,0],[344021,0,134094,0,0],[398398,0,153956,0,0],[461134,0,176672,0,0],[533489,0,202639,0,0],[616907,0,232315,0,0],[713049,0,266218,0,0],[823818,0,304937,0,0],[951401,0,349144,0,0]],"temple":[[141,0,0,137,0],[181,0,0,173,0],[232,0,0,223,0],[296,0,0,289,0],[376,0,0,377,0],[476,0,0,492,0],[598,0,0,641,0],[749,0,0,834,0],[932,0,0,1082,0],[1156,0,0,1399,0],[1428,0,0,1802,0],[1756,0,0,2312,0],[2151,0,0,2957,0],[2627,0,0,3768,0],[3197,0,0,4787,0],[3880,0,0,6063,0],[4697,0,0,7658,0],[5671,0,0,9647,0],[6831,0,0,12123,0],[8210,0,0,15200,0],[9848,0,0,19018,0],[11791,0,0,23748,0],[14093,0,0,29600,0],[16816,0,0,36831,0],[20035,0,0,45756,0],[23837,0,0,56760,0],[28322,0,0,70312,0],[33609,0,0,86987,0],[39835,0,0,107486,0],[47164,0,0,132664,0],[55782,0,0,163563,0],[65910,0,0,201456,0],[77805,0,0,247891,0],[91766,0,0,304756,0],[108143,0,0,374346,0],[127341,0,0,459458,0],[149835,0,0,563491,0],[176178,0,0,690581,0],[207012,0,0,845755,0],[243086,0,0,1035121,0],[285271,0,0,1266100,0],[334582,0,0,1547705,0],[392197,0,0,1890876,0],[459487,0,0,2308896,0],[538049,0,0,2817877,0],[629735,0,0,3437366,0],[736699,0,0,4191069,0],[861445,0,0,5107727,0],[1006880,0,0,6222178,0],[1176382,0,0,7576637,0],[1373872,0,0,9222255,0],[1603902,0,0,11220983,0],[1871757,0,0,13647849,0],[2183570,0,0,16593692,0],[2546457,0,0,20168472,0],[2968674,0,0,24505268,0]],"dump":[[479,0,409,600,288],[663,0,563,733,411],[907,0,762,904,576],[1229,0,1017,1122,794],[1648,0,1343,1397,1078],[2187,0,1754,1742,1447],[2877,0,2270,2172,1922],[3754,0,2914,2704,2528],[4863,0,3713,3360,3298],[6259,0,4700,4166,4273],[8008,0,5916,5152,5499],[10193,0,7408,6354,7038],[12913,0,9233,7816,8963],[16289,0,11459,9587,11363],[20468,0,14170,11731,14347],[25630,0,17461,14318,18050],[31991,0,21450,17435,22633],[39816,0,26276,21182,28296],[49424,0,32105,25681,35279],[61201,0,39133,31074,43877],[75615,0,47594,37528,54445],[93232,0,57769,45244,67419],[114736,0,69989,54456,83322],[140951,0,84646,65440,102795],[172875,0,102209,78526,126608],[211707,0,123231,94098,155700],[258897,0,148370,112611,191204],[316188,0,178405,134603,234493],[385682,0,214259,160703,287226],[469907,0,257025,191656,351409],[571907,0,307997,228336,429467],[695339,0,368704,271771,524328],[844601,0,440958,323172,639526],[1024978,0,526899,383960,779327],[1242818,0,629056,455804,948878],[1505740,0,750417,540669,1154383],[1822893,0,894513,640857,1403320],[2205251,0,1065510,759072,1704704],[2665978,0,1268327,898489,2069389],[3220858,0,1508768,1062830,2510448],[3888809,0,1793680,1256461,3043618],[4692504,0,2131136,1484503,3687837],[5659103,0,2530654,1752955,4465889],[6821133,0,3003454,2068850,5405177],[8217540,0,3562756,2440427,6538649],[9894942,0,4224135,2877336,7905916],[11909126,0,5005933,3390878,9554576],[14326838,0,5929750,3994283,11541820],[17227911,0,7021015,4703037,13936347],[20707815,0,8309654,5535264,16820655],[24880691,0,9830887,6512169,20293796],[29882972,0,11626147,7658553,24474668],[35877705,0,13744173,9003430,29505965],[43059704,0,16242281,10580720,35558898],[51661686,0,19187867,12430083,42838859],[61961599,0,22660159,14597877,51592191],[74291346,0,26752285,17138281,62114301],[89047189,0,31573683,20114603,74759363],[106702143,0,37252943,23600805,89951932],[127820742,0,43941134,27683286,108200846],[153076636,0,51815698,32462951,130115846],[183273548,0,61085030,38057636,156427468],[219370234,0,71993831,44604920,188010830],[262510208,0,84829399,52265415,225914080],[314057139,0,99928990,61226596,271392412],[375636993,0,117688448,71707256,325948742],[449188203,0,138572321,83962713,391382331],[537021387,0,163125710,98290858,469846907],[641890428,0,191988152,115039217,563920138],[767077060,0,225909882,134613161,676686654],[916491532,0,265770886,157485484,811837264],[1094792371,0,312603209,184207542,973787500],[1307528875,0,367617084,215422238,1167819245],[1561310621,0,432231532,251879127,1400249928],[1864009093,0,508110181,294452014,1678634621],[2224997499,0,597203219,344159438,2012007429],[2655435969,0,701796492,402188508,2411169766],[3168610716,0,824568985,469922661,2889034609],[3780337307,0,968660103,548973956,3461037554],[4509440138,0,1137748418,641220668,4145627598]],"pirateFortress":[[474,0,237,0,0],[1072,0,579,0,0],[1816,0,1016,0,0],[2736,0,1569,0,0],[3864,0,2262,0,0],[5239,0,3126,0,0],[6906,0,4194,0,0],[8916,0,5508,0,0],[11333,0,7119,0,0],[14226,0,9085,0,0],[17679,0,11475,0,0],[21789,0,14372,0,0],[26667,0,17874,0,0],[32445,0,22097,0,0],[39273,0,27175,0,0],[47327,0,33271,0,0],[56810,0,40573,0,0],[67956,0,49306,0,0],[81039,0,59731,0,0],[96373,0,72160,0,0],[114322,0,86956,0,0],[135306,0,104547,0,0],[159811,0,125435,0,0],[188397,0,150211,0,0],[221711,0,179568,0,0],[260498,0,214317,0,0],[305618,0,255412,0,0],[358061,0,303968,0,0],[418968,0,361292,0,0],[489652,0,428915,0,0],[571626,0,508629,0,0],[666630,0,602529,0,0],[776663,0,713066,0,0],[904027,0,843106,0,0],[1051368,0,995998,0,0],[1221724,0,1175655,0,0],[1418588,0,1386646,0,0],[1645970,0,1634307,0,0],[1908477,0,1924867,0,0],[2211395,0,2265593,0,0],[2560791,0,2664965,0,0],[2963626,0,3132871,0,0],[3427887,0,3680843,0,0],[3962732,0,4322320,0,0],[4578661,0,5072968,0,0],[5287711,0,5951038,0,0],[6103679,0,6977792,0,0],[7042372,0,8177991,0,0],[8121902,0,9580466,0,0],[9363013,0,11218783,0,0]],"shrineOfOlympus":[[872,0,0,0,0],[973,0,0,0,0],[1115,81,0,0,0],[1311,101,0,0,0],[1577,127,178,0,0],[1934,163,218,0,0],[2410,209,273,0,0],[3039,271,348,0,0],[3866,351,451,243,0],[4946,455,590,316,0],[6351,589,778,415,155],[8171,762,1030,546,216],[10521,984,1366,718,298],[13543,1267,1813,946,408],[17420,1629,2407,1244,557],[22380,2089,3193,1635,756],[28711,2672,4229,2146,1022],[36774,3411,5594,2812,1377],[47024,4344,7388,3678,1850],[60031,5522,9740,4802,2479],[76508,7005,12820,6258,3312],[97349,8870,16846,8143,4416],[123672,11211,22100,10579,5875],[156877,14148,28948,13721,7801],[198712,17826,37862,17770,10341],[251358,22428,49451,22982,13685],[317539,28180,64501,29683,18084],[400653,35361,84025,38289,23865],[504931,44319,109329,49331,31454],[635649,55484,142093,63487,41406],[799373,69387,184480,81618,54447],[1004276,86688,239270,104822,71520],[1260522,108199,310040,134496,93855],[1580751,134927,401381,172415,123051],[1980670,168115,519191,220838,161191],[2479792,209298,671041,282634,210980],[3102346,260372,866641,361446,275934],[3878410,323676,1118449,461901,360622],[4845302,402095,1442428,589870,470975],[6049311,499188,1859040,752802,614693],[7547835,619341,2394492,960141,801765],[9412017,767960,3082341,1223862,1045148],[11730015,951706,3965542,1559139,1361639],[14611033,1178781,5099061,1985193,1773010],[18190309,1459283,6553210,2526371,2307470],[22635269,1805645,8417902,3213493,3001556],[28153130,2233162,10808082,4085571,3902576],[35000291,2760655,13870656,5191965,5071772],[43493921,3411267,17793322,6595117,6588394],[54026264,4213458,22815833,8373991,8554970]]};
+
+// ---- engine.js ----
+// Ikariam growth engine: mechanics model + greedy-ROI build planner + hourly simulator.
+// All game constants are documented with their source in DATA_NOTES below.
+
+const RES = ['wood', 'wine', 'marble', 'glass', 'sulfur'];
+const LUX_BONUS = { wine: 'winegrower', marble: 'stonemason', glass: 'glassblowing', sulfur: 'alchemist' };
+const REDUCER = { wood: 'carpentering', wine: 'vineyard', marble: 'architect', glass: 'optician', sulfur: 'fireworker' };
+const GOD_RES = { pan: 'wood', dionysus: 'wine', tyche: 'marble', theia: 'glass', hephaestus: 'sulfur', plutus: 'gold' };
+
+const NAMES = {
+  townHall: 'Town Hall', tavern: 'Tavern', museum: 'Museum', academy: 'Academy', warehouse: 'Warehouse',
+  port: 'Trading Port', forester: "Forester's House", winegrower: 'Winegrower (Winery)', stonemason: 'Stonemason',
+  glassblowing: 'Glassblower', alchemist: "Alchemist's Tower", carpentering: "Carpenter's Workshop",
+  architect: "Architect's Office", vineyard: 'Wine Press', optician: 'Optician', fireworker: 'Firework Test Area',
+  palace: 'Palace', palaceColony: "Governor's Residence", shrineOfOlympus: "Gods' Shrine", barracks: 'Barracks',
+  wall: 'Town Wall', safehouse: 'Hideout', shipyard: 'Shipyard', embassy: 'Embassy', workshop: 'Workshop',
+  branchOffice: 'Trading Post', dump: 'Dump', temple: 'Temple', pirateFortress: 'Pirate Fortress',
+};
+
+// ---- Tables (index = level unless noted) ----
+// Tavern: satisfaction from the building level (index = tavern level)
+const TAVERN_SAT = [0,12,24,36,48,61,73,86,99,112,125,138,152,165,179,193,207,222,236,251,266,282,297,313,329,345,361,378,395,412,430,448,466,484,502,521,540,560,580,600,620,641,662,683,705,727,749,772,795,819,843,867,891,916,942,968,994,1021,1048,1075,1103,1131,1160,1189,1219,1249,1280,1311,1343,1375,1408];
+// Satisfaction from wine served (index = serving level, max = tavern level)
+const WINE_SAT = [0,60,120,181,242,304,367,430,494,559,624,691,758,826,896,966,1037,1109,1182,1256,1332,1408,1485,1564,1644,1725,1807,1891,1975,2061,2149,2238,2328,2419,2512,2606,2702,2800,2898,2999,3101,3204,3310,3416,3525,3635,3747,3861,3976,4094,4213,4334,4457,4582,4709,4838,4969,5103,5238,5375,5515,5657,5801,5947,6096,6247,6400,6556,6714,6875,7038];
+// Wine consumed per hour at each serving level, before Wine Press reduction
+const WINE_USE = [0,4,8,13,18,24,30,37,44,51,60,68,78,88,99,110,122,136,150,165,180,197,216,235,255,277,300,325,351,378,408,439,472,507,544,584,626,670,717,766,818,874,933,995,1060,1129,1203,1280,1361,1449,1541,1640,1745,1857,1976,2102,2237,2380,2532,2694,2867,3050,3246,3453,3675,3910,4160,4426,4710,5011,5332];
+// Museum satisfaction by level
+const MUSEUM_SAT = [0,20,41,63,88,114,144,176,211,250,294,341,395,453,518,590,670,759,857,965,1086,1219,1367,1530,1711,1912,2134,2380,2652,2953,3286,3655,4064,4516,5016,5569,6182];
+// Max scientists by Academy level
+const ACADEMY_SCI = [0,8,12,16,22,28,35,43,51,60,69,79,89,100,111,122,134,146,159,172,185,198,212,227,241,256,271,287,302,318,335,351,368,385,404,424,444,466,488,512,537,563,590,619,649,680,713,748,784,822,862];
+// Island worker caps per city, index = island building level - 1 (forum donation table, levels 1-60)
+const SAWMILL_WORKERS = [30,40,52,66,81,97,115,134,154,174,196,218,241,264,289,314,340,366,393,420,449,477,506,536,566,597,628,659,692,724,757,790,824,858,893,928,964,999,1036,1072,1109,1147,1184,1222,1261,1299,1339,1378,1418,1458,1498,1539,1580,1622,1663,1705,1748,1790,1833,1876];
+const LUX_WORKERS = [20,33,49,67,88,110,133,158,184,212,241,270,301,333,365,399,433,468,504,541,578,616,655,695,735,776,817,859,902,946,990,1034,1079,1125,1171,1218,1265,1313,1361,1410,1459,1509,1559,1610,1661,1713,1765,1817,1870,1924,1977,2032,2086,2142,2197,2253,2309,2366,2423,2481];
+// Warehouse capacity per resource, index = level-1
+const WAREHOUSE_CAP = [8000,16401,25455,35331,46181,58159,71421,86138,102493,120687,140942,163502,188637,216646,247860,282647,321416,364622,412768,466416,526189,592779,666959,749584,841609,944094,1058219,1185297,1326787,1484315,1659690,1854922,2072252,2314171,2583453,2883186,3216807,3588142,4001450,4461476];
+const PORT_LOAD = [30,60,93,129,169,213,261,315,373,437,508,586,672,766,869,983,1108,1246,1398,1565,1748,1950,2172,2416,2685,2980,3305,3663,4056,4489,4965,5488,6064,6698,7394,8161,9004,9931,10951,12073];
+
+function housing(L) {
+  if (L <= 0) return 0;
+  if (L < 41) return Math.floor(10 * Math.pow(L, 1.5)) * 2 + 40;
+  return Math.round(5099.12 * Math.pow(1.038283, L - 40) - 1.7) + (L === 58 || L === 62 ? 1 : 0);
+}
+
+// ---- Build time (seconds) for reaching level L ----
+const TP = {
+  townHall: { a: 1800, b: 1, c: 1.17, d: -1080, e: [3186] },
+  tavern: { a: 10800, b: 1, c: 1.06, d: 10440 },
+  museum: { a: 18000, b: 1, c: 1.1, d: 14040 },
+  academy: { a: 1440, b: 1, c: 1.2, d: 720, e: [983] },
+  warehouse: { a: 2880, b: 1, c: 1.14, d: 2160, e: [1063, 1163] },
+  port: { a: 50400, b: 23, c: 1.15, d: 1512, e: [588] },
+  forester: { a: 72000, b: 11, c: 1.1, d: 6120 }, glassblowing: { a: 72000, b: 11, c: 1.1, d: 6120 },
+  alchemist: { a: 72000, b: 11, c: 1.1, d: 6120 }, winegrower: { a: 72000, b: 11, c: 1.1, d: 6120 },
+  stonemason: { a: 72000, b: 11, c: 1.1, d: 6120 },
+  carpentering: [{ a: 125660, b: 37, c: 1.06, d: 2808 }, { a: 125031, b: 56, c: 1.069394, d: 0 }],
+  architect: [{ a: 125660, b: 37, c: 1.06, d: 2628 }, { a: 156455, b: 68, c: 1.068703, d: 0 }],
+  fireworker: [{ a: 125660, b: 37, c: 1.06, d: 2628 }, { a: 156455, b: 68, c: 1.068703, d: 0 }],
+  optician: [{ a: 125660, b: 37, c: 1.06, d: 2772 }, { a: 168457, b: 75, c: 1.069256, d: 0 }],
+  vineyard: [{ a: 125660, b: 37, c: 1.06, d: 2232 }, { a: 107967, b: 44, c: 1.067231, d: 1 }],
+  palace: { a: 11520, b: 1, c: 1.4, d: 0 }, palaceColony: { a: 11520, b: 1, c: 1.4, d: 0 },
+  shrineOfOlympus: { a: 48, b: 1, c: 1.25, d: 0 },
+  safehouse: { a: 96000, b: 7, c: 1.05, d: 12960 }, wall: { a: 57600, b: 11, c: 1.1, d: 3240, e: [2430] },
+  barracks: { a: 25200, b: 11, c: 1.1, d: 1728, e: [732] }, shipyard: { a: 64800, b: 7, c: 1.05, d: 7128 },
+  embassy: { a: 96000, b: 7, c: 1.05, d: 10080 }, workshop: { a: 96000, b: 7, c: 1.05, d: 11880 },
+  branchOffice: { a: 108000, b: 11, c: 1.1, d: 9360 }, dump: { a: 32000, b: 13, c: 1.17, d: 2160 },
+  temple: { a: 2160, b: 1, c: 1.1, d: 0 },
+};
+function buildSeconds(b, L) {
+  let p = TP[b]; if (!p) return 3600;
+  const i = L - 1;
+  if (Array.isArray(p)) p = i < 32 ? p[0] : p[1];
+  let t = Math.round(p.a / p.b * Math.pow(p.c, i + 1) - p.d) - (p.e && p.e[i] != null ? p.e[i] : 0);
+  return Math.max(1, Math.min(t, 1728000));
+}
+
+// ---- Costs with reductions ----
+function costFactor(city, r, research) {
+  const red = (research.pulley ? 2 : 0) + (research.geometry ? 4 : 0) + (research.spiritLevel ? 8 : 0);
+  const lvl = Math.min(city.b[REDUCER[r]] || 0, 50);
+  return Math.max(0, 1 - (red + lvl) / 100);
+}
+function upgradeCost(city, b, L, research) {
+  const row = COSTS[b] && COSTS[b][L - 1];
+  if (!row) return null;
+  const c = {};
+  RES.forEach((r, i) => { c[r] = Math.floor(row[i] * costFactor(city, r, research)); });
+  return c;
+}
+
+// ---- Example state (anonymised; real empire state lives in the data store, never in this repo) ----
+function defaultState() {
+  const mk = (o) => Object.assign({ cultural: 0, scientists: 0, god: 'pan', freeSlots: 0, wineStock: 0 }, o);
+  return {
+    meta: { updated: '2026-01-01', server: 'example', note: 'Anonymised example empire for tests and demos' },
+    donationItem: 0,
+    gold: 1000000, ambrosia: 0, traderUses: 0, ships: 40,
+    premium: { account: 0, boosts: { wood: true, wine: true, marble: true, glass: true, sulfur: true } },
+    research: { pulley: true, geometry: true, spiritLevel: true, holiday: true, wellConstruction: true, utopia: false,
+      economicFuture: 0, helpingHands: true, letterChute: false, paper: true, ink: true, mechanicalPen: true, scientificFuture: 0 },
+    government: 'ikacracy',
+    shrine: { level: 2, city: 'Delta', favour: 0, blessedCities: 2, blessedAuto: true, blessed: ['Alpha', 'Beta'] },
+    stock: { wood: 0, wine: 0, marble: 0, glass: 0, sulfur: 0 },
+    cities: [
+      mk({ name: 'Alpha', coords: '10:10', lux: 'wine', capital: true, pop: 500, woodLvl: 30, luxLvl: 30, god: 'dionysus', freeSlots: 4, slotPlan: ['optician', 'fireworker'],
+        b: { townHall: 19, warehouse: [10, 9, 11], architect: 14, academy: 15, carpentering: 12, winegrower: 15, vineyard: 22, palace: 4, forester: 8, tavern: 18, port: [10, 11], museum: 1 } }),
+      mk({ name: 'Beta', coords: '11:10', lux: 'sulfur', pop: 400, woodLvl: 28, luxLvl: 26, freeSlots: 6, slotPlan: ['forester', 'vineyard'],
+        b: { townHall: 16, warehouse: [12, 13, 15], architect: 6, academy: 12, carpentering: 8, palaceColony: 4, tavern: 14, port: [11], museum: 1, alchemist: 9 } }),
+      mk({ name: 'Gamma', coords: '12:10', lux: 'glass', pop: 380, woodLvl: 27, luxLvl: 25, freeSlots: 5, slotPlan: ['museum', 'glassblowing'],
+        b: { townHall: 15, warehouse: [15, 17], architect: 9, academy: 17, carpentering: 9, palaceColony: 4, forester: 6, tavern: 13, port: [10, 6] } }),
+      mk({ name: 'Delta', coords: '10:12', lux: 'marble', pop: 360, woodLvl: 29, luxLvl: 28, freeSlots: 11, slotPlan: ['museum', 'stonemason', 'forester', 'carpentering', 'architect'],
+        b: { townHall: 16, warehouse: [15, 14], academy: 12, palaceColony: 4, tavern: 12, port: [6], shrineOfOlympus: 2 } }),
+      mk({ name: 'Epsilon', coords: '10:12', lux: 'marble', pop: 470, woodLvl: 29, luxLvl: 28, freeSlots: 4, slotPlan: ['optician', 'fireworker'],
+        b: { townHall: 20, warehouse: [11, 5, 11], architect: 12, academy: 13, carpentering: 8, vineyard: 16, palaceColony: 4, forester: 6, tavern: 18, port: [10, 7], museum: 2, stonemason: 13 } }),
+    ],
+  };
+}
+
+const GOALS = {
+  economy: { label: 'Pure economic growth', w: { wood: 1, wine: 1, marble: 1, glass: 1, sulfur: 1 }, convertible: true, reserveGold: 0 },
+  expansion: { label: 'Expansion (6th town: Palace 5 + Governors 5)', w: { wood: 1, wine: 1.1, marble: 1, glass: 1.2, sulfur: 1.2 }, convertible: true, reserveGold: 0, expansion: true },
+  military: { label: 'Economy + army build-up', w: { wood: 1, wine: 1, marble: 1, glass: 0.9, sulfur: 1.3 }, convertible: true, reserveGold: 3000000 },
+};
+
+// ---- Per-city mechanics ----
+const lvl0 = 0;
+const lvl = (city, b) => { const v = city.b[b]; return Array.isArray(v) ? Math.max(0, ...v) : (v || 0); };
+const blevel = lvl;
+
+function govBuildFactor(st) { return st.government === 'aristocracy' ? 0.8 : st.government === 'oligarchy' ? 1.2 : 1; }
+function corruption(city, st) {
+  const n = st.cities.length;
+  const g = city.capital ? lvl(city, 'palace') : lvl(city, 'palaceColony');
+  let c = city.capital && g >= n - 1 ? 0 : Math.max(0, 1 - (g + 1) / n);
+  const gov = st.government;
+  if (gov === 'aristocracy' && !city.capital && g < n) c += 0.03; // removable with residence one level above requirement
+  if (gov === 'oligarchy') c += 0.03;
+  if (gov === 'nomocracy') c -= 0.05;
+  if (gov === 'anarchy') c += 0.25;
+  return Math.min(1, Math.max(0, c));
+}
+function maxPop(city, st) {
+  const R = st.research;
+  let m = housing(lvl(city, 'townHall'));
+  if (R.holiday) m += 50;
+  if (city.capital && R.wellConstruction) m += 50;
+  if (city.capital && R.utopia) m += 200;
+  m += 20 * (R.economicFuture || 0);
+  return m;
+}
+function baseSat(city, st) {
+  const R = st.research;
+  let s = 196;
+  if (R.holiday) s += 25;
+  if (city.capital && R.wellConstruction) s += 50;
+  if (city.capital && R.utopia) s += 200;
+  s += 10 * (R.economicFuture || 0);
+  s += TAVERN_SAT[lvl(city, 'tavern')] || 0;
+  s += MUSEUM_SAT[lvl(city, 'museum')] || 0;
+  s += 50 * Math.min(city.cultural || 0, lvl(city, 'museum'));
+  if (st.government === 'democracy') s += 75;
+  if (st.government === 'dictatorship') s -= 75;
+  return s;
+}
+function capacity(city) {
+  const v = city.b.warehouse; const arr = Array.isArray(v) ? v : (v ? [v] : []);
+  return 2500 + arr.reduce((t, l) => t + (WAREHOUSE_CAP[l - 1] || 0), 0);
+}
+function wineUse(city, s) { return WINE_USE[s] * (1 - Math.min(lvl(city, 'vineyard'), 100) / 100); }
+
+function shrineBlessing(st) {
+  const L = st.shrine.level || 0; if (!L) return 0;
+  const max = (3 + 2 * L) / 100;
+  return max * (0.4 + 0.6 * Math.min(1, (st.shrine.favour || 0) / 1000));
+}
+function blessedCount(st) {
+  return st.shrine.blessedAuto === false ? (st.shrine.blessedCities || 0) : Math.min(st.shrine.level || 0, st.cities.length);
+}
+function blessedSet(st) {
+  const order = Array.isArray(st.shrine.blessed) ? [...st.shrine.blessed] : [];
+  st.cities.forEach(c => { if (!order.includes(c.name) && c.god && c.god !== 'none') order.push(c.name); });
+  if (Array.isArray(st.shrine.blessed)) return new Set(order.slice(0, blessedCount(st)));
+  const n = st.shrine.blessedCities || 0;
+  return new Set(st.cities.filter(c => c.god && c.god !== 'none').slice(0, n).map(c => c.name));
+}
+function mult(city, st, r, blessed) {
+  let m = 1;
+  if (r === 'wood') m += 0.02 * lvl(city, 'forester');
+  else m += 0.02 * lvl(city, LUX_BONUS[r]);
+  if (st.premium.boosts && st.premium.boosts[r]) m += 0.2;
+  if ((blessed || blessedSet(st)).has(city.name) && GOD_RES[city.god] === r) m += shrineBlessing(st);
+  return m;
+}
+function workerCaps(city, st) {
+  const hh = st.research.helpingHands ? 0.5 : 0;
+  const w = SAWMILL_WORKERS[Math.min(60, city.woodLvl) - 1] || 0, l = LUX_WORKERS[Math.min(60, city.luxLvl) - 1] || 0;
+  return { wood: w, lux: l, woodHH: Math.floor(w * hh), luxHH: Math.floor(l * hh) };
+}
+function rpPerScientist(st) {
+  const R = st.research;
+  return 1 + (R.paper ? 0.02 : 0) + (R.ink ? 0.04 : 0) + (R.mechanicalPen ? 0.08 : 0) + 0.02 * (R.scientificFuture || 0);
+}
+
+// Allocate `citizens` of one city. weights: value per unit of each resource; luxShare: forced share target (optional)
+// Returns {wood, lux, woodHH, luxHH, tax, prod:{...}, value}
+function allocate(city, st, citizens, w, opts = {}) {
+  const caps = workerCaps(city, st);
+  const blessed = opts.blessed || blessedSet(st);
+  const mw = mult(city, st, 'wood', blessed), ml = mult(city, st, city.lux, blessed);
+  const goldW = opts.goldWeight != null ? opts.goldWeight : 0.05; // 3 gold/h per taxed citizen, gold mostly idle
+  let left = Math.max(0, Math.floor(citizens - (city.scientists || 0)));
+  const a = { wood: 0, lux: 0, woodHH: 0, luxHH: 0, tax: 0 };
+  // forced lux minimum (e.g. wine requirement)
+  if (opts.minLux) { const n = Math.min(left, caps.lux, Math.ceil(opts.minLux / ml)); a.lux += n; left -= n; }
+  const opt = [
+    { k: 'lux', v: ml * (w[city.lux] ?? 1), cap: caps.lux },
+    { k: 'wood', v: mw * (w.wood ?? 1), cap: caps.wood },
+    { k: 'luxHH', v: 0.25 * ml * (w[city.lux] ?? 1), cap: caps.luxHH },
+    { k: 'woodHH', v: 0.25 * mw * (w.wood ?? 1), cap: caps.woodHH },
+    { k: 'tax', v: 3 * goldW, cap: Infinity },
+  ].sort((x, y) => y.v - x.v);
+  if (opts.luxFrac != null) { // balanced mode: split skilled workers by target fraction
+    const skilled = Math.min(left, caps.lux - a.lux + caps.wood);
+    let nl = Math.min(caps.lux - a.lux, Math.round(skilled * opts.luxFrac));
+    let nw = Math.min(caps.wood, skilled - nl); nl = Math.min(caps.lux - a.lux, skilled - nw);
+    a.lux += nl; a.wood += nw; left -= nl + nw;
+  }
+  for (const o of opt) { const have = a[o.k]; const n = Math.max(0, Math.min(left, o.cap - have)); a[o.k] += n; left -= n; if (left <= 0) break; }
+  const prod = { wood: 0, wine: 0, marble: 0, glass: 0, sulfur: 0 };
+  prod.wood = (a.wood + 0.25 * a.woodHH) * mw;
+  prod[city.lux] += (a.lux + 0.25 * a.luxHH) * ml;
+  const gold = 3 * a.tax - (city.scientists || 0) * (6 - (st.research.letterChute ? 3 : 0));
+  const rp = (city.scientists || 0) * rpPerScientist(st) * (1 - corruption(city, st));
+  let value = 0; RES.forEach(r => value += prod[r] * (w[r] ?? 1)); value += gold * goldW;
+  return { ...a, prod, gold, rp, value, mw, ml };
+}
+
+// Equilibrium analysis for a city: best wine serving level and resulting steady-state value
+function equilibrium(city, st, w, opts = {}) {
+  const mp = maxPop(city, st), corr = corruption(city, st), bs = baseSat(city, st);
+  const tav = lvl(city, 'tavern');
+  let best = null;
+  for (let s = 0; s <= tav; s++) {
+    const sat = bs + WINE_SAT[s];
+    const pop = Math.min(mp, Math.floor((1 - corr) * sat));
+    const al = allocate(city, st, pop, w, opts);
+    const wu = wineUse(city, s);
+    const v = al.value - wu * (w.wine ?? 1);
+    if (!best || v > best.value + 1e-9) best = { s, sat, pop, value: v, wine: wu, alloc: al, maxPop: mp, corr };
+  }
+  return best;
+}
+
+// ---- Candidate actions ----
+const ECON_UPGRADES = ['townHall', 'tavern', 'museum', 'palaceColony', 'palace', 'forester', 'winegrower', 'stonemason', 'glassblowing', 'alchemist',
+  'carpentering', 'architect', 'vineyard', 'optician', 'fireworker'];
+const MAXLVL = { townHall: 66, tavern: 70, museum: 36, forester: 61, winegrower: 61, stonemason: 61, glassblowing: 61, alchemist: 61,
+  carpentering: 50, architect: 50, vineyard: 50, optician: 50, fireworker: 50, shrineOfOlympus: 41, academy: 50, warehouse: 85 };
+const SPEND_SHARE = { wood: 0.48, wine: 0.04, marble: 0.38, glass: 0.06, sulfur: 0.04 };
+
+function cloneCity(c) { return JSON.parse(JSON.stringify(c)); }
+function setLevel(city, b, L) {
+  const v = city.b[b];
+  if (Array.isArray(v)) { const i = v.indexOf(Math.max(...v)); v[i] = L; } else city.b[b] = L;
+}
+function relevantBuilding(city, b) {
+  if (['winegrower', 'stonemason', 'glassblowing', 'alchemist'].includes(b)) return LUX_BONUS[city.lux] === b;
+  if (b === 'optician' || b === 'fireworker') return false; // tiny spend share; offered only if already built
+  return true;
+}
+
+function candidates(st, w, opts = {}) {
+  const out = [];
+  const blessed = blessedSet(st);
+  const empireValue = st.cities.reduce((s, c) => s + equilibrium(c, st, w, { blessed }).value, 0);
+  const n = st.cities.length;
+  for (const city of st.cities) {
+    const eq0 = equilibrium(city, st, w, { blessed });
+    const tryAction = (steps, label) => {
+      const c2 = cloneCity(city); let cost = { wood: 0, wine: 0, marble: 0, glass: 0, sulfur: 0 }, secs = 0; const tos = [];
+      const st2 = { ...st, cities: st.cities.map(x => x.name === city.name ? c2 : x) };
+      for (const [b, isNew] of steps) {
+        const L = (isNew ? 0 : lvl(c2, b)) + 1;
+        if (L > (MAXLVL[b] || 50)) return;
+        const k = upgradeCost(c2, b, L, st.research); if (!k) return;
+        RES.forEach(r => cost[r] += k[r]); secs += buildSeconds(b, L) * govBuildFactor(st); tos.push(L);
+        if (isNew) c2.b[b] = 1; else setLevel(c2, b, L);
+      }
+      const eq1 = equilibrium(c2, st2, w, { blessed });
+      let dv = eq1.value - eq0.value;
+      // reducer savings
+      for (const [b] of steps) {
+        const r = Object.keys(REDUCER).find(k => REDUCER[k] === b);
+        if (r && lvl(city, b) < 50) {
+          const spend = empireValue / n * SPEND_SHARE[r] * (opts.buildIntensity ?? 0.85);
+          dv += 0.01 * spend / Math.max(0.36, costFactor(city, r, st.research));
+        }
+        if (b === 'shrineOfOlympus') {
+          const L = lvl(city, b);
+          const gain = (0.02) * (0.4 + 0.6 * Math.min(1, (st.shrine.favour || 0) / 1000));
+          let base = 0; for (const c of st.cities) if (blessed.has(c.name)) { const e = equilibrium(c, st, w, { blessed }); const r2 = GOD_RES[c.god]; base += r2 === 'gold' ? 0 : (e.alloc.prod[r2] / mult(c, st, r2, blessed)) * (w[r2] ?? 1); }
+          dv += gain * base * (L < 1 ? 0 : 1);
+        }
+      }
+      const costEq = RES.reduce((s, r) => s + cost[r] * (w[r] ?? 1), 0);
+      const popRelated = steps.some(([b]) => ['townHall', 'tavern', 'museum'].includes(b));
+      const hours = secs / 3600;
+      const payback = dv > 0.01 ? costEq / dv + hours + (popRelated ? 25 : 0) : Infinity;
+      out.push({ city: city.name, steps: steps.map(([b, isNew], i) => ({ b, to: tos[i], isNew: !!isNew })), label, cost, costEq, dv, hours, payback, eq1 });
+    };
+    for (const b of ECON_UPGRADES) {
+      if (lvl(city, b) > 0) tryAction([[b]], NAMES[b]);
+      else if ((city.freeSlots || 0) > 0 && (city.slotPlan || []).includes(b) && !(city._planned || []).includes(b)) tryAction([[b, true]], 'New ' + NAMES[b]);
+    }
+    tryAction([['townHall'], ['tavern']], 'Town Hall + Tavern');
+    if (lvl(city, 'museum') > 0) tryAction([['townHall'], ['museum']], 'Town Hall + Museum');
+    tryAction([['tavern'], ['tavern']], 'Tavern ×2');
+    if (lvl(city, 'shrineOfOlympus') > 0) tryAction([['shrineOfOlympus']], NAMES.shrineOfOlympus);
+  }
+  return out.filter(a => isFinite(a.payback)).sort((a, b) => a.payback - b.payback);
+}
+
+// Research queue used by the simulator (RP costs from the Ikariam wiki research list)
+const DEFAULT_RESEARCH = [
+  { name: 'A Lucky Coincidence (Tyche, marble god)', rp: 2236 },
+  { name: 'Riches From the Depths (Plutus)', rp: 3672 },
+  { name: "The Goddess's Splendour (Theia, glass god)", rp: 7200 },
+  { name: 'Forged in Lava (Hephaestus, sulphur god)', rp: 10764 },
+  { name: 'Bureaucracy (+1 building ground in every town)', rp: 106560, apply: st => st.cities.forEach(c => { c.freeSlots = (c.freeSlots || 0) + 1; }) },
+];
+// ---- Hourly simulation ----
+// opts: weights, days, expansion:{startDay, lux, woodLvl, luxLvl, name}, marketBuy:{marble:perDay, price}, minTradeGap, maxBatch
+function simulate(stIn, goalKey = 'economy', days = 30, opts = {}) {
+  const goal = GOALS[goalKey] || GOALS.economy;
+  const w = { ...goal.w, ...(opts.weights || {}) };
+  const st = JSON.parse(JSON.stringify(stIn));
+  const stock = { ...st.stock };
+  let gold = st.gold, rpTotal = 0, trades = 0, lastTrade = -999;
+  let tradesLeft = (st.traderUses || 0) + Math.floor((st.ambrosia || 0) / 5);
+  const busy = {}, current = {}; st.cities.forEach(c => { busy[c.name] = 0; current[c.name] = null; });
+  const events = [], daily = [], tradeLog = [], milestones = [];
+  const H = days * 24;
+  const exp = opts.expansion || (goal.expansion ? { startDay: 0 } : null);
+  let expQueue = null, expDone = false;
+  let cands = candidates(st, w, opts), candAge = 0;
+  st.cities.forEach(c => { c.userScientists = c.scientists || 0; });
+  let rpSpent = 0;
+  const rq = (opts.researchQueue || DEFAULT_RESEARCH).filter(x => !(st.research.done || []).includes(x.name)).map(x => ({ ...x }));
+
+  const startBuild = (c, b, to, isNew, label, payback) => {
+    const k = upgradeCost(c, b, to, st.research);
+    RES.forEach(r => stock[r] -= k[r]);
+    busy[c.name] = currentH + Math.max(1, Math.ceil(buildSeconds(b, to) * govBuildFactor(st) / 3600));
+    current[c.name] = { b, to, isNew, label };
+    events.push({ h: currentH, city: c.name, b, to, cost: k, label, payback, isNew });
+  };
+  const tryTrade = (c, k, wineBuffer) => {
+    if (!goal.convertible || tradesLeft <= 0 || currentH - lastTrade < (opts.minTradeGap ?? 12)) return false;
+    const reserve = { wood: 0, marble: 0, wine: wineBuffer + 5000, glass: opts.keepGlass ?? 20000, sulfur: opts.keepSulfur ?? 20000 };
+    if (expQueue && !expDone) { reserve.glass = 0; reserve.sulfur = 0; }
+    const deficit = RES.filter(r => stock[r] < k[r]);
+    if (!deficit.length) return false;
+    const surplus = {}; let sTot = 0;
+    RES.forEach(r => { if (deficit.includes(r)) return; const x = Math.max(0, stock[r] - reserve[r] - k[r]); if (x > 0 && (r !== 'wood' && r !== 'marble' || x > 80000)) { surplus[r] = x; sTot += x; } });
+    const missingTot = deficit.reduce((t, r) => t + (k[r] - stock[r]), 0);
+    if (sTot < Math.max(missingTot, opts.minBatch ?? 40000)) return false;
+    const batch = Math.min(sTot, opts.maxBatch ?? Math.min(350000, capacity(c)));
+    const to = {}, from = {}; let rem = batch;
+    deficit.forEach(r => { to[r] = k[r] - stock[r]; rem -= to[r]; });
+    const sinks = ['wood', 'marble'].filter(r => !surplus[r]);
+    const shares = { wood: 0.45, marble: 0.55 }; const ssum = sinks.reduce((t, r) => t + shares[r], 0) || 1;
+    sinks.forEach(r => { to[r] = (to[r] || 0) + Math.max(0, rem) * shares[r] / ssum; });
+    let need = batch;
+    for (const r of Object.keys(surplus).sort((x, y) => surplus[y] - surplus[x])) { const t = Math.min(surplus[r], need); if (t > 0) { from[r] = t; need -= t; } }
+    RES.forEach(r => { stock[r] += (to[r] || 0) - (from[r] || 0); });
+    trades++; tradesLeft--; lastTrade = currentH;
+    const rd = o => Object.fromEntries(Object.entries(o).filter(([, x]) => x > 0.5).map(([r, x]) => [r, Math.round(x)]));
+    tradeLog.push({ h: currentH, city: c.name, from: rd(from), to: rd(to) });
+    return RES.every(r => stock[r] >= k[r]);
+  };
+  let currentH = 0;
+  for (let h = 0; h < H; h++) {
+    currentH = h;
+    const blessed = blessedSet(st);
+    // market purchases (gold -> resource), once per day
+    if (opts.marketBuy && h % 24 === 0) for (const [r, q] of Object.entries(opts.marketBuy)) { if (r === 'price') continue; const price = opts.marketBuy.price || 15; const n = Math.min(q, Math.max(0, (gold - (goal.reserveGold || 0)) / price)); stock[r] += n; gold -= n * price; }
+    // finish builds
+    for (const c of st.cities) {
+      const cur = current[c.name];
+      if (cur && busy[c.name] <= h) {
+        if (cur.isNew) { if (cur.b === 'warehouse') { const v = c.b.warehouse; c.b.warehouse = Array.isArray(v) ? [...v, 1] : [1]; } else c.b[cur.b] = 1; c.freeSlots = Math.max(0, (c.freeSlots || 0) - 1); }
+        else if (cur.b === 'warehouse') { const v = c.b.warehouse; const arr = Array.isArray(v) ? v : [v]; const i = arr.indexOf(Math.min(...arr)); arr[i] = cur.to; c.b.warehouse = arr; }
+        else setLevel(c, cur.b, cur.to);
+        if (cur.b === 'shrineOfOlympus') st.shrine.level = cur.to;
+        current[c.name] = null; candAge = 99;
+      }
+    }
+    // expansion milestone
+    if (exp && !expQueue && !expDone && h >= (exp.startDay || 0) * 24) {
+      const target = st.cities.length;
+      expQueue = st.cities.map(c => ({ city: c.name, b: c.capital ? 'palace' : 'palaceColony', target }));
+      milestones.push({ h, text: `Expansion prep starts: Palace and all Governor's Residences to level ${target}` });
+    }
+    if (expQueue && !expDone && expQueue.every(q => blevel(st.cities.find(c => c.name === q.city), q.b) >= q.target)) {
+      const ag = st.cities.find(c => c.capital);
+      const nc = { name: exp.name || ('Colony ' + (st.cities.length + 1)), coords: exp.coords || '?', lux: exp.lux || 'marble', pop: 40, woodLvl: exp.woodLvl || 25, luxLvl: exp.luxLvl || 25,
+        cultural: 0, scientists: 0, god: 'pan', freeSlots: 16, isNewColony: true,
+        slotPlan: ['tavern', 'museum', 'palaceColony', 'warehouse', 'forester', 'carpentering', 'architect', LUX_BONUS[exp.lux || 'marble'], 'vineyard'],
+        b: { townHall: 1 } };
+      ag.pop -= 40; stock.wood -= 1250; gold -= 50000;
+      st.cities.push(nc); busy[nc.name] = h + (exp.travelHours || 2); current[nc.name] = null;
+      candAge = 99;
+      milestones.push({ h, text: `Town #${st.cities.length} founded: ${nc.name} (${nc.lux} island)` });
+      if (exp.every && st.cities.length < (exp.maxTowns || 8)) { expQueue = null; exp.startDay = h / 24 + exp.every; exp.name = 'Colony ' + (st.cities.length + 1); }
+      else expDone = true;
+    }
+    // wine policy
+    let wineNeed = 0; const serve = {};
+    for (const c of st.cities) {
+      const mp = maxPop(c, st), bs = baseSat(c, st), corr = corruption(c, st), tav = blevel(c, 'tavern');
+      let sv = tav;
+      if (c.pop >= mp - 1) { sv = 0; while (sv < tav && (1 - corr) * (bs + WINE_SAT[sv]) < mp + 5) sv++; }
+      serve[c.name] = sv; wineNeed += wineUse(c, sv);
+    }
+    const wineBuffer = wineNeed * 36;
+    // research: scientists from overflow (pop beyond worker caps) and from surplus luxury cities
+    for (const c of st.cities) {
+      const caps = workerCaps(c, st), acad = ACADEMY_SCI[blevel(c, 'academy')] || 0;
+      let sci = c.userScientists || 0;
+      const overflow = Math.max(0, Math.floor(c.pop) - caps.wood - caps.lux);
+      sci += overflow;
+      if (opts.autoScience !== false && ['glass', 'sulfur', 'wine'].includes(c.lux) && stock[c.lux] > (opts.luxSurplus ?? 150000) + (c.lux === 'wine' ? wineBuffer : 0)) sci = acad;
+      c.scientists = Math.min(acad, sci);
+    }
+    while (rq.length && rpTotal >= rq[0].rp + rpSpent) {
+      const it = rq.shift(); rpSpent += it.rp; it.apply && it.apply(st);
+      milestones.push({ h, text: `Research done: ${it.name}` }); candAge = 99;
+    }
+    // production
+    for (const c of st.cities) {
+      const o = { blessed, goldWeight: 0.02 };
+      let wAl = w;
+      if (c.lux === 'wine') { wAl = { ...w, wine: Math.min(w.wine, 0.8) }; o.minLux = stock.wine < wineBuffer ? wineNeed * 1.15 + (wineBuffer - stock.wine) / 24 : wineNeed * 0.95; }
+      else if (c.lux === 'marble') o.luxFrac = 1;
+      else { const tgt = (expQueue && !expDone) ? (opts.expLuxTarget ?? 120000) : (opts.luxTarget ?? 30000); o.luxFrac = stock[c.lux] < tgt ? 0.5 : 0; }
+      const al = allocate(c, st, Math.floor(c.pop), wAl, o);
+      RES.forEach(r => stock[r] += al.prod[r] * (1 - corruption(c, st) * 0));
+      gold += al.gold; rpTotal += al.rp; c._al = al;
+    }
+    // wine consumption + growth
+    for (const c of st.cities) {
+      let sv = serve[c.name]; let need = wineUse(c, sv);
+      while (sv > 0 && stock.wine < need) { sv--; need = wineUse(c, sv); }
+      stock.wine -= need; c._serve = sv;
+      const sat = (1 - corruption(c, st)) * (baseSat(c, st) + WINE_SAT[sv]);
+      const mp = maxPop(c, st);
+      const p1 = sat + (c.pop - sat) * Math.exp(-1 / 50);
+      c.pop = c.pop < mp ? Math.min(mp, p1) : (sat < c.pop ? p1 : c.pop);
+      c._sat = sat; c._mp = mp;
+    }
+    // scheduling
+    if (candAge++ >= 6) { cands = candidates(st, w, opts); candAge = 0; }
+    for (const c of st.cities) {
+      if (current[c.name] || busy[c.name] > h) continue;
+      // expansion builds take priority in their city
+      const q = expQueue && !expDone ? expQueue.find(x => x.city === c.name && blevel(c, x.b) < x.target) : null;
+      let list;
+      list = cands.filter(a => a.city === c.name).slice(0, 5);
+      if (expQueue && !expDone) {
+        const remaining = expQueue.reduce((t, x) => { const cc = st.cities.find(y => y.name === x.city); if (blevel(cc, x.b) >= x.target) return t; const kk = upgradeCost(cc, x.b, x.target, st.research); return t + RES.reduce((u, r) => u + kk[r], 0); }, 0);
+        list = list.filter(a => a.costEq <= (opts.expAllowance ?? 0.04) * remaining);
+        if (q) list.unshift({ steps: [{ b: q.b, isNew: false }], label: 'Expansion prep', payback: 0, priority: true });
+      }
+      if (!list.length) continue;
+      const firstReg = list.find(x => !x.priority); const bestPay = firstReg ? firstReg.payback : Infinity;
+      for (const a of list) {
+        if (!a.priority && a.payback > bestPay * 1.6) break;
+        let { b, isNew } = a.steps[0];
+        if (isNew && (c.freeSlots || 0) <= 0) continue;
+        let to = (isNew ? 0 : blevel(c, b)) + 1;
+        let k = upgradeCost(c, b, to, st.research); if (!k) continue;
+        // storage limit: upgrade/build a warehouse first
+        const cap = capacity(c);
+        if (RES.some(r => k[r] > cap * 0.98)) {
+          const v = c.b.warehouse; const arr = Array.isArray(v) ? v : (v ? [v] : []);
+          if (!arr.length) { if ((c.freeSlots || 0) <= 0) continue; b = 'warehouse'; isNew = true; to = 1; }
+          else { b = 'warehouse'; isNew = false; to = Math.min(...arr) + 1; }
+          k = upgradeCost(c, 'warehouse', to, st.research);
+          a.label = 'Warehouse (storage needed)';
+        }
+        let ok = RES.every(r => stock[r] >= k[r]);
+        if (!ok) ok = tryTrade(c, k, wineBuffer);
+        if (!ok) continue;
+        startBuild(c, b, to, isNew, a.label, a.payback);
+        break;
+      }
+    }
+    if (h % 24 === 23 || h === 0) {
+      const prod = { wood: 0, wine: 0, marble: 0, glass: 0, sulfur: 0 };
+      st.cities.forEach(c => RES.forEach(r => prod[r] += c._al.prod[r]));
+      daily.push({ day: Math.floor((h + 1) / 24), names: st.cities.map(c => c.name), pop: st.cities.map(c => Math.round(c.pop)), maxPop: st.cities.map(c => c._mp), serve: st.cities.map(c => c._serve),
+        prod, stock: { ...stock }, gold: Math.round(gold), rp: Math.round(rpTotal), trades,
+        alloc: st.cities.map(c => ({ wood: c._al.wood, lux: c._al.lux, woodHH: c._al.woodHH, luxHH: c._al.luxHH, tax: c._al.tax, sci: c.scientists || 0 })),
+        cityProd: st.cities.map(c => ({ ...c._al.prod })), cityWine: st.cities.map(c => wineUse(c, c._serve)), sat: st.cities.map(c => Math.round(c._sat)) });
+    }
+  }
+  return { events, daily, tradeLog, milestones, final: st, stock, gold, trades, w, rpTotal };
+}
+
+// ---- Logistics: daily transport flows between towns over a window of the simulation ----
+function islandDistance(a, b) {
+  const p = s => (s || '').split(':').map(Number);
+  const [x1, y1] = p(a), [x2, y2] = p(b);
+  if ([x1, y1, x2, y2].some(isNaN)) return null;
+  return Math.hypot(x1 - x2, y1 - y2);
+}
+function travelMinutes(a, b) { const d = islandDistance(a, b); if (d == null) return null; return d === 0 ? 10 : Math.round(20 * d); }
+function routes(sim, st, fromDay = 0, toDay = 3) {
+  const days = Math.max(1, toDay - fromDay);
+  const names = st.cities.map(c => c.name);
+  const net = {}; names.forEach(n => { net[n] = { wood: 0, wine: 0, marble: 0, glass: 0, sulfur: 0 }; });
+  const snaps = sim.daily.filter(d => d.day > fromDay && d.day <= toDay);
+  for (const d of snaps) d.names.forEach((n, i) => { if (!net[n]) return; RES.forEach(r => net[n][r] += d.cityProd[i][r] * 24 / snaps.length); net[n].wine -= d.cityWine[i] * 24 / snaps.length; });
+  for (const e of sim.events) { if (e.h < fromDay * 24 || e.h >= toDay * 24 || !net[e.city]) continue; RES.forEach(r => net[e.city][r] -= e.cost[r] / days); }
+  const flows = [];
+  for (const r of RES) {
+    const sur = names.map(n => ({ n, x: net[n][r] })).filter(o => o.x > 500).sort((a, b) => b.x - a.x);
+    const def = names.map(n => ({ n, x: -net[n][r] })).filter(o => o.x > 500).sort((a, b) => b.x - a.x);
+    for (const dd of def) for (const ss of sur) {
+      if (dd.x <= 0) break; if (ss.x <= 0) continue;
+      const q = Math.min(dd.x, ss.x); dd.x -= q; ss.x -= q;
+      const ca = st.cities.find(c => c.name === ss.n), cb = st.cities.find(c => c.name === dd.n);
+      flows.push({ res: r, from: ss.n, to: dd.n, perDay: Math.round(q / 100) * 100, ships: Math.ceil(q / 500), minutes: travelMinutes(ca.coords, cb.coords) });
+    }
+  }
+  return flows.filter(f => f.perDay >= 500).sort((a, b) => b.perDay - a.perDay);
+}
+
+// ---- ui.js ----
+// ---------------- UI ----------------
+const $ = (s, el = document) => el.querySelector(s);
+const fmt = (n, d = 0) => (n == null || !isFinite(n)) ? '–' : Number(n).toLocaleString('en-US', { maximumFractionDigits: d, minimumFractionDigits: d });
+const k = n => (n == null || !isFinite(n)) ? '–' : Math.abs(n) >= 1e6 ? fmt(n / 1e6, 2) + 'M' : Math.abs(n) >= 1e4 ? fmt(n / 1e3, 0) + 'k' : fmt(n);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const RESLBL = { wood: 'Wood', wine: 'Wine', marble: 'Marble', glass: 'Crystal', sulfur: 'Sulphur' };
+const resChip = r => `<span class="rc rc-${r}">${RESLBL[r]}</span>`;
+const costStr = c => RES.filter(r => c[r] > 0).map(r => `<span class="cost"><i class="dot d-${r}"></i>${k(c[r])}</span>`).join(' ');
+const dayStr = h => { const d = Math.floor(h / 24), hh = Math.round(h % 24); return `D${d}·${String(hh).padStart(2, '0')}h`; };
+
+const LS_KEY = 'ikariam-planner-v1';
+let state = null, settings = null, sim = null, db = null, saving = false, dirty = false;
+
+const DEFAULT_SETTINGS = { goal: 'economy', days: 30, expansion: true, expStart: 0, expLux: 'marble', expEvery: 0, marketMarble: 0, marketPrice: 15 };
+
+function loadLocal() { try { const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : null; } catch { return null; } }
+function saveLocal(stamp) { try { const prev = loadLocal(); localStorage.setItem(LS_KEY, JSON.stringify({ state, settings, savedAt: stamp ? new Date().toISOString() : (prev && prev.savedAt) || null })); } catch { /* storage unavailable */ } }
+
+function simOpts() {
+  const o = {};
+  if (settings.expansion) o.expansion = { startDay: +settings.expStart || 0, lux: settings.expLux, every: +settings.expEvery || 0, maxTowns: 9 };
+  if (+settings.marketMarble > 0) o.marketBuy = { marble: +settings.marketMarble, price: +settings.marketPrice || 15 };
+  return o;
+}
+
+function run() {
+  $('#status').textContent = 'Computing plan…';
+  setTimeout(() => {
+    try {
+      const t0 = performance.now();
+      sim = simulate(state, settings.goal, +settings.days || 30, simOpts());
+      renderAll();
+      $('#status').textContent = `Plan computed in ${Math.round(performance.now() - t0)} ms · state of ${state.meta.updated}`;
+    } catch (e) { console.error(e); $('#status').textContent = 'Could not compute the plan: ' + e.message; }
+  }, 20);
+}
+
+// ---------- Plan tab ----------
+function renderPlan() {
+  const d0 = sim.daily[0], dl = sim.daily[sim.daily.length - 1];
+  const P = d => RES.reduce((s, r) => s + d.prod[r], 0);
+  const popT = d => d.pop.reduce((a, b) => a + b, 0);
+  const founded = sim.milestones.find(m => /founded/.test(m.text));
+  const tiles = [
+    ['Population', `${fmt(popT(d0))} → ${fmt(popT(dl))}`, `now → day ${dl.day}`],
+    ['Production', `${k(P(d0))} → ${k(P(dl))}/h`, 'all five resources'],
+    ['Next town', founded ? `Day ${(founded.h / 24).toFixed(1)}` : (settings.expansion ? 'not within horizon' : 'not planned'), founded ? 'founded in the simulation' : 'enable expansion to plan it'],
+    ['Premium Trader', `${sim.trades} uses`, `of ${(state.traderUses || 0) + Math.floor((state.ambrosia || 0) / 5)} available (incl. Ambrosia)`],
+  ];
+  $('#kpis').innerHTML = tiles.map(t => `<div class="kpi"><div class="kl">${t[0]}</div><div class="kv">${t[1]}</div><div class="ks">${t[2]}</div></div>`).join('');
+
+  // Do now: allocation
+  const blessed = blessedSet(state);
+  const rows = state.cities.map((c, i) => {
+    const a = d0.alloc[i];
+    const mp = maxPop(c, state), bs = baseSat(c, state), tav = blevel(c, 'tavern');
+    const eq = equilibrium(c, state, sim.w, { blessed });
+    const satNow = (1 - corruption(c, state)) * (bs + WINE_SAT[tav]);
+    return `<tr><td class="city">${esc(c.name)}<div class="sub">${esc(c.coords || '')} · ${RESLBL[c.lux]}</div></td>
+      <td class="num">${fmt(c.pop)} / ${fmt(mp)}</td>
+      <td class="num">${fmt(a.wood + a.woodHH)}</td><td class="num">${fmt(a.lux + a.luxHH)}</td><td class="num">${fmt(a.sci)}</td>
+      <td class="num">${tav} <span class="sub">(${fmt(wineUse(c, tav), 0)}/h)</span></td>
+      <td class="num">${fmt(satNow)}</td>
+      <td class="num">${fmt(eq.alloc.wood + eq.alloc.woodHH)} / ${fmt(eq.alloc.lux + eq.alloc.luxHH)}${eq.alloc.luxHH + eq.alloc.woodHH > 0 ? '<span class="sub"> incl. helping hands</span>' : ''}</td></tr>`;
+  }).join('');
+  $('#alloc').innerHTML = `<table><thead><tr><th>Town</th><th>Pop / max</th><th>Wood workers</th><th>Luxury workers</th><th>Scientists</th><th>Serve wine (lvl)</th><th>Satisfaction cap</th><th>At full pop: wood / lux</th></tr></thead><tbody>${rows}</tbody></table>`;
+
+  // Build queue now (next 4 per city, premium queue length)
+  const byCity = {}; sim.events.forEach(e => (byCity[e.city] ??= []).push(e));
+  $('#queues').innerHTML = Object.entries(byCity).map(([city, list]) => `<div class="qcard"><h4>${esc(city)}</h4><ol>${list.slice(0, 6).map(e =>
+    `<li><span class="when">${dayStr(e.h)}</span> <b>${esc(NAMES[e.b] || e.b)}</b> ${e.isNew ? '<span class="pill new">new</span>' : ''}→ ${e.to}<div class="sub">${costStr(e.cost)} · ${fmt(buildSeconds(e.b, e.to) / 3600, 1)} h${e.label === 'Expansion prep' ? ' · <span class="pill exp">expansion</span>' : ''}</div></li>`).join('')}</ol></div>`).join('');
+
+  // Routes
+  const fl = routes(sim, state, 0, 3);
+  $('#routes').innerHTML = fl.length ? `<table><thead><tr><th>Resource</th><th>From</th><th>To</th><th>Per day</th><th>Cargo ships</th><th>Sailing</th></tr></thead><tbody>${fl.map(f =>
+    `<tr><td>${resChip(f.res)}</td><td>${esc(f.from)}</td><td>${esc(f.to)}</td><td class="num">${k(f.perDay)}</td><td class="num">${f.ships}</td><td class="num">${f.minutes != null ? '~' + f.minutes + ' min' : '–'}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">No transfers needed in the first three days.</p>';
+
+  // Trader
+  const tl = sim.tradeLog.filter(t => t.h < 24 * 10);
+  $('#trader').innerHTML = tl.length ? `<ul class="plain">${tl.map(t => `<li><span class="when">${dayStr(t.h)}</span> in <b>${esc(t.city)}</b>: give ${Object.entries(t.from).map(([r, x]) => k(x) + ' ' + RESLBL[r]).join(', ')} → get ${Object.entries(t.to).map(([r, x]) => k(x) + ' ' + RESLBL[r]).join(', ')}</li>`).join('')}</ul><p class="note">Amounts are indicative: convert whatever has piled up beyond your reserves, as one big trade, in the town that holds it.</p>` : '<p class="muted">No Premium Trader use needed in the first 10 days.</p>';
+
+  // Short term: days 0-7 compact timeline
+  const st7 = Object.entries(byCity).map(([city, list]) => {
+    const it = list.filter(e => e.h < 24 * 7);
+    if (!it.length) return '';
+    const agg = {}; it.forEach(e => { const key = e.b; (agg[key] ??= { b: e.b, from: e.to, to: e.to, n: 0, first: e.h }); agg[key].to = Math.max(agg[key].to, e.to); agg[key].from = Math.min(agg[key].from, e.to); agg[key].n++; });
+    const items = Object.values(agg).sort((a, b) => a.first - b.first);
+    return `<div class="qcard"><h4>${esc(city)} <span class="sub">${it.length} builds</span></h4><ul class="plain">${items.map(x => `<li><span class="when">from ${dayStr(x.first)}</span> ${esc(NAMES[x.b] || x.b)} ${x.from === x.to ? '→ ' + x.to : x.from + '→' + x.to}</li>`).join('')}</ul></div>`;
+  }).join('');
+  $('#week').innerHTML = st7;
+
+  // Milestones & medium term
+  const finalC = sim.final.cities;
+  $('#milestones').innerHTML = `<ul class="plain">${sim.milestones.map(m => `<li><span class="when">${dayStr(m.h)}</span> ${esc(m.text)}</li>`).join('') || '<li class="muted">No milestones in this horizon.</li>'}</ul>`;
+  const keyB = ['townHall', 'tavern', 'museum', 'palaceColony', 'forester', 'carpentering', 'architect', 'vineyard'];
+  $('#endstate').innerHTML = `<table><thead><tr><th>Town (day ${dl.day})</th><th>Pop</th>${keyB.map(b => `<th>${esc(NAMES[b].replace("Governor's Residence", 'Palace/GR').replace("'s Workshop", '').replace("'s Office", '').replace("'s House", ''))}</th>`).join('')}<th>Lux bonus</th></tr></thead><tbody>${finalC.map((c, i) => `<tr><td class="city">${esc(c.name)}</td><td class="num">${fmt(dl.pop[i])}</td>${keyB.map(b => `<td class="num">${(b === 'palaceColony' ? (blevel(c, 'palace') || blevel(c, 'palaceColony')) : blevel(c, b)) || '–'}</td>`).join('')}<td class="num">${blevel(c, LUX_BONUS[c.lux]) || '–'}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// ---------- Cities tab ----------
+function renderCities() {
+  const blessed = blessedSet(state);
+  const cands = candidates(state, sim.w);
+  $('#citycards').innerHTML = state.cities.map(c => {
+    const eq = equilibrium(c, state, sim.w, { blessed });
+    const caps = workerCaps(c, state);
+    const R = state.research;
+    const parts = [['Base', 196], ['Holiday', R.holiday ? 25 : 0], ['Capital (Well)', c.capital && R.wellConstruction ? 50 : 0], ['Utopia', c.capital && R.utopia ? 200 : 0],
+      ['Tavern lvl ' + blevel(c, 'tavern'), TAVERN_SAT[blevel(c, 'tavern')]], ['Museum lvl ' + blevel(c, 'museum'), MUSEUM_SAT[blevel(c, 'museum')] || 0],
+      ['Cultural goods', 50 * Math.min(c.cultural || 0, blevel(c, 'museum'))], ['Wine served lvl ' + eq.s, WINE_SAT[eq.s]]].filter(p => p[1]);
+    const mine = cands.filter(a => a.city === c.name).slice(0, 8);
+    return `<article class="ccard"><header><h3>${esc(c.name)}${c.capital ? ' <span class="pill cap">capital</span>' : ''}</h3><span class="sub">${esc(c.coords || '')} · ${RESLBL[c.lux]} island · sawmill ${c.woodLvl} / mine ${c.luxLvl}</span></header>
+      <div class="cgrid">
+        <div><div class="kl">Housing</div><div class="kv2">${fmt(maxPop(c, state))}</div></div>
+        <div><div class="kl">Stable pop (best wine)</div><div class="kv2">${fmt(eq.pop)}</div></div>
+        <div><div class="kl">Corruption</div><div class="kv2">${fmt(corruption(c, state) * 100)}%</div></div>
+        <div><div class="kl">Worker caps</div><div class="kv2">${caps.wood} / ${caps.lux}</div></div>
+        <div><div class="kl">Wood ×</div><div class="kv2">${fmt(mult(c, state, 'wood', blessed), 2)}</div></div>
+        <div><div class="kl">${RESLBL[c.lux]} ×</div><div class="kv2">${fmt(mult(c, state, c.lux, blessed), 2)}</div></div>
+      </div>
+      <div class="satbar">${parts.map(p => `<span title="${esc(p[0])}: +${p[1]}" style="flex:${p[1]}">${esc(p[0])} +${fmt(p[1])}</span>`).join('')}</div>
+      <p class="sub">Satisfaction ${fmt(eq.sat)} vs housing ${fmt(eq.maxPop)} → ${eq.sat >= eq.maxPop ? 'the town can fill completely' : `short by ${fmt(eq.maxPop - eq.sat)}: a bigger tavern, museum levels or cultural goods are needed`}. Wine at that level: ${fmt(eq.wine, 0)}/h.</p>
+      <table class="tight"><thead><tr><th>Best next builds now</th><th>Cost</th><th>+value/h</th><th>Payback</th></tr></thead><tbody>${mine.map(a => `<tr><td>${esc(a.label)} <span class="sub">${a.steps.map(s => '→' + s.to).join(' ')}</span></td><td>${costStr(a.cost)}</td><td class="num">${fmt(a.dv, 1)}</td><td class="num">${fmt(a.payback)} h</td></tr>`).join('')}</tbody></table>
+    </article>`;
+  }).join('');
+}
+
+// ---------- Projection tab ----------
+function drawChart(canvas, series, opts) {
+  const dpr = window.devicePixelRatio || 1, W = canvas.clientWidth, Hh = canvas.clientHeight;
+  canvas.width = W * dpr; canvas.height = Hh * dpr;
+  const g = canvas.getContext('2d'); g.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement);
+  const ink = cs.getPropertyValue('--ink').trim(), muted = cs.getPropertyValue('--muted').trim(), line = cs.getPropertyValue('--line').trim();
+  const pad = { l: 56, r: 16, t: 14, b: 28 };
+  const xs = series[0].pts.map(p => p[0]); const xmax = Math.max(...xs) || 1;
+  const ymax = Math.max(...series.flatMap(s => s.pts.map(p => p[1]))) * 1.08 || 1;
+  const X = x => pad.l + (W - pad.l - pad.r) * x / xmax, Y = y => Hh - pad.b - (Hh - pad.t - pad.b) * y / ymax;
+  g.font = '11px "IBM Plex Mono", monospace'; g.fillStyle = muted; g.strokeStyle = line; g.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) { const v = ymax / 1.08 * i / 4; const y = Y(v); g.beginPath(); g.moveTo(pad.l, y); g.lineTo(W - pad.r, y); g.stroke(); g.fillText(k(v), 6, y + 4); }
+  const step = xmax > 40 ? 10 : 5; for (let x = 0; x <= xmax; x += step) { g.fillText('d' + x, X(x) - 8, Hh - 8); }
+  for (const s of series) {
+    g.strokeStyle = s.color; g.lineWidth = s.width || 2; g.beginPath();
+    s.pts.forEach((p, i) => i ? g.lineTo(X(p[0]), Y(p[1])) : g.moveTo(X(p[0]), Y(p[1]))); g.stroke();
+    const last = s.pts[s.pts.length - 1]; g.fillStyle = s.color; g.beginPath(); g.arc(X(last[0]), Y(last[1]), 3, 0, 7); g.fill();
+  }
+  g.fillStyle = ink;
+}
+function renderProjection() {
+  const cs = getComputedStyle(document.documentElement);
+  const col = r => cs.getPropertyValue('--r-' + r).trim();
+  const D = sim.daily;
+  drawChart($('#chartProd'), RES.map(r => ({ color: col(r), pts: D.map(d => [d.day, d.prod[r]]) })));
+  drawChart($('#chartPop'), [{ color: cs.getPropertyValue('--accent').trim(), width: 2.5, pts: D.map(d => [d.day, d.pop.reduce((a, b) => a + b, 0)]) }]);
+  $('#legend').innerHTML = RES.map(r => `<span><i class="dot d-${r}"></i>${RESLBL[r]}</span>`).join('');
+  const pick = D.filter(d => [0, 1, 3, 7, 14, 21, 30, 45, 60, 90].includes(d.day));
+  $('#projtable').innerHTML = `<table><thead><tr><th>Day</th><th>Population</th>${RES.map(r => `<th>${RESLBL[r]}/h</th>`).join('')}<th>Gold</th><th>Research pts</th></tr></thead><tbody>${pick.map(d => `<tr><td class="num">${d.day}</td><td class="num">${fmt(d.pop.reduce((a, b) => a + b, 0))}</td>${RES.map(r => `<td class="num">${fmt(d.prod[r])}</td>`).join('')}<td class="num">${k(d.gold)}</td><td class="num">${k(d.rp)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// ---------- State editor ----------
+const ALL_B = Object.keys(NAMES);
+function renderEditor() {
+  const s = state;
+  const g = $('#ed-global');
+  g.innerHTML = `
+  <fieldset><legend>Account</legend>
+    <label>State date <input id="g-updated" type="date" value="${esc(s.meta.updated)}"></label>
+    <label>Gold <input id="g-gold" type="number" value="${s.gold}"></label>
+    <label>Ambrosia <input id="g-amb" type="number" value="${s.ambrosia}"></label>
+    <label>Premium Trader uses <input id="g-trader" type="number" value="${s.traderUses}"></label>
+    <label>Cargo ships <input id="g-ships" type="number" value="${s.ships}"></label>
+    <label>Government <select id="g-gov">${['ikacracy', 'democracy', 'dictatorship', 'aristocracy', 'oligarchy', 'nomocracy', 'technocracy', 'theocracy'].map(x => `<option ${x === s.government ? 'selected' : ''}>${x}</option>`).join('')}</select></label>
+  </fieldset>
+  <fieldset><legend>Empire stock (all towns together)</legend>${RES.map(r => `<label>${RESLBL[r]} <input id="g-st-${r}" type="number" value="${Math.round(s.stock[r] || 0)}"></label>`).join('')}</fieldset>
+  <fieldset><legend>+20% production boosts active</legend>${RES.map(r => `<label class="chk"><input id="g-pb-${r}" type="checkbox" ${s.premium.boosts[r] ? 'checked' : ''}> ${RESLBL[r]}</label>`).join('')}</fieldset>
+  <fieldset><legend>Gods' Shrine</legend>
+    <label>Level <input id="g-sh-l" type="number" value="${s.shrine.level}"></label>
+    <label>Favour donated (0–1000) <input id="g-sh-f" type="number" value="${s.shrine.favour}"></label>
+    <label class="chk"><input id="g-sh-auto" type="checkbox" ${s.shrine.blessedAuto !== false ? 'checked' : ''}> Towns blessed = shrine level</label>
+    <label>Otherwise, towns it can bless <input id="g-sh-n" type="number" value="${s.shrine.blessedCities}"></label>
+    <label>Blessed towns, in order <input id="g-sh-b" type="text" value="${esc((s.shrine.blessed || []).join(', '))}"></label>
+  </fieldset>
+  <fieldset><legend>Research that changes the numbers</legend>${['pulley', 'geometry', 'spiritLevel', 'holiday', 'wellConstruction', 'helpingHands', 'utopia', 'letterChute', 'paper', 'ink', 'mechanicalPen'].map(x => `<label class="chk"><input id="g-rs-${x}" type="checkbox" ${s.research[x] ? 'checked' : ''}> ${x}</label>`).join('')}
+    <label>Economic Future level <input id="g-rs-ef" type="number" value="${s.research.economicFuture || 0}"></label></fieldset>`;
+  $('#ed-cities').innerHTML = s.cities.map((c, i) => {
+    const blds = Object.keys(c.b);
+    return `<fieldset class="cityed" data-i="${i}"><legend>${esc(c.name)}</legend>
+      <div class="row">
+        <label>Name <input data-f="name" value="${esc(c.name)}"></label>
+        <label>Coords <input data-f="coords" value="${esc(c.coords || '')}"></label>
+        <label>Luxury <select data-f="lux">${['wine', 'marble', 'glass', 'sulfur'].map(x => `<option ${x === c.lux ? 'selected' : ''} value="${x}">${RESLBL[x]}</option>`).join('')}</select></label>
+        <label>Population <input data-f="pop" type="number" value="${Math.round(c.pop)}"></label>
+        <label>Sawmill lvl <input data-f="woodLvl" type="number" value="${c.woodLvl}"></label>
+        <label>Mine lvl <input data-f="luxLvl" type="number" value="${c.luxLvl}"></label>
+        <label>Free building grounds <input data-f="freeSlots" type="number" value="${c.freeSlots || 0}"></label>
+        <label>Cultural goods <input data-f="cultural" type="number" value="${c.cultural || 0}"></label>
+        <label>Scientists (fixed) <input data-f="scientists" type="number" value="${c.userScientists ?? c.scientists ?? 0}"></label>
+        <label>God <select data-f="god">${['none', 'pan', 'dionysus', 'tyche', 'theia', 'hephaestus', 'plutus'].map(x => `<option ${x === c.god ? 'selected' : ''}>${x}</option>`).join('')}</select></label>
+        <label class="chk"><input data-f="capital" type="checkbox" ${c.capital ? 'checked' : ''}> Capital</label>
+      </div>
+      <div class="row bl">${blds.map(b => `<label>${esc(NAMES[b] || b)} <input data-b="${b}" value="${Array.isArray(c.b[b]) ? c.b[b].join(',') : c.b[b]}"></label>`).join('')}
+        <label>Add building <select data-add><option value="">—</option>${ALL_B.filter(b => !blds.includes(b)).map(b => `<option value="${b}">${esc(NAMES[b])}</option>`).join('')}</select></label></div>
+      <label class="wide">New buildings allowed on free grounds <input data-f="slotPlan" value="${esc((c.slotPlan || []).join(', '))}"></label>
+      <button type="button" class="ghost" data-del="${i}">Remove this town</button>
+    </fieldset>`;
+  }).join('') + `<button type="button" class="ghost" id="addTown">Add a town</button>`;
+  $('#io').value = JSON.stringify(state, null, 1);
+}
+function readEditor() {
+  const s = JSON.parse(JSON.stringify(state));
+  const v = id => $('#' + id);
+  s.meta.updated = v('g-updated').value || s.meta.updated;
+  s.gold = +v('g-gold').value; s.ambrosia = +v('g-amb').value; s.traderUses = +v('g-trader').value; s.ships = +v('g-ships').value;
+  s.government = v('g-gov').value;
+  RES.forEach(r => { s.stock[r] = +v('g-st-' + r).value || 0; s.premium.boosts[r] = v('g-pb-' + r).checked; });
+  s.shrine.level = +v('g-sh-l').value; s.shrine.favour = +v('g-sh-f').value; s.shrine.blessedCities = +v('g-sh-n').value; s.shrine.blessedAuto = v('g-sh-auto').checked;
+  s.shrine.blessed = v('g-sh-b').value.split(',').map(x => x.trim()).filter(Boolean);
+  ['pulley', 'geometry', 'spiritLevel', 'holiday', 'wellConstruction', 'helpingHands', 'utopia', 'letterChute', 'paper', 'ink', 'mechanicalPen'].forEach(x => s.research[x] = v('g-rs-' + x).checked);
+  s.research.economicFuture = +v('g-rs-ef').value || 0;
+  document.querySelectorAll('.cityed').forEach(fs => {
+    const c = s.cities[+fs.dataset.i];
+    fs.querySelectorAll('[data-f]').forEach(el => {
+      const f = el.dataset.f;
+      if (el.type === 'checkbox') c[f] = el.checked;
+      else if (f === 'slotPlan') c[f] = el.value.split(',').map(x => x.trim()).filter(Boolean);
+      else if (['pop', 'woodLvl', 'luxLvl', 'freeSlots', 'cultural'].includes(f)) c[f] = +el.value || 0;
+      else if (f === 'scientists') { c.scientists = +el.value || 0; c.userScientists = c.scientists; }
+      else c[f] = el.value;
+    });
+    fs.querySelectorAll('[data-b]').forEach(el => {
+      const b = el.dataset.b, raw = el.value.trim();
+      if (raw === '' || raw === '0') { delete c.b[b]; return; }
+      const parts = raw.split(',').map(x => +x.trim()).filter(x => x > 0);
+      c.b[b] = (b === 'warehouse' || b === 'port' || b === 'shipyard') ? parts : parts[0];
+    });
+  });
+  if (s.cities.filter(c => c.capital).length !== 1) throw new Error('Exactly one town must be marked as capital.');
+  return s;
+}
+
+
+// ---------- Game snapshot (from the bookmarklet) ----------
+function mergeSnapshot(base, snap) {
+  // Mayor v0.2+ files (mayor.snapshot.v1 envelope) are accepted as well as the older clipboard format.
+  if (snap && snap.schema === 'mayor.snapshot.v1' && snap.payload) {
+    const isl = {}; for (const [id, i] of Object.entries(snap.payload.islands || {})) isl[id] = { ...i, lux: i.lux ?? i.tradegood ?? null };
+    snap = { type: 'ikariam-snapshot', version: 2, takenAt: snap.producedAt, server: snap.server, ...snap.payload, islands: isl };
+  }
+  if (!snap || snap.type !== 'ikariam-snapshot' || !Array.isArray(snap.cities) || !snap.cities.length) throw new Error('This is not an Ikariam snapshot from the bookmarklet.');
+  const s = JSON.parse(JSON.stringify(base));
+  const notes = [];
+  const byName = Object.fromEntries(s.cities.map(c => [String(c.name).toLowerCase(), c]));
+  const byId = Object.fromEntries(s.cities.filter(c => c.gameId).map(c => [String(c.gameId), c]));
+  const out = [];
+  for (const g of snap.cities) {
+    let c = byId[g.id] || byName[String(g.name).toLowerCase()];
+    if (!c) { c = { cultural: 0, scientists: 0, god: 'pan', slotPlan: ['tavern', 'museum', 'palaceColony', 'warehouse', 'forester', 'carpentering', 'architect'] }; notes.push(`new town ${g.name}`); }
+    const isl = (snap.islands || {})[g.islandId] || {};
+    const missingIsl = !isl.woodLvl && !c.woodLvl;
+    Object.assign(c, {
+      gameId: g.id, name: g.name, coords: g.coords, capital: !!g.capital, lux: g.lux || isl.lux || c.lux,
+      pop: g.population, woodLvl: isl.woodLvl || c.woodLvl || 20, luxLvl: isl.luxLvl || c.luxLvl || 20,
+      freeSlots: g.freeSlots, b: g.b, units: g.units || {}, stockHere: g.stock, wineSpendings: g.wineSpendings, upgrading: g.upgrading || null,
+    });
+    if (missingIsl) notes.push(`${g.name}: sawmill/mine levels were not in the snapshot, so 20 was assumed; set the real ones in Update state`);
+    c.slotPlan = (c.slotPlan || []).filter(b => !(b in g.b));
+    if (c.b.townHall) { const mp = maxPop(c, s); if (g.population > mp * 1.02) notes.push(`${g.name}: population ${g.population} is above its housing ${mp}; the game field may be housing, tell Claude`); }
+    out.push(c);
+  }
+  s.cities.filter(c => !out.includes(c)).forEach(c => notes.push(`${c.name} was not in the snapshot and was removed`));
+  s.cities = out;
+  s.stock = { wood: 0, wine: 0, marble: 0, glass: 0, sulfur: 0 };
+  snap.cities.forEach(g => RES.forEach(r => { s.stock[r] += g.stock?.[r] || 0; }));
+  if (snap.gold != null) s.gold = snap.gold;
+  if (snap.ships) s.ships = snap.ships;
+  if (snap.ambrosia != null) s.ambrosia = snap.ambrosia;
+  const shrineTown = s.cities.find(c => c.b.shrineOfOlympus);
+  if (shrineTown) { s.shrine.level = shrineTown.b.shrineOfOlympus; s.shrine.city = shrineTown.name; }
+  if (Array.isArray(s.shrine.blessed)) s.shrine.blessed = s.shrine.blessed.map(n => (s.cities.find(c => String(c.name).toLowerCase() === String(n).toLowerCase()) || { name: n }).name);
+  s.meta.updated = snap.takenAt.slice(0, 10);
+  s.meta.note = `Imported from game snapshot ${snap.takenAt}`;
+  s.lastSnapshot = { takenAt: snap.takenAt, server: snap.server, islands: snap.islands };
+  return { state: s, notes };
+}
+
+// ---------- Persistence ----------
+async function persist(note) {
+  saveLocal(true);
+  if (!db || saving) { $('#savestate').textContent = db ? 'Saving…' : 'Saved in this browser.'; return; }
+  saving = true; $('#savestate').textContent = 'Saving…';
+  try {
+    const payload = { state: JSON.parse(JSON.stringify(state)), settings, savedAt: new Date().toISOString(), note: note || '' };
+    await db.doc('planner/state').set(payload);
+    await db.collection('snapshots').doc(payload.savedAt.replace(/[^0-9TZ:.-]/g, '')).set(payload);
+    $('#savestate').textContent = `Saved ${new Date().toLocaleString()} · `;
+  } catch (e) { $('#savestate').textContent = 'Saving to shared storage failed (' + (e.code || e.message) + '); kept in this browser.'; }
+  saving = false;
+}
+
+// ---------- Building cost calculator ----------
+const CALC_RED = { wood: 'carpentering', wine: 'vineyard', marble: 'architect', glass: 'optician', sulfur: 'fireworker' };
+// Pure: rows of [level, {res: cost}] for b from `from` to `to`; pct = {research, extra, red:{res: level}}.
+// A reducer building being upgraded counts its own previous level for its resource, as in the game.
+function calcCost(b, from, to, pct) {
+  const table = COSTS[b] || [], out = [], tot = {}, base = {};
+  RES.forEach(r => { tot[r] = 0; base[r] = 0; });
+  const self = Object.keys(CALC_RED).find(r => CALC_RED[r] === b);
+  for (let L = from + 1; L <= Math.min(to, table.length); L++) {
+    const row = table[L - 1], c = {};
+    RES.forEach((r, i) => {
+      const red = Math.min(50, r === self ? L - 1 : (pct.red[r] || 0));
+      const p = Math.min(100, pct.research + red + pct.extra);
+      c[r] = Math.max(0, Math.floor(row[i] * (1 - p / 100) + 1e-9));
+      tot[r] += c[r]; base[r] += row[i];
+    });
+    out.push([L, c]);
+  }
+  return { rows: out, tot, base, max: table.length, self };
+}
+let calcOpts = [];
+function calcFillBuildings() {
+  const i = $('#c-town').value, c = i === '' ? null : state.cities[+i];
+  calcOpts = [];
+  if (c) for (const [b, v] of Object.entries(c.b)) {
+    if (!COSTS[b]) continue;
+    const arr = Array.isArray(v) ? v : [v];
+    arr.forEach((L, k) => calcOpts.push({ b, L, label: `${NAMES[b] || b}${arr.length > 1 ? ' #' + (k + 1) : ''} — level ${L}` }));
+  }
+  const have = new Set(calcOpts.map(o => o.b));
+  Object.keys(COSTS).filter(b => !have.has(b) || ['warehouse', 'port', 'shipyard'].includes(b))
+    .sort((x, y) => (NAMES[x] || x).localeCompare(NAMES[y] || y))
+    .forEach(b => calcOpts.push({ b, L: 0, label: `${NAMES[b] || b}${have.has(b) ? ' — another one' : ''} — not built` }));
+  $('#c-b').innerHTML = calcOpts.map((o, k) => `<option value="${k}">${esc(o.label)}</option>`).join('');
+  if (c) RES.forEach(r => { $('#c-r-' + r).value = Math.min(50, blevel(c, CALC_RED[r])); });
+  const R = state.research || {};
+  $('#c-pulley').checked = R.pulley !== false; $('#c-geometry').checked = R.geometry !== false; $('#c-spirit').checked = R.spiritLevel !== false;
+  calcPickBuilding();
+}
+function calcPickBuilding() {
+  const o = calcOpts[+$('#c-b').value]; if (!o) return;
+  $('#c-from').value = o.L; $('#c-to').value = Math.min(o.L + 1, (COSTS[o.b] || []).length);
+  calcRun();
+}
+function calcRun() {
+  const o = calcOpts[+$('#c-b').value]; if (!o) { $('#c-out').innerHTML = ''; return; }
+  const from = Math.max(0, Math.floor(+$('#c-from').value || 0)), to = Math.floor(+$('#c-to').value || 0);
+  const pct = { research: ($('#c-pulley').checked ? 2 : 0) + ($('#c-geometry').checked ? 4 : 0) + ($('#c-spirit').checked ? 8 : 0),
+    extra: Math.max(0, +$('#c-extra').value || 0), red: Object.fromEntries(RES.map(r => [r, Math.max(0, +$('#c-r-' + r).value || 0)])) };
+  const res = calcCost(o.b, from, to, pct);
+  if (to <= from || from >= res.max) { $('#c-out').innerHTML = `<p class="note">Choose a target level above ${from}. ${esc(NAMES[o.b] || o.b)} goes up to level ${res.max}.</p>`; return; }
+  const used = RES.filter(r => res.base[r] > 0);
+  const n = v => fmt(v);
+  const head = `<tr><th>Level</th>${used.map(r => `<th class="num">${RESLBL[r]}</th>`).join('')}</tr>`;
+  const body = res.rows.map(([L, c]) => `<tr><td class="lv">${L - 1} → ${L}</td>${used.map(r => `<td class="num">${n(c[r])}</td>`).join('')}</tr>`).join('');
+  const save = Object.fromEntries(used.map(r => [r, res.base[r] - res.tot[r]]));
+  const foot = `<tr class="tot"><td>Total</td>${used.map(r => `<td class="num">${n(res.tot[r])}</td>`).join('')}</tr>
+    <tr><td class="lv">No reductions</td>${used.map(r => `<td class="num">${n(res.base[r])}</td>`).join('')}</tr>
+    <tr><td class="lv">You save</td>${used.map(r => `<td class="num">${n(save[r])}</td>`).join('')}</tr>`;
+  const capped = to > res.max ? `<p class="note">${esc(NAMES[o.b] || o.b)} only goes up to level ${res.max}; the table stops there.</p>` : '';
+  const selfNote = res.self ? `<p class="note">This building is itself a reducer: each new level already counts for the next upgrade's ${RESLBL[res.self].toLowerCase()}, so its field above is ignored here.</p>` : '';
+  $('#c-out').innerHTML = `<div class="scroll"><table><thead>${head}</thead><tbody>${body}${foot}</tbody></table></div>${capped}${selfNote}
+    <p class="note">Reductions used: research ${pct.research}% + reducer levels + extra ${pct.extra}%. Reducer levels stay fixed over the range; change them above if you upgrade a reducer in between.</p>`;
+}
+function bindCalc() {
+  $('#c-town').addEventListener('change', calcFillBuildings);
+  $('#c-b').addEventListener('change', calcPickBuilding);
+  ['c-from', 'c-to', 'c-pulley', 'c-geometry', 'c-spirit', 'c-extra', ...RES.map(r => 'c-r-' + r)].forEach(id => $('#' + id).addEventListener('input', calcRun));
+}
+function renderCalc() {
+  const sel = $('#c-town'); const prev = sel.value; const first = !sel.options.length;
+  sel.innerHTML = '<option value="">No town (type the levels)</option>' + state.cities.map((c, i) => `<option value="${i}">${esc(c.name)}</option>`).join('');
+  const cap = state.cities.findIndex(c => c.capital);
+  sel.value = first ? (cap >= 0 ? String(cap) : '') : (prev !== '' && +prev < state.cities.length ? prev : '');
+  if (first || !calcOpts.length) calcFillBuildings(); else calcRun();
+}
+
+// ---------- Wiring ----------
+function renderAll() { renderPlan(); renderCities(); renderProjection(); renderEditor(); renderCalc(); }
+function bindControls() {
+  bindCalc();
+  const sync = () => { settings.goal = $('#goal').value; settings.days = +$('#days').value; settings.expansion = $('#exp').checked; settings.expStart = +$('#expStart').value; settings.expLux = $('#expLux').value; settings.expEvery = +$('#expEvery').value; settings.marketMarble = +$('#mkt').value; settings.marketPrice = +$('#mktp').value; saveLocal(); run(); };
+  ['goal', 'days', 'exp', 'expStart', 'expLux', 'expEvery', 'mkt', 'mktp'].forEach(id => $('#' + id).addEventListener('change', sync));
+  $('#goal').value = settings.goal; $('#days').value = settings.days; $('#exp').checked = settings.expansion; $('#expStart').value = settings.expStart; $('#expLux').value = settings.expLux; $('#expEvery').value = settings.expEvery; $('#mkt').value = settings.marketMarble; $('#mktp').value = settings.marketPrice;
+  $('#applyState').addEventListener('click', () => { try { state = readEditor(); $('#edmsg').textContent = ''; persist('edited in form'); run(); } catch (e) { $('#edmsg').textContent = e.message; } });
+  $('#ed-cities').addEventListener('change', e => {
+    if (e.target.matches('[data-add]') && e.target.value) { try { state = readEditor(); } catch { /* keep */ } const i = +e.target.closest('.cityed').dataset.i; state.cities[i].b[e.target.value] = ['warehouse', 'port', 'shipyard'].includes(e.target.value) ? [1] : 1; renderEditor(); }
+  });
+  $('#ed-cities').addEventListener('click', e => {
+    if (e.target.matches('[data-del]')) { state.cities.splice(+e.target.dataset.del, 1); renderEditor(); }
+    if (e.target.id === 'addTown') { state.cities.push({ name: 'New town', coords: '', lux: 'marble', pop: 40, woodLvl: 20, luxLvl: 20, cultural: 0, scientists: 0, god: 'pan', freeSlots: 15, slotPlan: ['tavern', 'museum', 'palaceColony', 'warehouse', 'forester', 'carpentering', 'architect'], b: { townHall: 1 } }); renderEditor(); }
+  });
+  $('#copyJson').addEventListener('click', async () => { try { await navigator.clipboard.writeText(JSON.stringify(state)); $('#iomsg').textContent = 'State copied. Keep it somewhere safe, or paste it into the planner in another browser.'; } catch { $('#io').select(); $('#iomsg').textContent = 'Copy blocked here; the text is selected, press Ctrl+C.'; } });
+  $('#importJson').addEventListener('click', () => { try { const s = JSON.parse($('#io').value); if (s.type === 'ikariam-snapshot' || s.schema === 'mayor.snapshot.v1') { const m = mergeSnapshot(state, s); state = m.state; persist('game snapshot'); run(); $('#iomsg').textContent = 'Game snapshot merged' + (m.notes.length ? ': ' + m.notes.join('; ') : '') + '.'; return; } if (!s.cities || !s.research) throw new Error('This JSON has no cities or research section.'); state = s; persist('imported'); run(); $('#iomsg').textContent = 'Imported.'; } catch (e) { $('#iomsg').textContent = 'Import failed: ' + e.message; } });
+  $('#importSnap').addEventListener('click', () => { try { const m = mergeSnapshot(state, JSON.parse($('#snapIn').value)); state = m.state; persist('game snapshot'); run(); $('#snapmsg').textContent = `Merged ${state.cities.length} towns from the snapshot of ${new Date(state.lastSnapshot.takenAt).toLocaleString()}` + (m.notes.length ? ' (' + m.notes.join('; ') + ')' : '') + '. The plan has been recomputed.'; $('#snapIn').value = ''; } catch (e) { $('#snapmsg').textContent = 'Could not import: ' + e.message; } });
+  try { $('#bmLink').href = $('#bmCode').value; } catch { /* link stays inert */ }
+  $('#copyBm').addEventListener('click', async () => { try { await navigator.clipboard.writeText($('#bmCode').value); $('#bmmsg').textContent = 'Copied. Paste it as the URL of a new bookmark.'; } catch { $('#bmCode').select(); $('#bmmsg').textContent = 'Copy blocked here; the text is selected, press Ctrl+C.'; } });
+  $('#resetState').addEventListener('click', () => { state = defaultState(); persist('reset to example'); run(); });
+  const show = () => { const t = (location.hash || '#plan').slice(1); document.querySelectorAll('.tab').forEach(s => s.hidden = s.id !== 'tab-' + t); document.querySelectorAll('nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + t)); if (t === 'projection' && sim) renderProjection(); };
+  window.addEventListener('hashchange', show); show();
+}
+
+async function boot() {
+  const loc = loadLocal();
+  state = loc?.state || defaultState();
+  settings = { ...DEFAULT_SETTINGS, ...(loc?.settings || {}) };
+  bindControls(); run();
+  try {
+    if (window.claude && typeof window.claude.use === 'function') {
+      db = await window.claude.use('db');
+      if (db) {
+        const timer = setTimeout(() => { $('#savestate').textContent = 'Shared storage not reachable yet; using this browser’s copy.'; }, 10000);
+        const snap = await db.doc('planner/state').get();
+        clearTimeout(timer);
+        if (snap.exists) {
+          const d = snap.data();
+          const remoteNewer = !loc || !loc.savedAt || (d.savedAt && d.savedAt > loc.savedAt);
+          if (d.state && remoteNewer) { state = JSON.parse(JSON.stringify(d.state)); settings = { ...DEFAULT_SETTINGS, ...(d.settings || {}) }; bindValues(); run(); }
+          $('#savestate').textContent = `Loaded saved state from ${new Date(d.savedAt).toLocaleString()}.`;
+        } else $('#savestate').textContent = 'Showing the example empire. Import your game or edit it in “Update state”, then save.';
+      }
+    }
+  } catch (e) { $('#savestate').textContent = 'Using this browser’s copy (' + (e.code || e.message) + ').'; }
+}
+function bindValues() { $('#goal').value = settings.goal; $('#days').value = settings.days; $('#exp').checked = settings.expansion; $('#expStart').value = settings.expStart; $('#expLux').value = settings.expLux; $('#expEvery').value = settings.expEvery; $('#mkt').value = settings.marketMarble; $('#mktp').value = settings.marketPrice; }
+boot();
+
+</script>
+</body>
+</html>
