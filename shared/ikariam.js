@@ -104,7 +104,7 @@ export function parseIslandHtml(html) {
   const res = pick('resourceLevel'), trade = pick('tradegoodLevel');
   if (res == null && trade == null) return null;
   return {
-    id: pick('islandId') ?? pick('id'), name: null, x: numOrNull(pick('xCoord')), y: numOrNull(pick('yCoord')),
+    id: pick('islandId'), name: null, x: numOrNull(pick('xCoord')), y: numOrNull(pick('yCoord')),
     tradegood: ORD[pick('tradegood')] || null,
     woodLvl: numOrNull(res), luxLvl: numOrNull(trade),
     wonder: pick('wonderName'), wonderLvl: numOrNull(pick('wonderLevel')),
@@ -116,32 +116,30 @@ export function parseIslandHtml(html) {
 export const levelKeys = html => [...new Set([...html.matchAll(/\\?"(\w{0,30}(?:[Ll]evel|tradegood|wonder)\w{0,20})\\?"\s*:/g)].map(m => m[1]))].slice(0, 60);
 
 /**
- * Read one island the way the game UI does: the ajax island view first; when the game answers
- * "reload", load the page it names (same origin only) and read the island from it.
- * Returns { island, via } or { island: null, diag }.
+ * Read one island the way the game UI does. The ajax island view first; the game usually answers
+ * "reload" (24 Nov 2026), and the reload page shows the island of the *current* town, not the one
+ * asked for (25 Nov 2026). So: full page load of view=island&islandId=<id>, and accept an island
+ * only when its id matches. Returns { island, via } or { island: null, diag }.
  */
 export async function readIsland(client, id) {
-  let last = null;
+  const want = isl => isl && isl.id != null && String(isl.id) === String(id);
+  let last = null, seen = null;
   for (const params of [
     { view: 'island', islandId: id, backgroundView: 'island', currentIslandId: id },
-    { view: 'island', islandId: id },
   ]) {
     last = await client.get(params);
     await pace();
     const isl = parseIsland(last);
-    if (isl) return { island: isl, via: 'ajax' };
-    const link = reloadLink(last);
-    if (link) {
-      const url = new URL(link, location.origin);
-      if (url.origin !== location.origin) break;
-      const html = await client.getText(url.pathname + url.search);
-      await pace();
-      const a = parseEmbedded(html); if (a) return { island: a, via: 'page-json' };
-      const b = parseIslandHtml(html); if (b) return { island: b, via: 'page-text' };
-      return { island: null, diag: { reload: true, pageLength: html.length, keys: levelKeys(html) } };
-    }
+    if (want(isl)) return { island: isl, via: 'ajax' };
+    if (isl) seen = isl.id;
   }
-  return { island: null, diag: shape(last) };
+  const html = await client.getText(`/index.php?view=island&islandId=${encodeURIComponent(id)}`);
+  await pace();
+  const a = parseEmbedded(html);
+  if (want(a)) return { island: a, via: 'page-json' };
+  const b = a ? null : parseIslandHtml(html); // text fallback only when the page has no readable island data
+  if (b && (b.id == null || String(b.id) === String(id))) return { island: { ...b, id: String(id) }, via: 'page-text' };
+  return { island: null, diag: { wrongIsland: seen ?? a?.id ?? b?.id ?? null, reload: !!reloadLink(last), pageLength: html.length, keys: levelKeys(html) } };
 }
 
 /** Game client bound to the current tab: carries the actionRequest token like the game UI does. */

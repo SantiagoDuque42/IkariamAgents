@@ -9,7 +9,7 @@
 // `.targetOwner` (onclick has tbl_mail<reportId>) and `.date`; warehouse reports hold `table.resourcesTable`
 // rows with `.unitname img[src*=icon_<res>.png]` and `.count`. Garrison-report markup is unverified.
 (async () => {
-  const VERSION = '0.2.0';
+  const VERSION = '0.2.1';
   /*@shared*/
   const ID = 'ika-spy';
   const say = (t, b, btns, html) => overlay(ID, t, b, btns, html);

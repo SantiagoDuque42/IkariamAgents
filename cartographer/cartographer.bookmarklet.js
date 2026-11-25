@@ -6,7 +6,7 @@
 // first, at a human pace, to read levels, free spots and towns. Response shapes are unverified until the
 // first real run; anything unrecognised is saved as structure-only diagnostics in the file.
 (async () => {
-  const VERSION = '0.2.0';
+  const VERSION = '0.2.1';
   /*@shared*/
   const ID = 'ika-carto';
   const say = (t, b, btns, html) => overlay(ID, t, b, btns, html);

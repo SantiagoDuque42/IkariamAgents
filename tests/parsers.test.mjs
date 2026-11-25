@@ -57,3 +57,20 @@ test('parseIslandHtml reads levels by name, also with escaped quotes', () => {
   assert.equal(parseIslandHtml('<html>nothing</html>'), null);
   assert.deepEqual(levelKeys(html).sort(), ['resourceLevel', 'tradegood', 'tradegoodLevel', 'wonderLevel']);
 });
+
+import { readIsland } from '../shared/ikariam.js';
+const islandPage = id => `<script>ikariam.getClass(ajax.Responder, ${JSON.stringify([['updateGlobalData', {}], ['updateBackgroundData', { id: String(id), name: 'I' + id, xCoord: '1', yCoord: '2', tradegood: '2', resourceLevel: '29', tradegoodLevel: '28', cities: [] }]])});</script>`;
+
+test('readIsland: reload answer → loads the requested island page and checks its id', async () => {
+  const calls = [];
+  const client = { get: async () => [['custom', ['reload', { link: '/index.php', isDevHost: 0 }]]], getText: async p => { calls.push(p); return islandPage(3009); } };
+  const r = await readIsland(client, '3009');
+  assert.equal(r.via, 'page-json'); assert.equal(r.island.id, '3009'); assert.equal(r.island.luxLvl, 28);
+  assert.deepEqual(calls, ['/index.php?view=island&islandId=3009']);
+});
+
+test('readIsland: a page showing another island is rejected (bug seen 25 Nov 2026)', async () => {
+  const client = { get: async () => [['custom', ['reload', { link: '/index.php' }]]], getText: async () => islandPage(3038) };
+  const r = await readIsland(client, '3009');
+  assert.equal(r.island, null); assert.equal(r.diag.wrongIsland, '3038');
+});

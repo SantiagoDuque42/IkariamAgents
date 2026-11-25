@@ -3,7 +3,7 @@
 // then downloads `mayor.snapshot_<server>_<YYYYMMDD-HHmm>.json` (schema mayor.snapshot.v1).
 // "Copy for planner" copies the older format the Empire Planner's importer understands.
 (async () => {
-  const VERSION = '0.3.0';
+  const VERSION = '0.3.1';
   /*@shared*/
   const ID = 'ika-mayor';
   const say = (t, b, btns) => overlay(ID, t, b, btns);
@@ -61,8 +61,7 @@
       await pace();
     }
 
-    // Islands. v0.1 got no island data; v0.2 found the game answers the ajax island view with
-    // ["custom", ["reload", {link}]] (24 Nov 2026). readIsland follows that link like a page load.
+    // Islands: see readIsland (ajax view, then a full page load of the requested island, id-checked).
     const client = { get, getText };
     for (const id of [...new Set(payload.cities.map(c => c.islandId))]) {
       const r = await readIsland(client, id);
