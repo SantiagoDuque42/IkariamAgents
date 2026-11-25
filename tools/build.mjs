@@ -6,11 +6,12 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 
 const root = new URL('..', import.meta.url).pathname;
-const { version } = JSON.parse(readFileSync(root + 'package.json', 'utf8'));
+const { version, cdnRef } = JSON.parse(readFileSync(root + 'package.json', 'utf8'));
 // Short loader bookmarks: some browsers refuse very long bookmark addresses. The loader pulls the
-// built file for this release tag (v<version>) from jsDelivr's GitHub mirror and pins it with
+// built file at package.json cdnRef (a pushed commit whose dist/ matches this build; else tag v<version>)
+// from jsDelivr's GitHub mirror and pins it with
 // Subresource Integrity, so the browser runs it only if it is byte-identical to this build.
-const CDN = `https://cdn.jsdelivr.net/gh/SantiagoDuque42/IkariamAgents@v${version}/dist/`;
+const CDN = `https://cdn.jsdelivr.net/gh/SantiagoDuque42/IkariamAgents@${cdnRef || 'v' + version}/dist/`;
 const shared = readFileSync(root + 'shared/ikariam.js', 'utf8')
   .replace(/^export\s+(?=(const|function|async function|let)\b)/gm, '');
 const targets = {

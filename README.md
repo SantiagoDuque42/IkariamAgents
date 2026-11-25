@@ -28,7 +28,7 @@ An information system for Ikariam: extractors that read the game (only when you 
 ## Use
 
 1. **Install a bookmarklet.** Use the short loader: copy `dist/<tool>.loader.txt` (about 600 characters) and paste it as the address of a new bookmark.
-   - The loader fetches `dist/<tool>.js` of the release tag (`v<version>`) from jsDelivr.
+   - The loader fetches `dist/<tool>.js` at the commit named in `package.json` → `cdnRef` from jsDelivr.
    - Subresource Integrity makes the browser run it only if it is byte-identical to that build.
    - The full inline version, `dist/<tool>.bookmarklet.txt` (about 27k characters), works where the browser accepts very long bookmark addresses.
    - **Console method**, if the game blocks the loader: open the game tab, press F12 → Console, paste the contents of `dist/<tool>.js`, press Enter.
