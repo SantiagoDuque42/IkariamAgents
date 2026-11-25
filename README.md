@@ -27,7 +27,11 @@ An information system for Ikariam: extractors that read the game (only when you 
 
 ## Use
 
-1. **Install a bookmarklet:** copy the contents of `dist/<tool>.bookmarklet.txt` and paste it as the URL of a new bookmark.
+1. **Install a bookmarklet.** Use the short loader: copy `dist/<tool>.loader.txt` (about 600 characters) and paste it as the address of a new bookmark.
+   - The loader fetches `dist/<tool>.js` of the release tag (`v<version>`) from jsDelivr.
+   - Subresource Integrity makes the browser run it only if it is byte-identical to that build.
+   - The full inline version, `dist/<tool>.bookmarklet.txt` (about 27k characters), works where the browser accepts very long bookmark addresses.
+   - **Console method**, if the game blocks the loader: open the game tab, press F12 → Console, paste the contents of `dist/<tool>.js`, press Enter.
 2. **Choose where downloads land:** set the browser you play in to download into the Drive-synced folder `IKARIAM [ATLAS]/Agentic Development/inbox` (or move the files there).
 3. **Import into the sheets:** install `sheets/AtlasImporter.gs` in the spreadsheet (see `sheets/README.md`). Then use the menu **ATLAS → Import now**, or turn on automatic import every 15 min.
 4. **Plan:** ask the Strategist (Claude, in the Ikariam project) for a plan. It reads the newest files.
